@@ -1,7 +1,7 @@
 import { options } from '../../types';
 import { View } from '../view';
 
-class ContainerView extends View {
+export class ContainerView extends View {
     constructor() {
         const options: options = {
             tagName: 'div',

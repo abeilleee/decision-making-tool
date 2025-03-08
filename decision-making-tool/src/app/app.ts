@@ -7,7 +7,7 @@ export class App {
     }
 
     createView() {
-        const header = new HeaderView();
-        const main = new MainView();
+        const header = new HeaderView().getHTMLElement();
+        const main = new MainView().getHTMLElement();
     }
 }
