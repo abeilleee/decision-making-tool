@@ -6,7 +6,7 @@ export class HeaderView extends View {
     constructor() {
         const options: options = {
             tagName: 'header',
-            parent: [document.body],
+            parent: document.body,
             children: [container],
             textContent: 'header',
             classes: ['header'],

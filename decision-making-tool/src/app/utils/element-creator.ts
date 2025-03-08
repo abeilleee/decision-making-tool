@@ -40,7 +40,7 @@ export class ElementCreator {
 
     private setParentElement(options: options, element: HTMLElement) {
         if (options.parent) {
-            options.parent.forEach((parent) => parent.append(element));
+            options.parent.append(element);
         }
     }
 

@@ -6,7 +6,7 @@ export class MainView extends View {
     constructor() {
         const options: options = {
             tagName: 'main',
-            parent: [document.body],
+            parent: document.body,
             children: [container],
             textContent: 'Hello',
             classes: ['main'],

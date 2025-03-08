@@ -1,9 +1,6 @@
-import { ElementCreator } from './utils/element-creator';
-import { View } from './view/view';
-
 export type options = {
     tagName: string;
-    parent?: HTMLElement[];
+    parent?: HTMLElement;
     children?: HTMLElement[];
     textContent?: string;
     classes: string[];
