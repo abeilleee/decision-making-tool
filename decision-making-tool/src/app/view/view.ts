@@ -3,6 +3,7 @@ import { options } from '../types';
 
 export class View {
     element: ElementCreator;
+
     constructor(options: options) {
         this.element = this.createView(options);
     }

@@ -1,1 +1,5 @@
 @use './app/view/container/container';
+@use './styles/base/reset';
+@use './styles/utils/mixins';
+@use './app/view/header/header';
+@use './styles/base/globals';
