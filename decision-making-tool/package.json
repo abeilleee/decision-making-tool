@@ -1,7 +1,7 @@
 {
     "name": "decision-making-tool",
     "version": "1.0.0",
-    "main": "app.ts",
+    "main": "index.ts",
     "scripts": {
         "build": "webpack",
         "start": "webpack serve --open --mode development",
@@ -38,6 +38,7 @@
         "sass": "^1.85.1",
         "sass-loader": "^16.0.5",
         "stylelint": "^16.15.0",
+        "stylelint-config-clean-order": "^7.0.0",
         "stylelint-config-idiomatic-order": "^10.0.0",
         "stylelint-config-standard-scss": "^14.0.0",
         "stylelint-order": "^6.0.4",
