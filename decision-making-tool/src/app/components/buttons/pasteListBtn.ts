@@ -3,7 +3,7 @@ import { ButtonsName } from './types';
 
 export class PasteListButton extends Button {
     constructor() {
-        super(ButtonsName.PASTE_LIST);
+        super(ButtonsName.PASTE_LIST, ['paste-list-btn']);
     }
 }
 

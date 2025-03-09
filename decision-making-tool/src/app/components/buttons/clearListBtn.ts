@@ -3,7 +3,7 @@ import { ButtonsName } from './types';
 
 export class AddOptionButton extends Button {
     constructor() {
-        super(ButtonsName.CLEAR_LIST);
+        super(ButtonsName.CLEAR_LIST, ['clear-list-btn']);
     }
 }
 

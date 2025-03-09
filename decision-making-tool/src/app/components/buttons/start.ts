@@ -3,7 +3,7 @@ import { ButtonsName } from './types';
 
 export class AddOptionButton extends Button {
     constructor() {
-        super(ButtonsName.START);
+        super(ButtonsName.START, ['start-btn']);
     }
 }
 

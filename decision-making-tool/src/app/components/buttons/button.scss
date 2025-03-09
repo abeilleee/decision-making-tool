@@ -4,4 +4,43 @@
     border-radius: 5px;
     background-color: rgb(104 4 165);
     color: #fff;
+
+    &__container {
+        display: grid;
+        width: 100%;
+        max-width: 48rem;
+        padding: 1rem;
+        gap: 1rem;
+        grid-template:
+            'add-option-btn add-option-btn' min-content
+            'paste-list-btn paste-list-btn' min-content
+            'clear-list-btn clear-list-btn' min-content
+            'save-list-btn load-list-btn' min-content
+            'start-btn start-btn' min-content / 1fr 1fr;
+        margin-inline: auto;
+    }
+}
+
+.add-option-btn {
+    grid-area: add-option-btn;
+}
+
+.paste-list-btn {
+    grid-area: paste-list-btn;
+}
+
+.clear-list-btn {
+    grid-area: clear-list-btn;
+}
+
+.save-list-btn {
+    grid-area: save-list-btn;
+}
+
+.load-list-btn {
+    grid-area: load-list-btn;
+}
+
+.start-btn {
+    grid-area: start-btn;
 }

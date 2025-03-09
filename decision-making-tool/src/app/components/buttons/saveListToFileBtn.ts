@@ -3,7 +3,7 @@ import { ButtonsName } from './types';
 
 export class AddOptionButton extends Button {
     constructor() {
-        super(ButtonsName.SAVE_LIST_TO_FILE);
+        super(ButtonsName.SAVE_LIST_TO_FILE, ['save-list-btn']);
     }
 }
 

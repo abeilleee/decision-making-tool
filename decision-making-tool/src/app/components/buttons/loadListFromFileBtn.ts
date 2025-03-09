@@ -3,7 +3,7 @@ import { ButtonsName } from './types';
 
 export class AddOptionButton extends Button {
     constructor() {
-        super(ButtonsName.LOAD_LIST_FROM_FILE);
+        super(ButtonsName.LOAD_LIST_FROM_FILE, ['load-list-btn']);
     }
 }
 
