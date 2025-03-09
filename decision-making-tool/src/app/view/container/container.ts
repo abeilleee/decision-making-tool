@@ -2,14 +2,13 @@ import { options } from '../../types';
 import { View } from '../view';
 
 export class ContainerView extends View {
-    constructor() {
+    constructor(className: string[], parent?: HTMLElement) {
         const options: options = {
             tagName: 'div',
-            classes: ['container'],
+            classes: ['container', ...className],
+            parent: parent,
         };
 
         super(options);
     }
 }
-
-export const container = new ContainerView().getHTMLElement();

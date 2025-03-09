@@ -1,14 +1,16 @@
 import { options } from '../../types';
-import { container } from '../container/container';
+import { ContainerView } from '../container/container';
 import { View } from '../view';
 import { title } from './title';
+
+const headerContainer = new ContainerView(['header__container']).getHTMLElement();
 
 export class HeaderView extends View {
     constructor() {
         const options: options = {
             tagName: 'header',
             parent: document.body,
-            children: [container],
+            children: [headerContainer],
             classes: ['header'],
         };
         super(options);
@@ -16,6 +18,6 @@ export class HeaderView extends View {
     }
 
     private setTitle(title: HTMLElement): void {
-        container.appendChild(title);
+        headerContainer.appendChild(title);
     }
 }

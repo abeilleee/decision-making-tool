@@ -1,5 +1,4 @@
 import { options } from '../types';
-import { View } from '../view/view';
 
 export class ElementCreator {
     private element: HTMLElement;
@@ -26,7 +25,7 @@ export class ElementCreator {
         options.classes.forEach((className: string) => element.classList.add(className));
     }
 
-    private setTextContent(options: options, element: HTMLElement): void {
+    setTextContent(options: options, element: HTMLElement): void {
         if (options.textContent) {
             element.textContent = options.textContent;
         }
