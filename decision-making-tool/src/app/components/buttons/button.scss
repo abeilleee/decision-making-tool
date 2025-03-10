@@ -13,7 +13,7 @@
         display: grid;
         width: 100%;
         max-width: 48rem;
-        padding: 1rem;
+        padding: 0 1rem 1rem;
         gap: 1rem;
         grid-template:
             'add-option-btn add-option-btn' min-content
@@ -47,4 +47,8 @@
 
 .start-btn {
     grid-area: start-btn;
+}
+
+.delete-btn {
+    max-width: 5rem;
 }

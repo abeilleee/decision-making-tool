@@ -25,21 +25,24 @@ export class Option {
         const id: HTMLElement = new ElementCreator({
             tagName: 'label',
             parent: this.option,
-            textContent: '#111111111',
+            textContent: '#1',
             classes: ['label'],
         }).getElement();
 
-        const titleInput: HTMLElement = new ElementCreator({
+        const titleInput: Partial<HTMLInputElement> = new ElementCreator({
             tagName: 'input',
             parent: this.option,
-            classes: ['input'],
+            classes: ['input', 'input__title'],
         }).getElement();
+        titleInput.placeholder = 'Title';
 
-        const weightInput: HTMLElement = new ElementCreator({
+        const weightInput: Partial<HTMLInputElement> = new ElementCreator({
             tagName: 'input',
             parent: this.option,
-            classes: ['input'],
+            classes: ['input', 'input__weight'],
         }).getElement();
+        weightInput.placeholder = 'Weight';
+        weightInput.type = 'number';
 
         const deleteBtn = new DeleteButton();
         this.option.append(deleteBtn.getElement());
