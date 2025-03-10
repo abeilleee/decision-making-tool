@@ -9,6 +9,7 @@ import { startBtn } from './components/buttons/start';
 import { TitleView } from './view/main/title';
 import { Option } from './components/list-option/option';
 import { ContainerView, mainContainer } from './view/container/container';
+import { OptionList } from './components/list-option/optionList';
 
 export class App {
     constructor() {
@@ -19,7 +20,8 @@ export class App {
         const main = new MainView().getHTMLElement();
         const title = new TitleView().getHTMLElement();
         const optionContainer = new ContainerView(['option__container'], mainContainer).getHTMLElement();
-        const option = new Option(optionContainer);
+        const optionList = new OptionList(optionContainer).getHTMLElement();
+        const option = new Option(optionList);
         const buttonContainer = new ButtonContainer([
             addOptionBtn,
             pasteListBtn,
