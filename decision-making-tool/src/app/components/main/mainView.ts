@@ -65,5 +65,9 @@ export class MainView extends View {
         addOptionBtn.getElement().addEventListener('click', () => {
             addOptionBtn.handleClick(optionList, new Option(optionList).getHTMLElement());
         });
+
+        clearListBtn.getElement().addEventListener('click', () => {
+            clearListBtn.handleClick(optionList);
+        });
     }
 }

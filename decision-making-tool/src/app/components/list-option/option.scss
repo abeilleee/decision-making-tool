@@ -18,6 +18,12 @@
     }
 }
 
+.option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 .input {
     display: flex;
     align-items: center;
