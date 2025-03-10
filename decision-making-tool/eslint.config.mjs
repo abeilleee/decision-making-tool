@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
+import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
@@ -20,6 +21,14 @@ export default [
     {
         ignores: ['**/*config.js'],
     },
+    tseslint.config(eslint.configs.recommended, tseslint.configs.recommendedTypeChecked, {
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    }),
     ...compat.extends(
         'eslint:recommendedTypeChecked ',
         'plugin:@typescript-eslint/recommendedTypeChecked',
@@ -49,6 +58,7 @@ export default [
         rules: {
             'no-plusplus': 'off',
             'no-console': 'warn',
+            'max-lines-per-function': ['error', { max: 40 }],
 
             'max-len': [
                 'warn',
