@@ -1,4 +1,9 @@
 .main {
+    display: flex;
+    height: 100dvh;
+    align-items: center;
+    justify-content: center;
+
     &__container {
         width: 900px;
         padding: 40px;

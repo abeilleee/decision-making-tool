@@ -1,6 +1,7 @@
-@use './app/view/container/container';
 @use './styles/base/reset';
+@use './app/view/container/container';
 @use './styles/utils/mixins';
 @use './styles/base/globals';
 @use './app/view/main/main';
 @use './app/components/buttons/button';
+@use './app/components/list-option/option';

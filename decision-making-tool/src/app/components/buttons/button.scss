@@ -1,6 +1,10 @@
 .button {
+    display: flex;
     height: 35px;
+    align-items: center;
+    justify-content: center;
     padding: 10px;
+    border: 2px solid white;
     border-radius: 10px;
     background-color: rgb(104 4 165);
     color: #fff;
