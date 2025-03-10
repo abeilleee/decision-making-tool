@@ -1,5 +1,5 @@
 import { options } from '../../types';
-import { View } from '../view';
+import { View } from '../../utils/view';
 
 export class ContainerView extends View {
     constructor(className: string[], parent?: HTMLElement) {
@@ -12,5 +12,3 @@ export class ContainerView extends View {
         super(options);
     }
 }
-
-export const mainContainer = new ContainerView(['main__container']).getHTMLElement();

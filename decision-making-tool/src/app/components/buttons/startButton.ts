@@ -1,10 +1,8 @@
 import { Button } from './button';
 import { ButtonsName } from './types';
 
-export class AddOptionButton extends Button {
+export class StartButton extends Button {
     constructor() {
         super(ButtonsName.START, ['start-btn']);
     }
 }
-
-export const startBtn = new AddOptionButton().getElement();

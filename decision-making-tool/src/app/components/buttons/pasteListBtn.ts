@@ -6,5 +6,3 @@ export class PasteListButton extends Button {
         super(ButtonsName.PASTE_LIST, ['paste-list-btn']);
     }
 }
-
-export const pasteListBtn = new PasteListButton().getElement();

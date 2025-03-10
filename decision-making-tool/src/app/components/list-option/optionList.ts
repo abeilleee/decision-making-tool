@@ -1,5 +1,5 @@
 import { options } from '../../types';
-import { View } from '../../view/view';
+import { View } from '../../utils/view';
 
 export class OptionList extends View {
     constructor(parent: HTMLElement) {

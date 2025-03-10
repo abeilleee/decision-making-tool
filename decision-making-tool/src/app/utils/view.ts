@@ -1,4 +1,4 @@
-import { ElementCreator } from '../utils/element-creator';
+import { ElementCreator } from './element-creator';
 import { options } from '../types';
 
 export class View {
@@ -15,5 +15,9 @@ export class View {
     private createView(options: options): ElementCreator {
         const element = new ElementCreator(options);
         return element;
+    }
+
+    public addInnerElements(elements: HTMLElement[]) {
+        elements.forEach((child: HTMLElement) => this.element.getElement().append(child));
     }
 }

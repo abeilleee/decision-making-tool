@@ -8,13 +8,16 @@ export class Option {
     constructor(parent: HTMLElement) {
         const options: options = {
             tagName: 'li',
-            parent: parent,
             classes: ['option'],
+            parent: parent,
         };
 
         this.option = new ElementCreator(options).getElement();
-
         this.createOptionElements();
+    }
+
+    public getHTMLElement(): HTMLElement {
+        return this.option;
     }
 
     public createOptionElements(): void {
