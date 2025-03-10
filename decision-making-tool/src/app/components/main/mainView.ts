@@ -18,7 +18,6 @@ export class MainView extends View {
             parent: document.body,
             classes: ['main'],
         };
-
         super(options);
         this.configureMain();
     }
@@ -27,23 +26,14 @@ export class MainView extends View {
         const mainContainer = new ContainerView(['main__container']).getHTMLElement();
         this.setTitle(mainContainer);
         const optionList = new OptionList(mainContainer).getHTMLElement();
-        const option = new Option(optionList).getHTMLElement();
+        this.addOption(optionList);
         this.addInnerElements([mainContainer]);
-        const buttonContainer = new ContainerView(['button__container'], mainContainer);
-        const addOptionBtn = new AddOptionButton().getElement();
-        const pasteListBtn = new PasteListButton().getElement();
-        const clearListBtn = new ClearListButton().getElement();
-        const saveListToFileBtn = new SaveListButton().getElement();
-        const loadListFromFileBtn = new LoadListButton().getElement();
-        const startBtn = new StartButton().getElement();
-        buttonContainer.addInnerElements([
-            addOptionBtn,
-            pasteListBtn,
-            clearListBtn,
-            saveListToFileBtn,
-            loadListFromFileBtn,
-            startBtn,
-        ]);
+        const buttonContainer = new ContainerView(['button__container'], mainContainer).getHTMLElement();
+        this.addButons(buttonContainer, optionList);
+    }
+
+    public addOption(parent: HTMLElement) {
+        const option = new Option(parent).getHTMLElement();
     }
 
     private setTitle(parent: HTMLElement): HTMLElement {
@@ -53,7 +43,27 @@ export class MainView extends View {
             parent: parent,
             textContent: 'Decision Making Tool',
         };
-
         return new ElementCreator(options).getElement();
+    }
+
+    private addButons(parent: HTMLElement, optionList: HTMLElement) {
+        const addOptionBtn = new AddOptionButton();
+        const pasteListBtn = new PasteListButton();
+        const clearListBtn = new ClearListButton();
+        const saveListToFileBtn = new SaveListButton();
+        const loadListFromFileBtn = new LoadListButton();
+        const startBtn = new StartButton();
+        const buttons = [
+            addOptionBtn.getElement(),
+            pasteListBtn.getElement(),
+            clearListBtn.getElement(),
+            saveListToFileBtn.getElement(),
+            loadListFromFileBtn.getElement(),
+            startBtn.getElement(),
+        ];
+        buttons.forEach((button) => parent.append(button));
+        addOptionBtn.getElement().addEventListener('click', () => {
+            addOptionBtn.handleClick(optionList, new Option(optionList).getHTMLElement());
+        });
     }
 }

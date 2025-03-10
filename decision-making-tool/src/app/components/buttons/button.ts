@@ -2,12 +2,12 @@ import { options } from '../../types';
 import { ElementCreator } from '../../utils/element-creator';
 
 export class Button extends ElementCreator {
-    constructor(text: string, classes?: string[], parent?: HTMLElement) {
+    constructor(text: string, classes?: string[], callback?: void) {
         const options: options = {
             tagName: 'button',
             classes: classes ? ['button', ...classes] : ['button'],
             textContent: text,
-            parent: parent,
+            callback: callback,
         };
         super(options);
     }

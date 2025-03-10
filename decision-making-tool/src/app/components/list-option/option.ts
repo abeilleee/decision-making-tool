@@ -1,6 +1,7 @@
 import { options } from '../../types';
 import { ElementCreator } from '../../utils/element-creator';
 import { Button } from '../buttons/button';
+import { DeleteButton } from '../buttons/deleteBtn';
 
 export class Option {
     option: HTMLElement;
@@ -40,6 +41,14 @@ export class Option {
             classes: ['input'],
         }).getElement();
 
-        const deleteBtn: HTMLElement = new Button('Delete', ['button'], this.option).getElement();
+        const deleteBtn = new DeleteButton();
+        this.option.append(deleteBtn.getElement());
+        deleteBtn.getElement().addEventListener('click', () => {
+            const parentElement = this.option.parentElement;
+            console.log(parentElement);
+            if (parentElement && parentElement instanceof HTMLElement) {
+                deleteBtn.handleClick(parentElement);
+            }
+        });
     }
 }
