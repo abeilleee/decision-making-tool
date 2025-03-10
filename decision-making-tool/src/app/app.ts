@@ -7,6 +7,8 @@ import { pasteListBtn } from './components/buttons/pasteListBtn';
 import { saveListToFileBtn } from './components/buttons/saveListToFileBtn';
 import { startBtn } from './components/buttons/start';
 import { TitleView } from './view/main/title';
+import { Option } from './components/list-option/option';
+import { ContainerView, mainContainer } from './view/container/container';
 
 export class App {
     constructor() {
@@ -16,6 +18,8 @@ export class App {
     createView() {
         const main = new MainView().getHTMLElement();
         const title = new TitleView().getHTMLElement();
+        const optionContainer = new ContainerView(['option__container'], mainContainer).getHTMLElement();
+        const option = new Option(optionContainer);
         const buttonContainer = new ButtonContainer([
             addOptionBtn,
             pasteListBtn,

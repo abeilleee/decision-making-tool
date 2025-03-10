@@ -1,0 +1,14 @@
+.option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    &__container {
+        display: grid;
+        width: 100%;
+        max-width: 48rem;
+        padding: 1rem;
+        gap: 1rem;
+    }
+}
