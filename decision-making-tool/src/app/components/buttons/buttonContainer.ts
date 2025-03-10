@@ -1,6 +1,6 @@
 import { options } from '../../types';
 import { ElementCreator } from '../../utils/element-creator';
-import { mainContainer } from '../../view/main/mainView';
+import { mainContainer } from '../../view/container/container';
 
 export class ButtonContainer extends ElementCreator {
     constructor(children: HTMLElement[]) {

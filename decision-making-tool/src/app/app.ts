@@ -1,4 +1,3 @@
-import { HeaderView } from './view/header/header';
 import { MainView } from './view/main/mainView';
 import { ButtonContainer } from './components/buttons/buttonContainer';
 import { addOptionBtn } from './components/buttons/addOptionsBtn';
@@ -7,6 +6,7 @@ import { loadListFromFileBtn } from './components/buttons/loadListFromFileBtn';
 import { pasteListBtn } from './components/buttons/pasteListBtn';
 import { saveListToFileBtn } from './components/buttons/saveListToFileBtn';
 import { startBtn } from './components/buttons/start';
+import { TitleView } from './view/main/title';
 
 export class App {
     constructor() {
@@ -14,8 +14,8 @@ export class App {
     }
 
     createView() {
-        const header = new HeaderView().getHTMLElement();
         const main = new MainView().getHTMLElement();
+        const title = new TitleView().getHTMLElement();
         const buttonContainer = new ButtonContainer([
             addOptionBtn,
             pasteListBtn,

@@ -1,3 +1,4 @@
+import { mainContainer } from '../container/container';
 import { View } from '../view';
 
 export class TitleView extends View {
@@ -5,10 +6,9 @@ export class TitleView extends View {
         const options = {
             tagName: 'h1',
             textContent: 'Decision Making Tool',
-            classes: ['title'],
+            classes: ['main__title'],
+            parent: mainContainer,
         };
         super(options);
     }
 }
-
-export const title = new TitleView().getHTMLElement();

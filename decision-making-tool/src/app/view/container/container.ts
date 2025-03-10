@@ -12,3 +12,5 @@ export class ContainerView extends View {
         super(options);
     }
 }
+
+export const mainContainer = new ContainerView(['main__container']).getHTMLElement();

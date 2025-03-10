@@ -8,11 +8,11 @@ export class View {
         this.element = this.createView(options);
     }
 
-    getHTMLElement() {
+    public getHTMLElement(): HTMLElement {
         return this.element.getElement();
     }
 
-    createView(options: options): ElementCreator {
+    private createView(options: options): ElementCreator {
         const element = new ElementCreator(options);
         return element;
     }
