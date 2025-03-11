@@ -7,6 +7,6 @@ export class AddOptionButton extends Button {
     }
 
     public handleClick(parentContainer: HTMLElement, child: HTMLElement): void {
-        parentContainer.append(child);
+        parentContainer.insertBefore(child, parentContainer.firstChild);
     }
 }
