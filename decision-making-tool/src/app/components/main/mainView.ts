@@ -73,14 +73,14 @@ export class MainView extends View {
     }
 
     private buttonsClickListeners(optionList: HTMLElement): void {
-        let currentId = Option.currentId++;
-
         this.addOptionBtn.getElement().addEventListener('click', () => {
+            let currentId = Option.currentId++;
             currentId++;
             this.addOptionBtn.handleClick(currentId, Option.currentId, optionList);
         });
 
         this.clearListBtn.getElement().addEventListener('click', () => {
+            let currentId = Option.currentId;
             currentId = 0;
             this.clearListBtn.handleClick(optionList);
         });

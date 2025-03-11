@@ -1,12 +1,12 @@
 import { options } from '../../types';
 import { ElementCreator } from '../../utils/element-creator';
-import { Button } from '../buttons/button';
 import { DeleteButton } from '../buttons/deleteBtn';
 
 export class Option {
     option: HTMLElement;
     id: HTMLElement | null;
     titleInput: HTMLInputElement | null | HTMLElement;
+    deleteBtn: DeleteButton;
     static currentId: number = 1;
 
     constructor(parent: HTMLElement) {
@@ -19,7 +19,9 @@ export class Option {
         this.option = new ElementCreator(options).getElement();
         this.id = null;
         this.titleInput = null;
+        this.deleteBtn = new DeleteButton();
         this.createOptionElements();
+        this.deleteBtnClickListener();
     }
 
     public getHTMLElement(): HTMLElement {
@@ -50,25 +52,18 @@ export class Option {
         }).getElement();
         weightInput.placeholder = 'Weight';
         weightInput.type = 'number';
-
-        const deleteBtn = new DeleteButton();
-        this.option.append(deleteBtn.getElement());
-        deleteBtn.getElement().addEventListener('click', () => {
-            const parentElement = this.option.parentElement;
-            console.log(parentElement);
-            if (parentElement && parentElement instanceof HTMLElement) {
-                deleteBtn.handleClick(parentElement);
-            }
-        });
+        this.option.append(this.deleteBtn.getElement());
     }
 
-    addTitle(value: string) {
+    private addTitle(value: string): void {
         if (this.titleInput instanceof HTMLInputElement) {
             this.titleInput.value = value;
         }
     }
 
-    increaseId() {
-        Option.currentId++;
+    private deleteBtnClickListener(): void {
+        this.deleteBtn.getElement().addEventListener('click', (MouseEvent) => {
+            this.deleteBtn.handleClick(MouseEvent);
+        });
     }
 }

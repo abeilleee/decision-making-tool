@@ -6,10 +6,11 @@ export class DeleteButton extends Button {
         super(ButtonsName.DELETE, ['delete-btn']);
     }
 
-    public handleClick(parentContainer: HTMLElement) {
-        const lastChild = parentContainer.lastChild;
-        if (lastChild && lastChild instanceof HTMLElement) {
-            parentContainer.removeChild(lastChild);
+    public handleClick(event: Event) {
+        let target = event.target;
+        if (target instanceof HTMLElement) {
+            const parentElement = target.parentElement;
+            parentElement?.remove();
         }
     }
 }
