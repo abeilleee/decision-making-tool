@@ -84,5 +84,9 @@ export class MainView extends View {
             currentId = 0;
             this.clearListBtn.handleClick(optionList);
         });
+
+        this.pasteListBtn.getElement().addEventListener('click', () => {
+            this.pasteListBtn.handleClick();
+        });
     }
 }
