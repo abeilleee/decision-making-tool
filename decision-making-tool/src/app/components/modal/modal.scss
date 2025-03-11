@@ -1,0 +1,51 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 650px;
+    height: 330px;
+    border: 1px solid rgb(255 255 255);
+    border-radius: 10px;
+    background-color: rgb(94 17 156);
+    gap: 1rem;
+    grid-template:
+        'textarea textarea' min-content
+        'cancel confirm' min-content / 1fr 1fr;
+    transform: translate(-50%, -50%);
+
+    &::backdrop {
+        backdrop-filter: blur(4px);
+        background: rgb(0 0 0 / 12.6%);
+    }
+}
+
+.form {
+    display: grid;
+    height: 100%;
+    padding: 1rem;
+    gap: 1rem;
+    grid-template:
+        'textarea textarea' min-content
+        'cancel-btn confirm-btn' min-content / 1fr 1fr;
+}
+
+.textarea {
+    height: 240px;
+    padding: 0.5rem;
+    border: 1px solid white;
+    background-color: rgb(144 123 237 / 45%);
+    grid-area: textarea;
+    resize: none;
+
+    &::placeholder {
+        color: black;
+    }
+}
+
+.cancel-btn {
+    grid-area: cancel-btn;
+}
+
+.confirm-btn {
+    grid-area: confirm-btn;
+}

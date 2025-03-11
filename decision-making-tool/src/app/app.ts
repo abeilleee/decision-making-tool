@@ -1,4 +1,5 @@
 import { MainView } from './components/main/mainView';
+import { Modal } from './components/modal/modal';
 
 export class App {
     constructor() {
@@ -7,5 +8,6 @@ export class App {
 
     createView() {
         const main = new MainView().getHTMLElement();
+        const modal = new Modal().open();
     }
 }

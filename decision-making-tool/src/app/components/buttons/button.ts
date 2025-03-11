@@ -1,13 +1,14 @@
+import { text } from 'stream/consumers';
 import { options } from '../../types';
 import { ElementCreator } from '../../utils/element-creator';
 
-export class Button extends ElementCreator {
-    constructor(text: string, classes?: string[], callback?: void) {
+export class Button extends ElementCreator<HTMLButtonElement> {
+    constructor(text: string, classes?: string[], parent?: HTMLElement) {
         const options: options = {
             tagName: 'button',
             classes: classes ? ['button', ...classes] : ['button'],
             textContent: text,
-            callback: callback,
+            parent: parent,
         };
         super(options);
     }

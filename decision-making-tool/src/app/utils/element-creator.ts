@@ -1,17 +1,17 @@
 import { options } from '../types';
 
-export class ElementCreator {
-    private element: HTMLElement;
+export class ElementCreator<T extends HTMLElement = HTMLElement> {
+    public element: T | HTMLElement;
 
     constructor(options: options) {
         this.element = this.createElement(options);
     }
 
-    getElement(): HTMLElement {
+    getElement(): T | HTMLElement {
         return this.element;
     }
 
-    createElement(options: options): HTMLElement {
+    createElement(options: options): T | HTMLElement {
         const element = document.createElement(options.tagName);
         this.setClasses(options, element);
         this.setTextContent(options, element);
@@ -21,29 +21,29 @@ export class ElementCreator {
         return element;
     }
 
-    private setClasses(options: options, element: HTMLElement): void {
+    private setClasses(options: options, element: T | HTMLElement): void {
         options.classes.forEach((className: string) => element.classList.add(className));
     }
 
-    setTextContent(options: options, element: HTMLElement): void {
+    private setTextContent(options: options, element: T | HTMLElement): void {
         if (options.textContent) {
             element.textContent = options.textContent;
         }
     }
 
-    private setCallback(options: options, element: HTMLElement): void {
+    private setCallback(options: options, element: T | HTMLElement): void {
         if (typeof options.callback === 'function') {
             element.addEventListener('click', (event) => options.callback);
         }
     }
 
-    private setParentElement(options: options, element: HTMLElement) {
+    private setParentElement(options: options, element: T | HTMLElement) {
         if (options.parent) {
             options.parent.append(element);
         }
     }
 
-    private addInnerElement(options: options, element: HTMLElement) {
+    public addInnerElement(options: options, element: T | HTMLElement) {
         if (options.children) {
             options.children.forEach((child) => {
                 element.append(child);

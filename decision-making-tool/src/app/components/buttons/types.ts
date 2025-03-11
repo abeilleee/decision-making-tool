@@ -6,4 +6,6 @@ export enum ButtonsName {
     LOAD_LIST_FROM_FILE = 'Load list from file',
     START = 'Start',
     DELETE = 'Delete',
+    CANCEL = 'Cancel',
+    CONFIRM = 'Confirm',
 }
