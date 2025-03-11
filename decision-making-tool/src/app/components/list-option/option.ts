@@ -5,6 +5,9 @@ import { DeleteButton } from '../buttons/deleteBtn';
 
 export class Option {
     option: HTMLElement;
+    id: HTMLElement | null;
+    titleInput: HTMLInputElement | null | HTMLElement;
+    static currentId: number = 1;
 
     constructor(parent: HTMLElement) {
         const options: options = {
@@ -14,6 +17,8 @@ export class Option {
         };
 
         this.option = new ElementCreator(options).getElement();
+        this.id = null;
+        this.titleInput = null;
         this.createOptionElements();
     }
 
@@ -22,19 +27,21 @@ export class Option {
     }
 
     public createOptionElements(): void {
-        const id: HTMLElement = new ElementCreator({
+        this.id = new ElementCreator({
             tagName: 'label',
             parent: this.option,
-            textContent: '#1',
+            textContent: `#${Option.currentId}`,
             classes: ['label'],
         }).getElement();
 
-        const titleInput: Partial<HTMLInputElement> = new ElementCreator({
+        this.titleInput = new ElementCreator<HTMLInputElement>({
             tagName: 'input',
             parent: this.option,
             classes: ['input', 'input__title'],
         }).getElement();
-        titleInput.placeholder = 'Title';
+        if (this.titleInput instanceof HTMLInputElement) {
+            this.titleInput.placeholder = 'Title';
+        }
 
         const weightInput: Partial<HTMLInputElement> = new ElementCreator({
             tagName: 'input',
@@ -53,5 +60,15 @@ export class Option {
                 deleteBtn.handleClick(parentElement);
             }
         });
+    }
+
+    addTitle(value: string) {
+        if (this.titleInput instanceof HTMLInputElement) {
+            this.titleInput.value = value;
+        }
+    }
+
+    increaseId() {
+        Option.currentId++;
     }
 }

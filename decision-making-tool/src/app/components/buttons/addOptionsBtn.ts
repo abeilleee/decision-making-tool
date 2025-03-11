@@ -1,3 +1,4 @@
+import { Option } from '../list-option/option';
 import { Button } from './button';
 import { ButtonsName } from './types';
 
@@ -6,7 +7,8 @@ export class AddOptionButton extends Button {
         super(ButtonsName.ADD_OPTION, ['add-option-btn']);
     }
 
-    public handleClick(parentContainer: HTMLElement, child: HTMLElement): void {
-        parentContainer.insertBefore(child, parentContainer.firstChild);
+    public handleClick(prevValue: number, currentId: number, optionContainer: HTMLElement): void {
+        Option.currentId = prevValue;
+        new Option(optionContainer);
     }
 }

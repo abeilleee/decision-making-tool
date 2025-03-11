@@ -1,7 +1,7 @@
 import { options } from '../../types';
 import { View } from '../../utils/view';
 
-export class OptionList extends View {
+export class OptionList<HTMLUListElement> extends View {
     constructor(parent: HTMLElement) {
         const options: options = {
             tagName: 'ul',

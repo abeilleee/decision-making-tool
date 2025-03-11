@@ -8,6 +8,6 @@ export class App {
 
     createView() {
         const main = new MainView().getHTMLElement();
-        const modal = new Modal().open();
+        // const modal = new Modal().open();
     }
 }
