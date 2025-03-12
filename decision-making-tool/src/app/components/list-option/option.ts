@@ -6,6 +6,7 @@ export class Option {
     option: HTMLElement;
     id: HTMLElement | null;
     titleInput: HTMLInputElement | null | HTMLElement;
+    weightInput: HTMLInputElement | null | HTMLElement;
     deleteBtn: DeleteButton;
     static currentId: number = 1;
 
@@ -19,6 +20,7 @@ export class Option {
         this.option = new ElementCreator(options).getElement();
         this.id = null;
         this.titleInput = null;
+        this.weightInput = null;
         this.deleteBtn = new DeleteButton();
         this.createOptionElements();
         this.deleteBtnClickListener();
@@ -45,25 +47,30 @@ export class Option {
             this.titleInput.placeholder = 'Title';
         }
 
-        const weightInput: Partial<HTMLInputElement> = new ElementCreator({
+        this.weightInput = new ElementCreator({
             tagName: 'input',
             parent: this.option,
             classes: ['input', 'input__weight'],
         }).getElement();
-        weightInput.placeholder = 'Weight';
-        weightInput.type = 'number';
-        this.option.append(this.deleteBtn.getElement());
-    }
-
-    private addTitle(value: string): void {
-        if (this.titleInput instanceof HTMLInputElement) {
-            this.titleInput.value = value;
+        if (this.weightInput instanceof HTMLInputElement) {
+            this.weightInput.placeholder = 'Weight';
+            this.weightInput.type = 'number';
         }
+
+        this.option.append(this.deleteBtn.getElement());
     }
 
     private deleteBtnClickListener(): void {
         this.deleteBtn.getElement().addEventListener('click', (MouseEvent) => {
             this.deleteBtn.handleClick(MouseEvent);
         });
+    }
+
+    public addOption(title: string, weight: number, parent: HTMLElement): void {
+        new Option(parent);
+        if (this.titleInput instanceof HTMLInputElement && this.weightInput instanceof HTMLInputElement) {
+            this.titleInput.value = title;
+            this.weightInput.value = String(weight);
+        }
     }
 }

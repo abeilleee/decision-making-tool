@@ -5,8 +5,8 @@ import { ButtonsName } from '../buttons/types';
 export class Modal {
     modal: HTMLDialogElement | HTMLElement;
     form: HTMLFormElement | HTMLElement;
-    cancelButton: HTMLButtonElement | HTMLElement;
-    confirmButton: HTMLButtonElement | HTMLElement;
+    cancelButton: Button;
+    confirmButton: Button;
     textArea: HTMLTextAreaElement | HTMLElement;
 
     constructor() {
@@ -16,8 +16,8 @@ export class Modal {
             tagName: 'textarea',
             classes: ['textarea'],
         }).getElement();
-        this.cancelButton = new Button(ButtonsName.CANCEL, ['cancel-btn', 'button'], this.form).getElement();
-        this.confirmButton = new Button(ButtonsName.CONFIRM, ['confirm-btn', 'button'], this.form).getElement();
+        this.cancelButton = new Button(ButtonsName.CANCEL, ['cancel-btn', 'button'], this.form);
+        this.confirmButton = new Button(ButtonsName.CONFIRM, ['confirm-btn', 'button'], this.form);
 
         this.configureModal();
         this.addEventListeners();
@@ -35,19 +35,28 @@ title,1                 -> | title                 | 1 |
 title with whitespace,2 -> | title with whitespace | 2 |
 title , with , commas,3 -> | title , with , commas | 3 |
 title with &quot;quotes&quot;,4   -> | title with &quot;quotes&quot;   | 4 |`;
+
+            this.setupConfirmBtnEventListener(this.textArea);
         }
     }
 
     private addEventListeners(): void {
-        this.cancelButton.addEventListener('click', () => this.close());
-        this.confirmButton.addEventListener('click', () => this.handleConfirm());
-
+        this.cancelButton.getElement().addEventListener('click', () => this.close());
+        this.confirmButton.getElement().addEventListener('click', () => this.handleConfirm());
         this.modal.addEventListener('click', (event) => {
-            if (event.target !== this.form && event.target !== this.textArea) {
+            if (
+                event.target !== this.form &&
+                event.target !== this.textArea &&
+                event.target !== this.confirmButton.getElement() &&
+                event.target !== this.cancelButton.getElement()
+            ) {
                 this.close();
             }
         });
         window.addEventListener('scroll', this.preventScroll);
+        this.form.addEventListener('click', (MouseEvent: Event) => {
+            MouseEvent?.preventDefault();
+        });
     }
 
     public open(): void {
@@ -86,5 +95,27 @@ title with &quot;quotes&quot;,4   -> | title with &quot;quotes&quot;   | 4 |`;
 
     private preventScroll(event: Event): void {
         event.preventDefault();
+    }
+
+    // private validateTextArea(): parsedData | void {
+    //     let textAreaInput;
+    //     if (this.textArea instanceof HTMLTextAreaElement) {
+    //         textAreaInput = this.textArea.value;
+    //     }
+    //     const validator = new ValidateText();
+
+    //     if (textAreaInput) {
+    //         if (validator.validate(textAreaInput)) {
+    //             const parsedInput = validator.parse(textAreaInput);
+    //             console.log(parsedInput);
+    //             return parsedInput;
+    //         }
+    //     }
+    // }
+
+    private setupConfirmBtnEventListener(parent: HTMLTextAreaElement) {
+        this.confirmButton.getElement().addEventListener('click', (event) => {
+            this.confirmButton.confirm(parent);
+        });
     }
 }

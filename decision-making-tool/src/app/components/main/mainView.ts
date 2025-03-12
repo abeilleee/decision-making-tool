@@ -12,6 +12,8 @@ import { LoadListButton } from '../buttons/loadListFromFileBtn';
 import { StartButton } from '../buttons/startButton';
 
 export class MainView extends View {
+    mainContainer: ContainerView;
+    optionList: OptionList;
     addOptionBtn: AddOptionButton;
     pasteListBtn: PasteListButton;
     clearListBtn: ClearListButton;
@@ -26,6 +28,9 @@ export class MainView extends View {
             classes: ['main'],
         };
         super(options);
+        this.mainContainer = new ContainerView(['main__container']);
+        this.setTitle(this.mainContainer.getHTMLElement());
+        this.optionList = new OptionList(this.mainContainer.getHTMLElement());
         this.addOptionBtn = new AddOptionButton();
         this.pasteListBtn = new PasteListButton();
         this.clearListBtn = new ClearListButton();
@@ -36,14 +41,14 @@ export class MainView extends View {
     }
 
     private configureMain(): void {
-        const mainContainer = new ContainerView(['main__container']).getHTMLElement();
-        this.setTitle(mainContainer);
-        const optionList = new OptionList(mainContainer).getHTMLElement();
-        this.addOption(optionList);
-        this.addInnerElements([mainContainer]);
-        const buttonContainer = new ContainerView(['button__container'], mainContainer).getHTMLElement();
+        this.addOption(this.optionList.getHTMLElement());
+        this.addInnerElements([this.mainContainer.getHTMLElement()]);
+        const buttonContainer = new ContainerView(
+            ['button__container'],
+            this.mainContainer.getHTMLElement()
+        ).getHTMLElement();
         this.addButons(buttonContainer);
-        this.buttonsClickListeners(optionList);
+        this.buttonsClickListeners(this.optionList.getHTMLElement());
     }
 
     private addOption(parent: HTMLElement) {
