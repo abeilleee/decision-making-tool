@@ -20,11 +20,14 @@
 
 .option-list {
     display: flex;
+    overflow: auto;
     width: 100%;
     max-width: 48rem;
     flex-direction: column;
     padding: 1rem;
     gap: 1rem;
+    scrollbar-color: rgb(191 144 245) transparent;
+    scrollbar-width: thin;
 }
 
 .input {

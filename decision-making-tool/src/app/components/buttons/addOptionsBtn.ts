@@ -10,5 +10,9 @@ export class AddOptionButton extends Button {
     public handleClick(prevValue: number, currentId: number, optionContainer: HTMLElement): void {
         Option.currentId = !optionContainer.hasChildNodes() ? 1 : prevValue;
         new Option(optionContainer);
+        // const box = document.createElement('div');
+        // box.style.height = '20px';
+        // box.style.backgroundColor = 'red';
+        // optionContainer.append(box);
     }
 }

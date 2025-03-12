@@ -83,6 +83,7 @@ export class MainView extends View {
             let currentId = Option.currentId++;
             currentId++;
             this.addOptionBtn.handleClick(currentId, Option.currentId, optionList);
+            optionList.scrollTop = optionList.scrollHeight;
         });
 
         this.clearListBtn.getElement().addEventListener('click', () => {
