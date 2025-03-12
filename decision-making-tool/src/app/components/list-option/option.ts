@@ -65,12 +65,4 @@ export class Option {
             this.deleteBtn.handleClick(MouseEvent);
         });
     }
-
-    public addOption(title: string, weight: number, parent: HTMLElement): void {
-        new Option(parent);
-        if (this.titleInput instanceof HTMLInputElement && this.weightInput instanceof HTMLInputElement) {
-            this.titleInput.value = title;
-            this.weightInput.value = String(weight);
-        }
-    }
 }

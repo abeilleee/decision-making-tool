@@ -10,6 +10,5 @@ export class AddOptionButton extends Button {
     public handleClick(prevValue: number, currentId: number, optionContainer: HTMLElement): void {
         Option.currentId = !optionContainer.hasChildNodes() ? 1 : prevValue;
         new Option(optionContainer);
-        console.log(optionContainer.hasChildNodes());
     }
 }

@@ -10,6 +10,7 @@ import { ClearListButton } from '../buttons/clearListBtn';
 import { SaveListButton } from '../buttons/saveListToFileBtn';
 import { LoadListButton } from '../buttons/loadListFromFileBtn';
 import { StartButton } from '../buttons/startButton';
+import { Modal } from '../modal/modal';
 
 export class MainView extends View {
     mainContainer: ContainerView;
@@ -91,7 +92,20 @@ export class MainView extends View {
         });
 
         this.pasteListBtn.getElement().addEventListener('click', () => {
-            this.pasteListBtn.handleClick();
+            const modal = new Modal();
+            modal.open();
+            modal.confirmButton.getElement().addEventListener('click', () => {
+                const parsedData = modal.getParsedData();
+                if (parsedData) {
+                    for (let i = 0; i < parsedData.length; i++) {
+                        Option.currentId++;
+                        const title = parsedData[i].title;
+                        const weight = parsedData[i].weight;
+                        this.optionList.addFilledOption(Option.currentId, title, weight);
+                    }
+                }
+                modal.close();
+            });
         });
     }
 }

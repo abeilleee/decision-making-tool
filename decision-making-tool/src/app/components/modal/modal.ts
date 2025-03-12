@@ -1,4 +1,5 @@
 import { ElementCreator } from '../../utils/element-creator';
+import { parsedData, ValidateText } from '../../utils/validateText';
 import { Button } from '../buttons/button';
 import { ButtonsName } from '../buttons/types';
 
@@ -18,7 +19,6 @@ export class Modal {
         }).getElement();
         this.cancelButton = new Button(ButtonsName.CANCEL, ['cancel-btn', 'button'], this.form);
         this.confirmButton = new Button(ButtonsName.CONFIRM, ['confirm-btn', 'button'], this.form);
-
         this.configureModal();
         this.addEventListeners();
     }
@@ -35,14 +35,11 @@ title,1                 -> | title                 | 1 |
 title with whitespace,2 -> | title with whitespace | 2 |
 title , with , commas,3 -> | title , with , commas | 3 |
 title with &quot;quotes&quot;,4   -> | title with &quot;quotes&quot;   | 4 |`;
-
-            this.setupConfirmBtnEventListener(this.textArea);
         }
     }
 
     private addEventListeners(): void {
         this.cancelButton.getElement().addEventListener('click', () => this.close());
-        this.confirmButton.getElement().addEventListener('click', () => this.handleConfirm());
         this.modal.addEventListener('click', (event) => {
             if (
                 event.target !== this.form &&
@@ -69,7 +66,7 @@ title with &quot;quotes&quot;,4   -> | title with &quot;quotes&quot;   | 4 |`;
         document.body.style.overflow = 'hidden';
     }
 
-    private close(): void {
+    public close(): void {
         if (this.modal instanceof HTMLDialogElement) {
             this.modal.close();
         }
@@ -77,45 +74,14 @@ title with &quot;quotes&quot;,4   -> | title with &quot;quotes&quot;   | 4 |`;
         this.modal.remove();
     }
 
-    private handleConfirm(): void {
-        let lines;
-
-        if (this.textArea instanceof HTMLTextAreaElement) {
-            lines = this.textArea.value.split('\n');
-        }
-        if (lines) {
-            lines.forEach((line) => {
-                const option = document.createElement('option');
-                option.textContent = line;
-            });
-        }
-
-        this.close();
-    }
-
     private preventScroll(event: Event): void {
         event.preventDefault();
     }
 
-    // private validateTextArea(): parsedData | void {
-    //     let textAreaInput;
-    //     if (this.textArea instanceof HTMLTextAreaElement) {
-    //         textAreaInput = this.textArea.value;
-    //     }
-    //     const validator = new ValidateText();
-
-    //     if (textAreaInput) {
-    //         if (validator.validate(textAreaInput)) {
-    //             const parsedInput = validator.parse(textAreaInput);
-    //             console.log(parsedInput);
-    //             return parsedInput;
-    //         }
-    //     }
-    // }
-
-    private setupConfirmBtnEventListener(parent: HTMLTextAreaElement) {
-        this.confirmButton.getElement().addEventListener('click', (event) => {
-            this.confirmButton.confirm(parent);
-        });
+    public getParsedData(): parsedData | void {
+        const validator = new ValidateText();
+        if (this.textArea instanceof HTMLTextAreaElement) {
+            return validator.getValidateTextArea(this.textArea);
+        }
     }
 }
