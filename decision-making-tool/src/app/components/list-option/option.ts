@@ -77,10 +77,11 @@ export class Option {
             const input = elements[i];
             if (input)
                 input.addEventListener('input', () => {
-                    const id = Number(input?.parentElement?.firstChild?.textContent?.split('').slice(1));
+                    const id = Number(input?.parentElement?.firstChild?.textContent?.slice(1));
+                    console.log(id);
                     const savedDate = this.saveState.getData();
                     const savedListOptions = savedDate.list;
-                    const obj = savedListOptions.find((obj) => obj.id === id);
+                    const obj = savedListOptions.find((obj) => Number(obj.id) === id);
                     let title;
                     let weight;
                     if (input instanceof HTMLInputElement) {
