@@ -7,12 +7,8 @@ export class AddOptionButton extends Button {
         super(ButtonsName.ADD_OPTION, ['add-option-btn']);
     }
 
-    public handleClick(prevValue: number, currentId: number, optionContainer: HTMLElement): void {
-        Option.currentId = !optionContainer.hasChildNodes() ? 1 : prevValue;
-        new Option(optionContainer);
-        // const box = document.createElement('div');
-        // box.style.height = '20px';
-        // box.style.backgroundColor = 'red';
-        // optionContainer.append(box);
+    public handleClick(optionContainer: HTMLElement, lastId: number): Option {
+        const newOption = new Option(optionContainer, Number(lastId));
+        return newOption;
     }
 }

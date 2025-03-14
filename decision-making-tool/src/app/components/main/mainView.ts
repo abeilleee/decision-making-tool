@@ -3,7 +3,6 @@ import { ContainerView } from '../container/container';
 import { View } from '../../utils/view';
 import { ElementCreator } from '../../utils/element-creator';
 import { OptionList } from '../list-option/optionList';
-import { Option } from '../list-option/option';
 import { AddOptionButton } from '../buttons/addOptionsBtn';
 import { PasteListButton } from '../buttons/pasteListBtn';
 import { ClearListButton } from '../buttons/clearListBtn';
@@ -11,6 +10,7 @@ import { SaveListButton } from '../buttons/saveListToFileBtn';
 import { LoadListButton } from '../buttons/loadListFromFileBtn';
 import { StartButton } from '../buttons/startButton';
 import { Modal } from '../modal/modal';
+import { SaveState } from '../save-state/saveState';
 
 export class MainView extends View {
     mainContainer: ContainerView;
@@ -21,6 +21,8 @@ export class MainView extends View {
     saveListToFileBtn: SaveListButton;
     loadListFromFileBtn: LoadListButton;
     startBtn: StartButton;
+    saveState: SaveState;
+    lastId: number;
 
     constructor() {
         const options: options = {
@@ -29,9 +31,12 @@ export class MainView extends View {
             classes: ['main'],
         };
         super(options);
+
         this.mainContainer = new ContainerView(['main__container']);
         this.setTitle(this.mainContainer.getHTMLElement());
-        this.optionList = new OptionList(this.mainContainer.getHTMLElement());
+        this.saveState = new SaveState();
+        this.lastId = 1;
+        this.optionList = new OptionList(this.mainContainer.getHTMLElement(), this.lastId);
         this.addOptionBtn = new AddOptionButton();
         this.pasteListBtn = new PasteListButton();
         this.clearListBtn = new ClearListButton();
@@ -42,7 +47,6 @@ export class MainView extends View {
     }
 
     private configureMain(): void {
-        this.addOption(this.optionList.getHTMLElement());
         this.addInnerElements([this.mainContainer.getHTMLElement()]);
         const buttonContainer = new ContainerView(
             ['button__container'],
@@ -50,10 +54,20 @@ export class MainView extends View {
         ).getHTMLElement();
         this.addButons(buttonContainer);
         this.buttonsClickListeners(this.optionList.getHTMLElement());
+        this.uploadFromLocalStorage(this.optionList, this.lastId);
     }
 
-    private addOption(parent: HTMLElement) {
-        return new Option(parent);
+    private uploadFromLocalStorage(optionList: OptionList, id: number) {
+        this.optionList.removeChildren();
+        const data = this.saveState.initializeLocalStorage(optionList);
+        if (data) {
+            for (let i = 0; i < data.list.length; i++) {
+                const id = data.list[i].id;
+                const title = data.list[i].title;
+                const weight = data.list[i].weight;
+                this.optionList.addFilledOption(id, title, weight);
+            }
+        }
     }
 
     private setTitle(parent: HTMLElement): HTMLElement {
@@ -80,16 +94,18 @@ export class MainView extends View {
 
     private buttonsClickListeners(optionList: HTMLElement): void {
         this.addOptionBtn.getElement().addEventListener('click', () => {
-            let currentId = Option.currentId++;
-            currentId++;
-            this.addOptionBtn.handleClick(currentId, Option.currentId, optionList);
-            optionList.scrollTop = optionList.scrollHeight;
+            const id = this.saveState.getLastId('add');
+            if (id) {
+                const newOption = this.addOptionBtn.handleClick(optionList, id);
+                this.saveState.addToLocalStorage(newOption);
+                optionList.scrollTop = optionList.scrollHeight;
+            }
         });
 
         this.clearListBtn.getElement().addEventListener('click', () => {
-            let currentId = Option.currentId;
-            currentId = 0;
+            this.saveState.getLastId('clear');
             this.clearListBtn.handleClick(optionList);
+            this.saveState.cleanStorage();
         });
 
         this.pasteListBtn.getElement().addEventListener('click', () => {
@@ -99,10 +115,14 @@ export class MainView extends View {
                 const parsedData = modal.getParsedData();
                 if (parsedData) {
                     for (let i = 0; i < parsedData.length; i++) {
-                        Option.currentId++;
-                        const title = parsedData[i].title;
-                        const weight = parsedData[i].weight;
-                        this.optionList.addFilledOption(Option.currentId, title, weight);
+                        let lastId = this.saveState.getLastId('add');
+                        if (lastId) {
+                            const id = lastId;
+                            const title = parsedData[i].title;
+                            const weight = parsedData[i].weight;
+                            this.optionList.addFilledOption(lastId, title, String(weight));
+                            this.saveState.saveInputData(id, title, String(weight));
+                        }
                     }
                 }
                 modal.close();

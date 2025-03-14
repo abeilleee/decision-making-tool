@@ -6,9 +6,4 @@ export class PasteListButton extends Button {
     constructor() {
         super(ButtonsName.PASTE_LIST, ['paste-list-btn']);
     }
-
-    // handleClick() {
-    //     const modal = new Modal();
-    //     modal.open();
-    // }
 }

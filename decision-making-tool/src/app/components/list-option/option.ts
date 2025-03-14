@@ -1,16 +1,18 @@
 import { options } from '../../types';
 import { ElementCreator } from '../../utils/element-creator';
 import { DeleteButton } from '../buttons/deleteBtn';
+import { SaveState } from '../save-state/saveState';
 
 export class Option {
-    option: HTMLElement;
+    option: HTMLElement | HTMLLIElement;
     id: HTMLElement | null;
     titleInput: HTMLInputElement | null | HTMLElement;
     weightInput: HTMLInputElement | null | HTMLElement;
     deleteBtn: DeleteButton;
-    static currentId: number = 1;
+    saveState: SaveState;
+    lastId: number;
 
-    constructor(parent: HTMLElement) {
+    constructor(parent: HTMLElement, id: number) {
         const options: options = {
             tagName: 'li',
             classes: ['option'],
@@ -22,8 +24,11 @@ export class Option {
         this.titleInput = null;
         this.weightInput = null;
         this.deleteBtn = new DeleteButton();
+        this.lastId = Number(id);
         this.createOptionElements();
         this.deleteBtnClickListener();
+        this.saveState = new SaveState();
+        this.inputListeners();
     }
 
     public getHTMLElement(): HTMLElement {
@@ -34,7 +39,7 @@ export class Option {
         this.id = new ElementCreator({
             tagName: 'label',
             parent: this.option,
-            textContent: `#${Option.currentId}`,
+            textContent: `#${this.lastId}`,
             classes: ['label'],
         }).getElement();
 
@@ -60,9 +65,45 @@ export class Option {
         this.option.append(this.deleteBtn.getElement());
     }
 
-    private deleteBtnClickListener(): void {
+    public deleteBtnClickListener(): void {
         this.deleteBtn.getElement().addEventListener('click', (MouseEvent) => {
             this.deleteBtn.handleClick(MouseEvent);
         });
+    }
+
+    private inputListeners() {
+        const elements = [this.titleInput, this.weightInput];
+        for (let i = 0; i < elements.length; i++) {
+            const input = elements[i];
+            if (input)
+                input.addEventListener('input', () => {
+                    const id = Number(input?.parentElement?.firstChild?.textContent?.split('').slice(1));
+                    const savedDate = this.saveState.getData();
+                    const savedListOptions = savedDate.list;
+                    const obj = savedListOptions.find((obj) => obj.id === id);
+                    let title;
+                    let weight;
+                    if (input instanceof HTMLInputElement) {
+                        if (input === this.titleInput) {
+                            title = input.value;
+                            if (obj && title) {
+                                obj.title = title;
+                            }
+                            if (obj && !title) {
+                                obj.title = '';
+                            }
+                        } else if (input === this.weightInput) {
+                            weight = input.value;
+                            if (obj && weight) {
+                                obj.weight = weight;
+                            }
+                            if (obj && !weight) {
+                                obj.weight = '';
+                            }
+                        }
+                    }
+                    localStorage.setItem(this.saveState.storageName, JSON.stringify(savedDate));
+                });
+        }
     }
 }
