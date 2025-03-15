@@ -1,0 +1,7 @@
+body {
+    font-family: 'Red Hat Display', sans-serif;
+
+    @media screen and (width <= 700px) {
+        font-size: 12px;
+    }
+}

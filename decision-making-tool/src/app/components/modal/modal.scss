@@ -6,7 +6,7 @@
     height: 330px;
     border: 1px solid rgb(255 255 255);
     border-radius: 10px;
-    background-color: rgb(94 17 156);
+    background-color: var(--background-color-modal);
     gap: 1rem;
     grid-template:
         'textarea textarea' min-content
@@ -38,7 +38,7 @@
     resize: none;
 
     &::placeholder {
-        color: black;
+        color: rgb(0 0 0 / 60.4%);
     }
 }
 

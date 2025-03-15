@@ -4,24 +4,28 @@
     align-items: center;
     justify-content: center;
     padding: 10px;
-    border: 2px solid white;
+    border: 1px solid white;
     border-radius: 10px;
-    background-color: rgb(104 4 165);
-    color: #fff;
+    background-color: var(--main-color);
+    color: var(--font-color);
+    transition: all 0.5s;
 
     &__container {
         display: grid;
         width: 100%;
-        max-width: 48rem;
+        max-width: 50rem;
         padding: 0 1rem 1rem;
         gap: 1rem;
         grid-template:
             'add-option-btn add-option-btn' min-content
-            'paste-list-btn paste-list-btn' min-content
-            'clear-list-btn clear-list-btn' min-content
+            'paste-list-btn clear-list-btn' min-content
             'save-list-btn load-list-btn' min-content
             'start-btn start-btn' min-content / 1fr 1fr;
         margin-inline: auto;
+    }
+
+    &:hover {
+        background-color: rgb(255 255 255 / 0%);
     }
 }
 

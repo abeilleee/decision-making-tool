@@ -5,7 +5,7 @@
     justify-content: space-between;
     padding: 8px;
     border-radius: 10px;
-    background-color: rgb(118 35 177);
+    background-color: var(--main-color);
     gap: 1rem;
 
     &__container {
@@ -22,11 +22,11 @@
     display: flex;
     overflow: auto;
     width: 100%;
-    max-width: 48rem;
+    max-width: 50rem;
     flex-direction: column;
     padding: 1rem;
     gap: 1rem;
-    scrollbar-color: rgb(191 144 245) transparent;
+    scrollbar-color: rgb(169 144 245 / 35.4%) transparent;
     scrollbar-width: thin;
 }
 
@@ -42,17 +42,23 @@
     }
 
     &__weight {
-        max-width: 5rem;
+        max-width: 6rem;
+
+        @media screen and (width <= 700px) {
+            max-width: 5rem;
+        }
     }
 }
 
 .label {
     display: flex;
-    max-width: 4rem;
+    width: 50px;
+    max-width: 8rem;
     align-items: center;
     padding: 10px;
     border: 2px solid white;
     border-radius: 10px;
-    background-color: rgb(118 35 177);
+    background-color: var(--main-color);
     color: white;
+    text-align: center;
 }

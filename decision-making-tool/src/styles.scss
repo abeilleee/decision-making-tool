@@ -1,4 +1,6 @@
 @use './styles/base/reset';
+@use './styles/base/typography';
+@use './styles/utils/variables';
 @use './app/components/container/container';
 @use './styles/utils/mixins';
 @use './styles/base/globals';

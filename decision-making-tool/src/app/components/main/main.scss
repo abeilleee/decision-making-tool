@@ -6,15 +6,20 @@
 
     &__container {
         display: flex;
-        width: 900px;
-        height: 100%;
-        padding: 40px;
+        width: 80%;
+        max-height: 90%;
+        padding: 20px;
         border-radius: 10px;
         background-color: rgb(255 255 255 / 17%);
+
+        @media screen and (width <= 700px) {
+            padding: 18px;
+        }
     }
 }
 
 .title {
-    margin-bottom: 20px;
+    color: var(--font-color);
     font-size: 40px;
+    text-shadow: 3px 1px 10px #2421ce;
 }
