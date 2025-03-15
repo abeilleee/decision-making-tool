@@ -11,10 +11,12 @@ import { LoadListButton } from '../buttons/loadListFromFileBtn';
 import { StartButton } from '../buttons/startButton';
 import { Modal } from '../modal/modal';
 import { SaveState } from '../save-state/saveState';
+import { FileLoader } from '../file-loader.ts/fileLoader';
 
 export class MainView extends View {
     mainContainer: ContainerView;
     optionList: OptionList;
+    fileLoader: FileLoader;
     addOptionBtn: AddOptionButton;
     pasteListBtn: PasteListButton;
     clearListBtn: ClearListButton;
@@ -43,6 +45,7 @@ export class MainView extends View {
         this.saveListToFileBtn = new SaveListButton();
         this.loadListFromFileBtn = new LoadListButton();
         this.startBtn = new StartButton();
+        this.fileLoader = new FileLoader();
         this.configureMain();
     }
 
@@ -127,6 +130,10 @@ export class MainView extends View {
                 }
                 modal.close();
             });
+        });
+
+        this.loadListFromFileBtn.getElement().addEventListener('click', () => {
+            this.loadListFromFileBtn.handleClick(this.fileLoader, this.optionList);
         });
     }
 }

@@ -6,3 +6,9 @@ export type options = {
     classes: string[];
     callback?: void;
 };
+
+export type savedOption = {
+    id: number;
+    title: string;
+    weight: string;
+};

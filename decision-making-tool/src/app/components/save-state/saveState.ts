@@ -1,11 +1,7 @@
 import { Option } from '../list-option/option';
 import { OptionList } from '../list-option/optionList';
-
-export type savedOption = {
-    id: number;
-    title: string;
-    weight: string;
-};
+import { savedOption } from '../../types';
+import { jsonType } from '../file-loader.ts/fileLoader';
 
 export type localStorageObject = {
     list: savedOption[];
@@ -113,4 +109,15 @@ export class SaveState {
     public cleanStorage() {
         localStorage.setItem(this.storageName, JSON.stringify({ list: [], lastId: 0 }));
     }
+
+    // public addDataFromFile(file: jsonType) {
+    //     const data = { id: id, title: title, weight: weight };
+    //     const dataFromStorage = localStorage.getItem(this.storageName);
+    //     if (typeof dataFromStorage === 'string') {
+    //         const storedData: localStorageObject = JSON.parse(dataFromStorage);
+    //         storedData.list.push(data);
+    //         storedData.lastId = Number(data.id);
+    //         localStorage.setItem(this.storageName, JSON.stringify(storedData));
+    //     }
+    // }
 }
