@@ -10,7 +10,7 @@ export class StartButton extends Button {
         this.router = router;
     }
 
-    public handleClick() {
+    public handleClick(): void {
         this.router.navigate(Pages.DECISION_PICKER);
     }
 }

@@ -71,7 +71,7 @@ export class Option {
         });
     }
 
-    private inputListeners() {
+    private inputListeners(): void {
         const elements = [this.titleInput, this.weightInput];
         for (let i = 0; i < elements.length; i++) {
             const input = elements[i];

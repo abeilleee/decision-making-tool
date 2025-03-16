@@ -17,7 +17,7 @@ export class View {
         return element;
     }
 
-    public addInnerElements(elements: HTMLElement[]) {
+    public addInnerElements(elements: HTMLElement[]): void {
         elements.forEach((child: HTMLElement) => this.element.getElement().append(child));
     }
 }

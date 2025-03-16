@@ -1,4 +1,4 @@
-import { DataExporter } from '../file-loader.ts/dataExporter';
+import { DataExporter } from '../file-handler.ts/dataExporter';
 import { Button } from './button';
 import { ButtonsName } from './types';
 
@@ -9,7 +9,7 @@ export class SaveListButton extends Button {
         this.dataExporter = dataExporter;
     }
 
-    public handleClick(dataExporter: DataExporter) {
+    public handleClick(dataExporter: DataExporter): void {
         dataExporter.exportDataToJson();
     }
 }

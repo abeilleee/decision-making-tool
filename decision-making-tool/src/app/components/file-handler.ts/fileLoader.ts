@@ -15,17 +15,17 @@ export class FileLoader {
         this.list = list;
     }
 
-    public openInterface(optionList: OptionList) {
+    public openInterface(): void {
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = '.json';
         fileInput.addEventListener('change', (event) => {
-            this.handleUploadedFile(event, optionList);
+            this.handleUploadedFile(event);
         });
         fileInput.click();
     }
 
-    private handleUploadedFile(event: Event, optionList: OptionList): void {
+    private handleUploadedFile(event: Event): void {
         const target = event.target;
         if (target instanceof HTMLInputElement) {
             if (target.files && target.files.length > 0) {
@@ -36,7 +36,7 @@ export class FileLoader {
         }
     }
 
-    private loadJsonFile(file: File) {
+    private loadJsonFile(file: File): void {
         const reader = new FileReader();
         let jsonFile;
         reader.onload = (event) => {
@@ -46,7 +46,7 @@ export class FileLoader {
                     jsonFile = JSON.parse(jsonFile);
                     const result = jsonFile;
                     const res = { ...result };
-                    this.updateOptionList(res, this.list, this.saveState);
+                    this.updateOptionList(res, this.list);
                 }
             } else {
                 console.error('Error while loading file');
@@ -55,9 +55,8 @@ export class FileLoader {
         reader.readAsText(file);
     }
 
-    public updateOptionList(file: localStorageObject, optionList: OptionList, saveState: SaveState): void {
+    public updateOptionList(file: localStorageObject, optionList: OptionList): void {
         optionList.removeChildren();
-        this.saveState.cleanStorage();
         this.saveState.addDataFromFile(file);
         for (let i = 0; i < file.list.length; i++) {
             const id = file.list[i].id;

@@ -15,7 +15,7 @@ export class HashRouterHandler extends HistoryRouterHandler {
         window.addEventListener(this.options.event, this.handler);
     }
 
-    setHistory(url: string) {
+    public setHistory(url: string): void {
         window.location.href = `${window.location.href.replace(/#(.*)$/, '')}#${url}`;
     }
 }

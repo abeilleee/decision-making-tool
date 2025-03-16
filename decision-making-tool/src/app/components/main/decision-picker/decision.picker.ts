@@ -19,7 +19,7 @@ export class DecisionPicker extends View {
         this.configure();
     }
 
-    public configure(): void {
+    private configure(): void {
         this.element.addChildren([this.backBtn.getElement()]);
         this.backBtn.getElement().addEventListener('click', () => {
             this.backBtn.handleClick();

@@ -7,7 +7,7 @@ export class DeleteButton extends Button {
         super(ButtonsName.DELETE, ['delete-btn']);
     }
 
-    public handleClick(event: Event) {
+    public handleClick(event: Event): void {
         let target = event.target;
         if (target instanceof HTMLElement) {
             const parentElement = target.parentElement;
@@ -18,7 +18,7 @@ export class DeleteButton extends Button {
             if (target.parentElement instanceof HTMLLIElement) {
                 saveState.removeFromLocalStorage(target.parentElement);
             } else {
-                console.error('error');
+                console.error('Error while deleting an element');
             }
         }
     }

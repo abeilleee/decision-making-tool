@@ -94,7 +94,7 @@ export class SaveState {
         }
     }
 
-    public saveInputData(id: number, title: string, weight: string) {
+    public saveInputData(id: number, title: string, weight: string): void {
         const data = { id: id, title: title, weight: weight };
         const dataFromStorage = localStorage.getItem(this.storageName);
         if (typeof dataFromStorage === 'string') {
@@ -105,11 +105,11 @@ export class SaveState {
         }
     }
 
-    public cleanStorage() {
+    public cleanStorage(): void {
         localStorage.setItem(this.storageName, JSON.stringify({ list: [], lastId: 0 }));
     }
 
-    public addDataFromFile(obj: localStorageObject) {
+    public addDataFromFile(obj: localStorageObject): void {
         localStorage.removeItem(this.storageName);
         localStorage.setItem(this.storageName, JSON.stringify(obj));
     }

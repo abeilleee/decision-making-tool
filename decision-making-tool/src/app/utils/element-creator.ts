@@ -7,15 +7,14 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
         this.element = this.createElement(options);
     }
 
-    getElement(): T | HTMLElement {
+    public getElement(): T | HTMLElement {
         return this.element;
     }
 
-    createElement(options: options): T | HTMLElement {
+    public createElement(options: options): T | HTMLElement {
         const element = document.createElement(options.tagName);
         this.setClasses(options, element);
         this.setTextContent(options, element);
-        this.setCallback(options, element);
         this.setParentElement(options, element);
         this.addInnerElement(options, element);
         return element;
@@ -31,19 +30,13 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
         }
     }
 
-    private setCallback(options: options, element: T | HTMLElement): void {
-        if (typeof options.callback === 'function') {
-            element.addEventListener('click', (event) => options.callback);
-        }
-    }
-
-    private setParentElement(options: options, element: T | HTMLElement) {
+    private setParentElement(options: options, element: T | HTMLElement): void {
         if (options.parent) {
             options.parent.append(element);
         }
     }
 
-    public addInnerElement(options: options, element: T | HTMLElement) {
+    public addInnerElement(options: options, element: T | HTMLElement): void {
         if (options.children) {
             options.children.forEach((child) => {
                 element.append(child);
@@ -51,7 +44,7 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
         }
     }
 
-    public addChildren(elements: HTMLElement[]) {
+    public addChildren(elements: HTMLElement[]): void {
         elements.forEach((child: HTMLElement) => this.element.append(child));
     }
 }

@@ -11,9 +11,9 @@ import { LoadListButton } from '../../buttons/loadListFromFileBtn';
 import { StartButton } from '../../buttons/startButton';
 import { Modal } from '../../modal/modal';
 import { SaveState } from '../../save-state/saveState';
-import { FileLoader } from '../../file-loader.ts/fileLoader';
+import { FileLoader } from '../../file-handler.ts/fileLoader';
 import { Router } from '../../router/router';
-import { DataExporter } from '../../file-loader.ts/dataExporter';
+import { DataExporter } from '../../file-handler.ts/dataExporter';
 
 export class IndexView extends View {
     indexContainer: ContainerView;
@@ -66,7 +66,7 @@ export class IndexView extends View {
         this.uploadFromLocalStorage(this.optionList, this.lastId);
     }
 
-    private uploadFromLocalStorage(optionList: OptionList, id: number) {
+    private uploadFromLocalStorage(optionList: OptionList, id: number): void {
         this.optionList.removeChildren();
         const data = this.saveState.initializeLocalStorage(optionList);
         if (data) {
@@ -139,7 +139,7 @@ export class IndexView extends View {
         });
 
         this.loadListFromFileBtn.getElement().addEventListener('click', () => {
-            this.loadListFromFileBtn.handleClick(this.fileLoader, this.optionList);
+            this.loadListFromFileBtn.handleClick(this.fileLoader);
         });
 
         this.startBtn.getElement().addEventListener('click', () => {

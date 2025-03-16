@@ -10,7 +10,7 @@ export class MainView extends View {
         super(options);
     }
 
-    setContent(content: View) {
+    public setContent(): void {
         const htmlElement = this.element.getElement();
         while (htmlElement.firstElementChild) {
             htmlElement.firstElementChild.remove();

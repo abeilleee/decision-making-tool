@@ -6,7 +6,7 @@ export class ClearListButton extends Button {
         super(ButtonsName.CLEAR_LIST, ['clear-list-btn']);
     }
 
-    public handleClick(parentElement: HTMLElement) {
+    public handleClick(parentElement: HTMLElement): void {
         while (parentElement.firstChild) {
             parentElement.removeChild(parentElement.firstChild);
         }

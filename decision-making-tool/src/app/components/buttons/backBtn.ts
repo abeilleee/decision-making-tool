@@ -1,4 +1,3 @@
-import { Option } from '../list-option/option';
 import { Router } from '../router/router';
 import { Pages } from '../router/types';
 import { Button } from './button';
@@ -11,7 +10,7 @@ export class BackButton extends Button {
         this.router = router;
     }
 
-    public handleClick() {
+    public handleClick(): void {
         this.router.navigate(Pages.INDEX);
     }
 }

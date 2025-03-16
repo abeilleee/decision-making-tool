@@ -16,19 +16,16 @@ export class Router {
         });
     }
 
-    setHashHandler() {
+    public setHashHandler(): void {
         this.handler.disable();
         this.handler = new HashRouterHandler(this.urlChangedHandler.bind(this));
     }
 
-    navigate(url: string) {
+    public navigate(url: string): void {
         this.handler.navigate(url);
     }
 
-    /**
-     * @param {import('./handler/history-router-handler.js').RequestParams} requestParams
-     */
-    urlChangedHandler(request: UserRequest) {
+    private urlChangedHandler(request: UserRequest): void {
         const pathForFind = request.resource === '' ? request.path : `${request.path}/${''}`;
         const route = this.routes.find((item) => item.path === pathForFind);
 
@@ -40,7 +37,7 @@ export class Router {
         route.callback(request.resource);
     }
 
-    redirectToNotFoundPage() {
+    private redirectToNotFoundPage(): void {
         const notFoundPage = this.routes.find((item) => item.path === Pages.NOT_FOUND);
         if (notFoundPage) {
             this.navigate(notFoundPage.path);

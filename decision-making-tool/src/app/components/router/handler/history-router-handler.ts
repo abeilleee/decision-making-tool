@@ -30,7 +30,7 @@ export class HistoryRouterHandler {
         window.removeEventListener(this.options.event, this.handler);
     }
 
-    public setHistory(url: string) {
+    public setHistory(url: string): void {
         window.history.pushState(null, '', `/${url}`);
     }
 }
