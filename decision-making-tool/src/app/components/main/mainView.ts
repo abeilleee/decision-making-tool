@@ -1,5 +1,5 @@
 import { options } from '../../types';
-import { View } from '../../utils/view';
+import { View } from './view';
 
 export class MainView extends View {
     constructor() {

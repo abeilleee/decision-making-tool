@@ -1,7 +1,7 @@
 import { MainView } from './components/main/mainView';
 import { Pages } from './components/router/types';
 import { Router } from './components/router/router';
-import { View } from './utils/view';
+import { View } from './components/main/view';
 import { Route } from './components/router/types';
 
 export class App {

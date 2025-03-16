@@ -1,6 +1,6 @@
 import { options } from '../../../types';
 import { ContainerView } from '../../container/container';
-import { View } from '../../../utils/view';
+import { View } from '../view';
 import { ElementCreator } from '../../../utils/element-creator';
 import { OptionList } from '../../list-option/optionList';
 import { AddOptionButton } from '../../buttons/addOptionsBtn';

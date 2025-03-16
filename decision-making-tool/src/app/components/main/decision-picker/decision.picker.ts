@@ -1,5 +1,5 @@
 import { options } from '../../../types';
-import { View } from '../../../utils/view';
+import { View } from '../view';
 import { BackButton } from '../../buttons/backBtn';
 import { Router } from '../../router/router';
 

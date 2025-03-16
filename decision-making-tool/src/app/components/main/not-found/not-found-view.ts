@@ -1,6 +1,6 @@
 import { options } from '../../../types';
 import { ElementCreator } from '../../../utils/element-creator';
-import { View } from '../../../utils/view';
+import { View } from '../view';
 
 export class NotFoundView extends View {
     #default_text = 'Error. Page not found';
