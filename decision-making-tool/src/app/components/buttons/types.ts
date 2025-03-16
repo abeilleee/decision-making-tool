@@ -9,4 +9,5 @@ export enum ButtonsName {
     CANCEL = 'Cancel',
     CONFIRM = 'Confirm',
     BACK = 'Back',
+    SOUND = 'Sound',
 }

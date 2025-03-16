@@ -1,0 +1,28 @@
+.button-box {
+    display: flex;
+    flex-direction: row;
+
+    gap: 10px;
+}
+
+.back-btn {
+    // grid-area: back-btn;
+}
+
+.play-btn {
+    // grid-area: play-btn;
+}
+
+.timer-input {
+    width: 100px;
+    height: 35px;
+    // grid-area: timer-input;
+    border: 2px solid rgb(255 255 255);
+    border-radius: 10px;
+    background-color: var(--backgorund);
+}
+
+.timer-label {
+    // grid-area: timer-label;
+    height: 35px;
+}

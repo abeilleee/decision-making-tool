@@ -6,7 +6,7 @@ import { ButtonsName } from './types';
 export class BackButton extends Button {
     router: Router;
     constructor(router: Router) {
-        super(ButtonsName.BACK, ['button']);
+        super(ButtonsName.BACK, ['button', 'back-btn']);
         this.router = router;
     }
 

@@ -55,10 +55,12 @@
     width: 50px;
     max-width: 8rem;
     align-items: center;
+    justify-content: center;
     padding: 10px;
-    border: 2px solid white;
+    border: 1px solid white;
     border-radius: 10px;
     background-color: var(--main-color);
     color: white;
+    pointer-events: none;
     text-align: center;
 }
