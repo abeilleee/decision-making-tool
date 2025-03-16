@@ -1,5 +1,5 @@
 import { ElementCreator } from '../../utils/element-creator';
-import { options } from '../../types';
+import { options } from '../list-option/types';
 
 export class View {
     element: ElementCreator;

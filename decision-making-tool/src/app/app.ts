@@ -12,7 +12,6 @@ export class App {
         this.main = null;
         const routes = this.createRoutes();
         this.router = new Router(routes);
-        // this.router.setHashHandler();
         this.createView();
     }
 
@@ -29,10 +28,6 @@ export class App {
                     const { IndexView } = await import('./components/main/index/index');
                     this.setContent(new IndexView(this.router));
                 },
-                // callback: () => {
-                //     const index = new IndexView(this.router);
-                //     this.setContent(index);
-                // },
             },
             {
                 path: `${Pages.INDEX}`,
@@ -40,9 +35,6 @@ export class App {
                     const { IndexView } = await import('./components/main/index/index');
                     this.setContent(new IndexView(this.router));
                 },
-                // callback: () => {
-                //     this.setContent(new IndexView(this.router));
-                // },
             },
             {
                 path: `${Pages.DECISION_PICKER}`,

@@ -1,4 +1,4 @@
-import { savedOption } from '../../types';
+import { savedOption } from '../list-option/types';
 import { OptionList } from '../list-option/optionList';
 import { SaveState } from '../save-state/saveState';
 

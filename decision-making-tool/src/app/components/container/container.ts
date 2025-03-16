@@ -1,4 +1,4 @@
-import { options } from '../../types';
+import { options } from '../list-option/types';
 import { View } from '../main/view';
 
 export class ContainerView extends View {

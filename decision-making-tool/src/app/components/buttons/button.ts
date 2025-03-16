@@ -1,4 +1,4 @@
-import { options } from '../../types';
+import { options } from '../list-option/types';
 import { ElementCreator } from '../../utils/element-creator';
 
 export class Button extends ElementCreator<HTMLButtonElement> {

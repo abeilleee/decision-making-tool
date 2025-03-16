@@ -1,4 +1,4 @@
-import { options } from '../../types';
+import { options } from './types';
 import { View } from '../main/view';
 import { Option } from './option';
 

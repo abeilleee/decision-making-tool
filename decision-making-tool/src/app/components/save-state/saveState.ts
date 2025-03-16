@@ -1,6 +1,6 @@
 import { Option } from '../list-option/option';
 import { OptionList } from '../list-option/optionList';
-import { savedOption } from '../../types';
+import { savedOption } from '../list-option/types';
 import { jsonType } from '../file-loader.ts/fileLoader';
 
 export type localStorageObject = {

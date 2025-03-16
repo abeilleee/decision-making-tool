@@ -1,4 +1,4 @@
-import { options } from '../../../types';
+import { options } from '../../list-option/types';
 import { ContainerView } from '../../container/container';
 import { View } from '../view';
 import { ElementCreator } from '../../../utils/element-creator';

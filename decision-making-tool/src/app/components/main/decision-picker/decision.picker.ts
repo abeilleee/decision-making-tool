@@ -1,4 +1,4 @@
-import { options } from '../../../types';
+import { options } from '../../list-option/types';
 import { View } from '../view';
 import { BackButton } from '../../buttons/backBtn';
 import { Router } from '../../router/router';

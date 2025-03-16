@@ -1,4 +1,4 @@
-import { options } from '../types';
+import { options } from '../components/list-option/types';
 
 export class ElementCreator<T extends HTMLElement = HTMLElement> {
     public element: T | HTMLElement;
