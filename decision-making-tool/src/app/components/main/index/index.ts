@@ -13,11 +13,13 @@ import { Modal } from '../../modal/modal';
 import { SaveState } from '../../save-state/saveState';
 import { FileLoader } from '../../file-loader.ts/fileLoader';
 import { Router } from '../../router/router';
+import { DataExporter } from '../../file-loader.ts/dataExporter';
 
 export class IndexView extends View {
     indexContainer: ContainerView;
     optionList: OptionList;
     fileLoader: FileLoader;
+    dataExporter: DataExporter;
     addOptionBtn: AddOptionButton;
     pasteListBtn: PasteListButton;
     clearListBtn: ClearListButton;
@@ -44,7 +46,8 @@ export class IndexView extends View {
         this.addOptionBtn = new AddOptionButton();
         this.pasteListBtn = new PasteListButton();
         this.clearListBtn = new ClearListButton();
-        this.saveListToFileBtn = new SaveListButton();
+        this.dataExporter = new DataExporter(this.saveState);
+        this.saveListToFileBtn = new SaveListButton(this.dataExporter);
         this.loadListFromFileBtn = new LoadListButton();
         this.startBtn = new StartButton(this.router);
         this.fileLoader = new FileLoader(this.saveState, this.optionList);
@@ -141,6 +144,10 @@ export class IndexView extends View {
 
         this.startBtn.getElement().addEventListener('click', () => {
             this.startBtn.handleClick();
+        });
+
+        this.saveListToFileBtn.getElement().addEventListener('click', () => {
+            this.saveListToFileBtn.handleClick(this.dataExporter);
         });
     }
 }
