@@ -1,7 +1,6 @@
 import { Option } from '../list-option/option';
 import { OptionList } from '../list-option/optionList';
 import { savedOption } from '../list-option/types';
-import { jsonType } from '../file-loader.ts/fileLoader';
 
 export type localStorageObject = {
     list: savedOption[];
@@ -110,14 +109,8 @@ export class SaveState {
         localStorage.setItem(this.storageName, JSON.stringify({ list: [], lastId: 0 }));
     }
 
-    // public addDataFromFile(file: jsonType) {
-    //     const data = { id: id, title: title, weight: weight };
-    //     const dataFromStorage = localStorage.getItem(this.storageName);
-    //     if (typeof dataFromStorage === 'string') {
-    //         const storedData: localStorageObject = JSON.parse(dataFromStorage);
-    //         storedData.list.push(data);
-    //         storedData.lastId = Number(data.id);
-    //         localStorage.setItem(this.storageName, JSON.stringify(storedData));
-    //     }
-    // }
+    public addDataFromFile(obj: localStorageObject) {
+        localStorage.removeItem(this.storageName);
+        localStorage.setItem(this.storageName, JSON.stringify(obj));
+    }
 }

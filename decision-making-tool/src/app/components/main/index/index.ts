@@ -47,7 +47,7 @@ export class IndexView extends View {
         this.saveListToFileBtn = new SaveListButton();
         this.loadListFromFileBtn = new LoadListButton();
         this.startBtn = new StartButton(this.router);
-        this.fileLoader = new FileLoader();
+        this.fileLoader = new FileLoader(this.saveState, this.optionList);
 
         this.configureMain();
     }
