@@ -1,67 +1,49 @@
-import { Pages } from './pages';
-
-export type Route = {
-    path: string;
-    callback: () => void;
-};
-
-export type UserRequest = {
-    path: string;
-    resource: string;
-};
+import { HashRouterHandler } from './handler/hash-router-handler';
+import { HistoryRouterHandler } from './handler/history-router-handler';
+import { Pages, Route, UserRequest } from './types';
 
 export class Router {
     routes: Route[];
+    handler: HistoryRouterHandler;
 
     constructor(routes: Route[]) {
         this.routes = routes;
-        this.redirectToEmptyPage();
+
+        this.handler = new HistoryRouterHandler(this.urlChangedHandler.bind(this));
+
         document.addEventListener('DOMContentLoaded', () => {
-            const path = this.getCurrentUrl();
-            this.navigate(path);
+            this.handler.navigate(history.state);
         });
-        window.addEventListener('popstate', this.browserChangeHandler.bind(this));
-        window.addEventListener('hashchange', this.browserChangeHandler.bind(this));
     }
 
-    private browserChangeHandler(): void {
-        const url = this.getCurrentUrl();
-        this.navigate(url);
+    setHashHandler() {
+        this.handler.disable();
+        this.handler = new HashRouterHandler(this.urlChangedHandler.bind(this));
     }
 
-    private getCurrentUrl() {
-        if (window.location.pathname) {
-            return window.location.pathname.slice(1);
-        } else {
-            return window.location.hash.slice(1);
-        }
+    navigate(url: string) {
+        this.handler.navigate(url);
     }
 
-    public navigate(url: string) {
-        const request = this.parseUrl(url);
-        const finalPath = request.resource === '' ? request.path : `${request.path}/${request.resource}`;
-        const route = this.routes.find((elem) => elem.path === finalPath);
+    /**
+     * @param {import('./handler/history-router-handler.js').RequestParams} requestParams
+     */
+    urlChangedHandler(request: UserRequest) {
+        const pathForFind = request.resource === '' ? request.path : `${request.path}/${''}`;
+        const route = this.routes.find((item) => item.path === pathForFind);
 
         if (!route) {
-            this.redirectToEmptyPage();
+            this.redirectToNotFoundPage();
             return;
         }
 
-        route.callback();
+        route.callback(request.resource);
     }
 
-    private parseUrl(url: string): UserRequest {
-        const result: UserRequest = { path: '', resource: '' };
-        const path = url.split('/');
-        [result.path = '', result.resource = ''] = path;
-        return result;
-    }
-
-    private redirectToEmptyPage(): void {
-        const routeEmptyPage = this.routes.find((elem) => elem.path === Pages.NOT_FOUND);
-
-        if (routeEmptyPage) {
-            this.navigate(routeEmptyPage.path);
+    redirectToNotFoundPage() {
+        const notFoundPage = this.routes.find((item) => item.path === Pages.NOT_FOUND);
+        if (notFoundPage) {
+            this.navigate(notFoundPage.path);
         }
     }
 }

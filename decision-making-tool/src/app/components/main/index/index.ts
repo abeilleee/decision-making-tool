@@ -13,7 +13,7 @@ import { Modal } from '../../modal/modal';
 import { SaveState } from '../../save-state/saveState';
 import { FileLoader } from '../../file-loader.ts/fileLoader';
 import { Router } from '../../router/router';
-import { Pages } from '../../router/pages';
+import { Pages } from '../../router/types';
 
 export class IndexView extends View {
     indexContainer: ContainerView;
@@ -36,7 +36,7 @@ export class IndexView extends View {
         };
         super(options);
 
-        this.indexContainer = new ContainerView(['index']);
+        this.indexContainer = new ContainerView(['index__container']);
         this.setTitle(this.indexContainer.getHTMLElement());
         this.saveState = new SaveState();
         this.router = router;

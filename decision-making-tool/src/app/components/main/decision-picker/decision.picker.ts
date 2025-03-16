@@ -6,6 +6,7 @@ export class DecisionPicker extends View {
         const options: options = {
             tagName: 'section',
             classes: ['decision-picker'],
+            textContent: 'Wheel',
         };
         super(options);
     }

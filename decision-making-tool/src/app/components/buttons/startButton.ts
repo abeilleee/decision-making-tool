@@ -1,4 +1,4 @@
-import { Pages } from '../router/pages';
+import { Pages } from '../router/types';
 import { Router } from '../router/router';
 import { Button } from './button';
 import { ButtonsName } from './types';
@@ -11,6 +11,6 @@ export class StartButton extends Button {
     }
 
     public handleClick() {
-        this.router.navigate(Pages.NOT_FOUND);
+        this.router.navigate(Pages.DECISION_PICKER);
     }
 }

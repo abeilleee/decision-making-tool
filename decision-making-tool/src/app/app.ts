@@ -1,10 +1,8 @@
-import { DecisionPicker } from './components/main/decision-picker/decision.picker';
-import { IndexView } from './components/main/index/index';
 import { MainView } from './components/main/mainView';
-import { NotFoundView } from './components/main/not-found/not-found-view';
-import { Pages } from './components/router/pages';
-import { Route, Router } from './components/router/router';
+import { Pages } from './components/router/types';
+import { Router } from './components/router/router';
 import { View } from './utils/view';
+import { Route } from './components/router/types';
 
 export class App {
     router: Router;
@@ -14,6 +12,7 @@ export class App {
         this.main = null;
         const routes = this.createRoutes();
         this.router = new Router(routes);
+        // this.router.setHashHandler();
         this.createView();
     }
 
@@ -26,26 +25,36 @@ export class App {
         return [
             {
                 path: ``,
-                callback: () => {
-                    const index = new IndexView(this.router);
-                    this.setContent(index);
+                callback: async () => {
+                    const { IndexView } = await import('./components/main/index/index');
+                    this.setContent(new IndexView(this.router));
                 },
+                // callback: () => {
+                //     const index = new IndexView(this.router);
+                //     this.setContent(index);
+                // },
             },
             {
                 path: `${Pages.INDEX}`,
-                callback: () => {
+                callback: async () => {
+                    const { IndexView } = await import('./components/main/index/index');
                     this.setContent(new IndexView(this.router));
                 },
+                // callback: () => {
+                //     this.setContent(new IndexView(this.router));
+                // },
             },
             {
                 path: `${Pages.DECISION_PICKER}`,
-                callback: () => {
+                callback: async () => {
+                    const { DecisionPicker } = await import('./components/main/decision-picker/decision.picker');
                     this.setContent(new DecisionPicker());
                 },
             },
             {
                 path: `${Pages.NOT_FOUND}`,
-                callback: () => {
+                callback: async () => {
+                    const { NotFoundView } = await import('./components/main/not-found/not-found-view');
                     this.setContent(new NotFoundView());
                 },
             },
