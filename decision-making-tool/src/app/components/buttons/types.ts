@@ -8,4 +8,5 @@ export enum ButtonsName {
     DELETE = 'Delete',
     CANCEL = 'Cancel',
     CONFIRM = 'Confirm',
+    BACK = 'Back',
 }

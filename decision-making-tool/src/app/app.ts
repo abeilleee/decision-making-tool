@@ -48,7 +48,7 @@ export class App {
                 path: `${Pages.DECISION_PICKER}`,
                 callback: async () => {
                     const { DecisionPicker } = await import('./components/main/decision-picker/decision.picker');
-                    this.setContent(new DecisionPicker());
+                    this.setContent(new DecisionPicker(this.router));
                 },
             },
             {

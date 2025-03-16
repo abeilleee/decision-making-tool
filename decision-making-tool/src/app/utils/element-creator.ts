@@ -50,4 +50,8 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
             });
         }
     }
+
+    public addChildren(elements: HTMLElement[]) {
+        elements.forEach((child: HTMLElement) => this.element.append(child));
+    }
 }

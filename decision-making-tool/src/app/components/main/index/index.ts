@@ -13,7 +13,6 @@ import { Modal } from '../../modal/modal';
 import { SaveState } from '../../save-state/saveState';
 import { FileLoader } from '../../file-loader.ts/fileLoader';
 import { Router } from '../../router/router';
-import { Pages } from '../../router/types';
 
 export class IndexView extends View {
     indexContainer: ContainerView;
