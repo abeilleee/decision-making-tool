@@ -8,6 +8,7 @@ import { PlayButton } from '../../buttons/playBtn';
 import { SoundButton } from '../../buttons/soundBtn';
 import { WheelCanvas } from '../../wheel/wheel1';
 import { SaveState } from '../../save-state/saveState';
+import { IncomingMessage } from 'http';
 
 export class DecisionPicker extends View {
     router: Router;
@@ -24,6 +25,7 @@ export class DecisionPicker extends View {
         this.container = new ContainerView(['decision-picker__container'], this.element.getElement());
         this.btnBox = new ContainerView(['button-box']);
         this.configure();
+        this.createWheel();
     }
 
     private configure(): void {
@@ -63,6 +65,14 @@ export class DecisionPicker extends View {
 
     private handlerOnload(): void {
         window.onload = () => {
+            const children = this.container.getHTMLElement().children;
+            for (let i = 0; i < children.length; i++) {
+                const child = children[i];
+                if (child.nodeType === Node.ELEMENT_NODE && child.tagName === 'CANVAS') {
+                    console.log(child);
+                    this.container.getHTMLElement().removeChild(child);
+                }
+            }
             this.createWheel();
         };
     }
