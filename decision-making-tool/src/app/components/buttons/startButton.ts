@@ -4,7 +4,7 @@ import { Button } from './button';
 import { ButtonsName } from './types';
 import { SaveState } from '../save-state/saveState';
 import { Modal } from '../modal/modal';
-import { WheelCanvas } from '../wheel/wheel1';
+import { WheelCanvas } from '../wheel/wheel';
 
 export class StartButton extends Button {
     router: Router;

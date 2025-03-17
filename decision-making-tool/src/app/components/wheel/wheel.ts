@@ -1,5 +1,24 @@
 import { ElementCreator } from '../../utils/element-creator';
-import { centerElement, optionNameParams, OptionsParams } from './types';
+
+export type OptionsParams = {
+    id: number;
+    title: string;
+    weight: string;
+};
+
+type optionNameParams = {
+    startAngle: number;
+    sliceAngle: number;
+    options: OptionsParams;
+    centerX: number;
+    centerY: number;
+};
+
+type centerElement = {
+    x: number;
+    y: number;
+    radius: number;
+};
 
 export class WheelCanvas {
     private canvas: HTMLCanvasElement;

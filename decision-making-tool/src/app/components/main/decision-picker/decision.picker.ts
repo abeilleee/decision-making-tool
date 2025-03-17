@@ -6,9 +6,8 @@ import { ElementCreator } from '../../../utils/element-creator';
 import { ContainerView } from '../../container/container';
 import { PlayButton } from '../../buttons/playBtn';
 import { SoundButton } from '../../buttons/soundBtn';
-import { WheelCanvas } from '../../wheel/wheel1';
+import { WheelCanvas } from '../../wheel/wheel';
 import { SaveState } from '../../save-state/saveState';
-import { IncomingMessage } from 'http';
 
 export class DecisionPicker extends View {
     router: Router;
@@ -25,7 +24,6 @@ export class DecisionPicker extends View {
         this.container = new ContainerView(['decision-picker__container'], this.element.getElement());
         this.btnBox = new ContainerView(['button-box']);
         this.configure();
-        this.createWheel();
     }
 
     private configure(): void {
@@ -52,7 +50,7 @@ export class DecisionPicker extends View {
         backBtn.getElement().addEventListener('click', () => {
             backBtn.handleClick();
         });
-        // this.createWheel();
+        this.createWheel();
         this.handlerOnload();
     }
 
