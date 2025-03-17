@@ -1,3 +1,4 @@
+import { WheelCanvas } from '../wheel/wheel';
 import { Button } from './button';
 import { ButtonsName } from './types';
 
@@ -6,5 +7,5 @@ export class PlayButton extends Button {
         super(ButtonsName.START, ['play-btn']);
     }
 
-    public handleClick(): void {}
+    public handleClick(wheel: WheelCanvas): void {}
 }

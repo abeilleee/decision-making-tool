@@ -79,7 +79,6 @@ export class Option {
             if (input)
                 input.addEventListener('input', () => {
                     const id = Number(input?.parentElement?.firstChild?.textContent?.slice(1));
-                    console.log(id);
                     const savedDate = this.saveState.getData();
                     const savedListOptions = savedDate.list;
                     const obj = savedListOptions.find((obj) => Number(obj.id) === id);

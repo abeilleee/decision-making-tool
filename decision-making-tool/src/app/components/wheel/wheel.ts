@@ -1,4 +1,5 @@
 import { ElementCreator } from '../../utils/element-creator';
+import { WheelState } from './types';
 
 export type OptionsParams = {
     id: number;
@@ -26,6 +27,9 @@ export class WheelCanvas {
     private sections: OptionsParams[];
     private cursorIndex: number;
     private centerElement: centerElement;
+    private startAngle: number;
+    public wheelState: WheelState;
+    colors: string[];
 
     constructor(sections: OptionsParams[]) {
         this.canvas = document.createElement('canvas');
@@ -35,6 +39,9 @@ export class WheelCanvas {
         this.centerElement = { x: 10, y: 10, radius: 20 };
         this.canvas.width = 420;
         this.canvas.height = 440;
+        this.startAngle = 0;
+        this.wheelState = WheelState.INITIAL;
+        this.colors = this.getColors();
         this.drawWheel();
     }
 
@@ -43,17 +50,16 @@ export class WheelCanvas {
         const radius = this.canvas.width / 2;
         const centerX = this.canvas.width / 2;
         const centerY = this.canvas.height / 2;
-        let startAngle = 0;
+        let startAngle = this.startAngle;
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
             let sectionAngle = (+this.sections[i].weight / totalWeight) * 2 * Math.PI;
-
             this.context.beginPath();
             this.context.moveTo(centerX, centerY);
             this.context.arc(centerX, centerY, radius, startAngle, startAngle + sectionAngle);
             this.context.closePath();
-            const color = this.generateRandomColor();
+            const color = this.colors[i];
             this.context.fillStyle = color;
             this.context.fill();
             this.context.strokeStyle = 'rgba(255, 255, 255, 1)';
@@ -70,6 +76,11 @@ export class WheelCanvas {
 
         this.drawCursor();
         this.drawCenterElement(centerX, centerY);
+        this.context.save();
+    }
+
+    public getSaveCtx() {
+        this.drawWheel;
     }
 
     private addOptionName(textParams: optionNameParams): void {
@@ -158,5 +169,29 @@ export class WheelCanvas {
             color += hexCodes[Math.floor(Math.random() * hexCodes.length)];
         }
         return '#' + color;
+    }
+
+    private getColors() {
+        const length = this.sections.length;
+        let colorsArr: string[] = [];
+        for (let i = 0; i < length; i++) {
+            const color = this.generateRandomColor();
+            colorsArr.push(color);
+        }
+        return colorsArr;
+    }
+
+    public animate(): void {
+        console.log('hi');
+        this.startAngle += 0.01; // Увеличиваем угол вращения
+        this.drawWheel();
+        requestAnimationFrame(() => this.animate());
+    }
+
+    private getRandomTargetAngle(): number {
+        // Генерация угла в радианах для минимальных 5 поворотов
+        const completeRotations = 5 * 2 * Math.PI; // минимум 5 полных оборотов
+        const randomSectionAngle = Math.random() * ((2 * Math.PI) / this.sections.length);
+        return completeRotations + randomSectionAngle;
     }
 }

@@ -35,7 +35,6 @@ export class StartButton extends Button {
             this.router.navigate(Pages.DECISION_PICKER);
             const wheel = new WheelCanvas(filledOptions);
             wheel.getHTMLElement();
-            console.log(filledOptions);
         }
     }
 }

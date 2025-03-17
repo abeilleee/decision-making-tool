@@ -31,7 +31,6 @@ export class FileLoader {
             if (target.files && target.files.length > 0) {
                 const file = target.files[0];
                 const result = this.loadJsonFile(file);
-                console.log('res' + result);
             }
         }
     }
