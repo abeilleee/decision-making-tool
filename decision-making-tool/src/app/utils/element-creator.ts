@@ -47,4 +47,10 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
     public addChildren(elements: HTMLElement[]): void {
         elements.forEach((child: HTMLElement) => this.element.append(child));
     }
+
+    public removeChildren(element: HTMLElement): void {
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+    }
 }

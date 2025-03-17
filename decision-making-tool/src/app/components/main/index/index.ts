@@ -49,7 +49,7 @@ export class IndexView extends View {
         this.dataExporter = new DataExporter(this.saveState);
         this.saveListToFileBtn = new SaveListButton(this.dataExporter);
         this.loadListFromFileBtn = new LoadListButton();
-        this.startBtn = new StartButton(this.router);
+        this.startBtn = new StartButton(this.router, this.saveState);
         this.fileLoader = new FileLoader(this.saveState, this.optionList);
 
         this.configureMain();

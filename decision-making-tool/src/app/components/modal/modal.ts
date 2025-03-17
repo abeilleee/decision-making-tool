@@ -81,4 +81,19 @@ title, weight`;
             return validator.getValidateTextArea(this.textArea);
         }
     }
+
+    public addOptionDialog(): void {
+        if (this.form.firstChild) {
+            while (this.form.childNodes.length !== 1) {
+                this.form.removeChild(this.form.firstChild);
+            }
+        }
+        if (this.textArea instanceof HTMLTextAreaElement) {
+            this.textArea.disabled = true;
+            this.textArea.placeholder =
+                'Please add at least 2 valid options. An option is considered valid if its title is not empty and its weight is greater than 0';
+        }
+        const closeBtn = new Button('Close');
+        this.form.append(closeBtn.getElement());
+    }
 }
