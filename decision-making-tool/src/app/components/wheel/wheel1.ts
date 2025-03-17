@@ -3,6 +3,14 @@ type OptionsParams = {
     weight: number;
 };
 
+type optionNameParams = {
+    startAngle: number;
+    sliceAngle: number;
+    options: OptionsParams;
+    centerX: number;
+    centerY: number;
+};
+
 type centerElement = {
     x: number;
     y: number;
@@ -12,46 +20,77 @@ type centerElement = {
 export class WheelCanvas {
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
-    private sections: string[];
+    private sections: OptionsParams[];
     private cursorIndex: number;
     private centerElement: centerElement;
 
-    constructor(sections: string[]) {
+    constructor(sections: OptionsParams[]) {
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d')!;
         this.sections = sections;
         this.cursorIndex = 0;
-        this.centerElement = { x: 10, y: 10, radius: 10 };
+        this.centerElement = { x: 10, y: 10, radius: 20 };
         this.canvas.width = 420;
         this.canvas.height = 440;
         this.drawWheel();
     }
 
-    private drawWheel() {
-        const radius = Math.min(this.canvas.width, this.canvas.height) / 2;
-        // const sectionAngle = (2 * Math.PI) / this.sections.length; // угол для секции
-        const sectionAngle = (2 * Math.PI) / this.sections.length; // угол для секции
+    private drawWheel(): void {
+        const totalWeight = this.sections.reduce((sum, option) => sum + option.weight, 0);
+        const radius = this.canvas.width / 2;
         const centerX = this.canvas.width / 2;
         const centerY = this.canvas.height / 2;
+        let startAngle = 0;
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
-            const startAngle = i * sectionAngle;
-            const endAngle = (i + 1) * sectionAngle;
+            let sectionAngle = (this.sections[i].weight / totalWeight) * 2 * Math.PI;
 
             this.context.beginPath();
             this.context.moveTo(centerX, centerY);
-            this.context.arc(centerX, centerY, radius, startAngle, endAngle);
+            this.context.arc(centerX, centerY, radius, startAngle, startAngle + sectionAngle);
             this.context.closePath();
-            this.context.fillStyle = `hsl(${(i * 360) / this.sections.length}, 100%, 50%)`;
+            this.context.fillStyle = `hsl(${(i * 360) / this.sections.length}, 90%, 50%)`;
             this.context.fill();
+            this.context.strokeStyle = 'rgba(255, 255, 255, 1)';
+            this.context.stroke();
+            this.addOptionName({
+                startAngle: startAngle,
+                sliceAngle: sectionAngle,
+                options: this.sections[i],
+                centerX: centerX,
+                centerY: centerY,
+            });
+            startAngle += sectionAngle;
         }
 
         this.drawCursor();
         this.drawCenterElement(centerX, centerY);
     }
 
-    private drawCursor() {
+    private addOptionName(textParams: optionNameParams): void {
+        const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
+        this.context.save();
+        this.context.translate(
+            textParams.centerX + (Math.cos(textAngle) * textParams.centerX) / 2,
+            textParams.centerY + (Math.sin(textAngle) * textParams.centerY) / 2
+        );
+        this.context.rotate(textAngle);
+        this.context.fillStyle = 'white';
+        this.context.font = 'bold 16px sans-serif';
+        this.context.shadowBlur = 15;
+        this.context.shadowOffsetX = 0;
+        this.context.shadowOffsetY = 0;
+        this.context.shadowColor = 'black';
+        this.context.fillStyle = 'white';
+        this.context.fillText(textParams.options.name, -this.context.measureText(textParams.options.name).width / 2, 0);
+
+        this.context.restore();
+
+        textParams.startAngle += textParams.sliceAngle;
+    }
+
+    private drawCursor(): void {
         // координаты курсора
         const x = this.canvas.width;
         const y = this.canvas.height - this.canvas.width;
@@ -78,7 +117,7 @@ export class WheelCanvas {
         this.context.stroke();
     }
 
-    private drawCenterElement(centerX: number, centerY: number) {
+    private drawCenterElement(centerX: number, centerY: number): void {
         const { radius } = this.centerElement;
 
         // отрисовка центрального круга
@@ -87,12 +126,16 @@ export class WheelCanvas {
         this.context.closePath();
 
         // цвета для центр. круга
-        this.context.fillStyle = '#5f2fb9';
+        const grad = this.context.createLinearGradient(0, 0, 280, 0);
+        grad.addColorStop(0, 'rgb(49, 22, 125)');
+        grad.addColorStop(0.5, 'rgb(152, 205, 204)');
+        grad.addColorStop(1, 'rgb(86, 56, 195)');
+        this.context.fillStyle = grad;
         this.context.fill();
 
         // бордер центр. круга
         this.context.lineWidth = 2;
-        this.context.strokeStyle = 'black';
+        this.context.strokeStyle = 'white';
         this.context.stroke();
     }
 

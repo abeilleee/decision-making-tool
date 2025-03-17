@@ -23,7 +23,12 @@ export class DecisionPicker extends View {
         this.router = router;
         this.container = new ContainerView(['decision-picker__container'], this.element.getElement());
         this.btnBox = new ContainerView(['button-box']);
-        this.wheel = new WheelCanvas(['new', 'sas', 'new', 'sas', 'new', 'sas']);
+        this.wheel = new WheelCanvas([
+            { name: 'hi', weight: 17 },
+            { name: 'we', weight: 2 },
+            { name: 'sds', weight: 2 },
+            { name: 'sdwqdsadsads', weight: 12 },
+        ]);
 
         this.configure();
     }
