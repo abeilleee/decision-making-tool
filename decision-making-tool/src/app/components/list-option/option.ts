@@ -68,6 +68,7 @@ export class Option {
     public deleteBtnClickListener(): void {
         this.deleteBtn.getElement().addEventListener('click', (MouseEvent) => {
             this.deleteBtn.handleClick(MouseEvent);
+            this.saveState.getLastId('delete');
         });
     }
 

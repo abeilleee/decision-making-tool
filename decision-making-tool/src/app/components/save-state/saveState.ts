@@ -45,6 +45,11 @@ export class SaveState {
                 storedData.lastId = lastId;
             } else if (type === 'clear') {
                 storedData.lastId = 0;
+            } else if (type === 'delete') {
+                const optionList = storedData.list;
+                if (optionList.length === 0) {
+                    storedData.lastId = 0;
+                }
             }
             localStorage.setItem(this.storageName, JSON.stringify(storedData));
         } else {
