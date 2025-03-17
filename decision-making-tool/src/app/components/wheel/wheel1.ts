@@ -1,6 +1,9 @@
-type OptionsParams = {
-    name: string;
-    weight: number;
+import { ElementCreator } from '../../utils/element-creator';
+
+export type OptionsParams = {
+    id: number;
+    title: string;
+    weight: string;
 };
 
 type optionNameParams = {
@@ -35,8 +38,8 @@ export class WheelCanvas {
         this.drawWheel();
     }
 
-    private drawWheel(): void {
-        const totalWeight = this.sections.reduce((sum, option) => sum + option.weight, 0);
+    public drawWheel(): void {
+        const totalWeight = this.sections.reduce((sum, option) => sum + Number(option.weight), 0);
         const radius = this.canvas.width / 2;
         const centerX = this.canvas.width / 2;
         const centerY = this.canvas.height / 2;
@@ -44,13 +47,14 @@ export class WheelCanvas {
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
-            let sectionAngle = (this.sections[i].weight / totalWeight) * 2 * Math.PI;
+            let sectionAngle = (+this.sections[i].weight / totalWeight) * 2 * Math.PI;
 
             this.context.beginPath();
             this.context.moveTo(centerX, centerY);
             this.context.arc(centerX, centerY, radius, startAngle, startAngle + sectionAngle);
             this.context.closePath();
-            this.context.fillStyle = `hsl(${(i * 360) / this.sections.length}, 90%, 50%)`;
+            const color = this.generateRandomColor();
+            this.context.fillStyle = color;
             this.context.fill();
             this.context.strokeStyle = 'rgba(255, 255, 255, 1)';
             this.context.stroke();
@@ -83,7 +87,11 @@ export class WheelCanvas {
         this.context.shadowOffsetY = 0;
         this.context.shadowColor = 'black';
         this.context.fillStyle = 'white';
-        this.context.fillText(textParams.options.name, -this.context.measureText(textParams.options.name).width / 2, 0);
+        this.context.fillText(
+            textParams.options.title,
+            -this.context.measureText(textParams.options.title).width / 2,
+            0
+        );
 
         this.context.restore();
 
@@ -139,7 +147,16 @@ export class WheelCanvas {
         this.context.stroke();
     }
 
-    public getHTMLElement(): HTMLElement {
+    public getHTMLElement(): HTMLElement & Partial<ElementCreator> {
         return this.canvas;
+    }
+
+    private generateRandomColor(): string {
+        const hexCodes = '0123456789ABCDEF';
+        let color = '';
+        for (let i = 0; i < 6; i++) {
+            color += hexCodes[Math.floor(Math.random() * hexCodes.length)];
+        }
+        return '#' + color;
     }
 }

@@ -4,6 +4,7 @@ import { Button } from './button';
 import { ButtonsName } from './types';
 import { SaveState } from '../save-state/saveState';
 import { Modal } from '../modal/modal';
+import { WheelCanvas } from '../wheel/wheel1';
 
 export class StartButton extends Button {
     router: Router;
@@ -17,18 +18,24 @@ export class StartButton extends Button {
 
     public handleClick(): void {
         const optionsList = this.saveState.getData().list;
-        let counter = 0;
-        for (let i = 0; i < optionsList.length; i++) {
-            if (optionsList[i].title !== '' && Number(optionsList[i].weight) > 0) {
-                counter++;
-            }
-        }
-        if (counter < 2) {
+        const filledOptions = this.saveState.getFilledOptions();
+        // let counter = 0;
+        // let filledOptions = [];
+        // for (let i = 0; i < optionsList.length; i++) {
+        //     if (optionsList[i].title !== '' && Number(optionsList[i].weight) > 0) {
+        //         counter++;
+        //         filledOptions.push(optionsList[i]);
+        //     }
+        // }
+        if (filledOptions.length < 2) {
             const modal = new Modal();
             modal.addOptionDialog();
             modal.open();
         } else {
             this.router.navigate(Pages.DECISION_PICKER);
+            const wheel = new WheelCanvas(filledOptions);
+            wheel.getHTMLElement();
+            console.log(filledOptions);
         }
     }
 }

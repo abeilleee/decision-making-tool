@@ -7,12 +7,12 @@ import { ContainerView } from '../../container/container';
 import { PlayButton } from '../../buttons/playBtn';
 import { SoundButton } from '../../buttons/soundBtn';
 import { WheelCanvas } from '../../wheel/wheel1';
+import { SaveState } from '../../save-state/saveState';
 
 export class DecisionPicker extends View {
     router: Router;
     container: ContainerView;
     btnBox: ContainerView;
-    wheel: WheelCanvas;
 
     constructor(router: Router) {
         const options: options = {
@@ -23,13 +23,6 @@ export class DecisionPicker extends View {
         this.router = router;
         this.container = new ContainerView(['decision-picker__container'], this.element.getElement());
         this.btnBox = new ContainerView(['button-box']);
-        this.wheel = new WheelCanvas([
-            { name: 'hi', weight: 17 },
-            { name: 'we', weight: 2 },
-            { name: 'sds', weight: 2 },
-            { name: 'sdwqdsadsads', weight: 12 },
-        ]);
-
         this.configure();
     }
 
@@ -46,7 +39,7 @@ export class DecisionPicker extends View {
         const label = new ElementCreator({ tagName: 'label', classes: ['label', 'timer-label'], textContent: 'Time' });
         const timerInput = new ElementCreator({ tagName: 'input', classes: ['timer-input'] });
 
-        this.container.addInnerElements([this.btnBox.getHTMLElement(), this.wheel.getHTMLElement()]);
+        this.container.addInnerElements([this.btnBox.getHTMLElement()]);
         this.btnBox.addInnerElements([
             backBtn.getElement(),
             playBtn.getElement(),
@@ -57,5 +50,20 @@ export class DecisionPicker extends View {
         backBtn.getElement().addEventListener('click', () => {
             backBtn.handleClick();
         });
+        // this.createWheel();
+        this.handlerOnload();
+    }
+
+    private createWheel(): void {
+        const saveState = new SaveState();
+        const optionsList = saveState.getFilledOptions();
+        const wheel = new WheelCanvas(optionsList);
+        this.container.addInnerElements([wheel.getHTMLElement()]);
+    }
+
+    private handlerOnload(): void {
+        window.onload = () => {
+            this.createWheel();
+        };
     }
 }

@@ -1,6 +1,7 @@
 import { Option } from '../list-option/option';
 import { OptionList } from '../list-option/optionList';
-import { savedOption } from '../list-option/types';
+import { options, savedOption } from '../list-option/types';
+import { OptionsParams } from '../wheel/wheel1';
 
 export type localStorageObject = {
     list: savedOption[];
@@ -117,5 +118,17 @@ export class SaveState {
     public addDataFromFile(obj: localStorageObject): void {
         localStorage.removeItem(this.storageName);
         localStorage.setItem(this.storageName, JSON.stringify(obj));
+    }
+
+    public getFilledOptions(): OptionsParams[] {
+        const data = this.getData();
+        const optionsList = data.list;
+        let filledOptions = [];
+        for (let i = 0; i < optionsList.length; i++) {
+            if (optionsList[i].title !== '' && Number(optionsList[i].weight) > 0) {
+                filledOptions.push(optionsList[i]);
+            }
+        }
+        return filledOptions;
     }
 }
