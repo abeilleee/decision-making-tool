@@ -1,7 +1,7 @@
 .button-box {
     display: flex;
     flex-direction: row;
-
+    padding: 10px;
     gap: 10px;
 }
 
@@ -16,6 +16,7 @@
 .timer-input {
     width: 100px;
     height: 35px;
+
     // grid-area: timer-input;
     border: 2px solid rgb(255 255 255);
     border-radius: 10px;
