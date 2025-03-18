@@ -100,6 +100,10 @@ export class WheelCanvas {
 
     private addOptionName(textParams: optionNameParams): void {
         const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
+        const title =
+            textParams.options.title.length > 15
+                ? textParams.options.title.slice(1, 15) + '...'
+                : textParams.options.title;
         if (this.context) {
             this.context.save();
             this.context.translate(
@@ -114,11 +118,7 @@ export class WheelCanvas {
             this.context.shadowOffsetY = 0;
             this.context.shadowColor = 'black';
             this.context.fillStyle = 'white';
-            this.context.fillText(
-                textParams.options.title,
-                -this.context.measureText(textParams.options.title).width / 2,
-                0
-            );
+            this.context.fillText(title, -this.context.measureText(title).width / 2, 0);
 
             this.context.restore();
         }
@@ -239,36 +239,12 @@ export class WheelCanvas {
     //     requestAnimationFrame(() => animate);
     // }
 
-    public rotate(duration: number) {
-        if ((this.startTime = 0)) {
-            this.startTime = performance.now();
-        }
-        this.wheelState = WheelState.PICKING;
-        const timer = duration * 1000;
-        const numberOfSections = this.sections.length;
-        let currentTime = performance.now();
-        const elapsedTime = currentTime - this.startTime;
-        let t = Math.min(elapsedTime / timer, 1);
-        const easeValue = this.easeInOutBack(t);
-
-        const rotationAmount = easeValue * Math.PI * numberOfSections; // Полный оборот
-
-        this.startAngle += rotationAmount;
-        this.drawWheel();
-        if (t < 1) {
-            requestAnimationFrame(() => this.rotate(duration));
-        } else {
-            this.endAnimation();
-            currentTime = 0;
-            this.wheelState = WheelState.PICKED;
-        }
-    }
     // public rotate(duration: number) {
     //     if ((this.startTime = 0)) {
     //         this.startTime = performance.now();
     //     }
+    //     this.wheelState = WheelState.PICKING;
     //     const timer = duration * 1000;
-    //     console.log('this start time ' + this.startTime);
     //     const numberOfSections = this.sections.length;
     //     let currentTime = performance.now();
     //     const elapsedTime = currentTime - this.startTime;
@@ -276,24 +252,48 @@ export class WheelCanvas {
     //     const easeValue = this.easeInOutBack(t);
 
     //     const rotationAmount = easeValue * Math.PI * numberOfSections; // Полный оборот
-    //     // if (this.context) {
-    //     //     // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    //     //     // this.context.save();
-    //     //     // this.context.translate(this.canvas.width / 2, this.canvas.height / 2);
-    //     // }
 
     //     this.startAngle += rotationAmount;
     //     this.drawWheel();
-
-    //     console.log('currentTime: ' + currentTime);
     //     if (t < 1) {
     //         requestAnimationFrame(() => this.rotate(duration));
     //     } else {
-    //         console.log('Анимация завершена');
     //         this.endAnimation();
     //         currentTime = 0;
+    //         this.wheelState = WheelState.PICKED;
     //     }
     // }
+    public rotate(duration: number) {
+        if ((this.startTime = 0)) {
+            this.startTime = performance.now();
+        }
+        const timer = duration * 1000;
+        console.log('this start time ' + this.startTime);
+        const numberOfSections = this.sections.length;
+        let currentTime = performance.now();
+        const elapsedTime = currentTime - this.startTime;
+        let t = Math.min(elapsedTime / timer, 1);
+        const easeValue = this.easeInOutBack(t);
+
+        const rotationAmount = easeValue * Math.PI * numberOfSections; // Полный оборот
+        // if (this.context) {
+        //     // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        //     // this.context.save();
+        //     // this.context.translate(this.canvas.width / 2, this.canvas.height / 2);
+        // }
+
+        this.startAngle += rotationAmount;
+        this.drawWheel();
+
+        console.log('currentTime: ' + currentTime);
+        if (t < 1) {
+            requestAnimationFrame(() => this.rotate(duration));
+        } else {
+            console.log('Анимация завершена');
+            this.endAnimation();
+            currentTime = 0;
+        }
+    }
 
     private endAnimation() {
         this.startTime = 0;
