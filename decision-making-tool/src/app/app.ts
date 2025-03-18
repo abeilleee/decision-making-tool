@@ -47,7 +47,7 @@ export class App {
                 path: `${Pages.NOT_FOUND}`,
                 callback: async () => {
                     const { NotFoundView } = await import('./components/main/not-found/not-found-view');
-                    this.setContent(new NotFoundView());
+                    this.setContent(new NotFoundView(this.router));
                 },
             },
         ];

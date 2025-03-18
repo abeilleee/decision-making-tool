@@ -1,5 +1,5 @@
 import { ElementCreator } from '../../utils/element-creator';
-import { DecisionPicker } from '../main/decision-picker/decision.picker';
+import { ContainerView } from '../container/container';
 import { WheelState } from './types';
 
 export type OptionsParams = {
@@ -32,14 +32,16 @@ export class WheelCanvas {
     public wheelState: WheelState;
     private centerX: number;
     private centerY: number;
+    animationFrameId: number | null = null;
     startTime: number;
     speed: number;
     acceleration: number;
     timerInput;
+    buttons: ContainerView | undefined;
 
     colors: string[];
 
-    constructor(sections: OptionsParams[], timerInput?: HTMLInputElement) {
+    constructor(sections: OptionsParams[], timerInput?: HTMLInputElement, controllers?: ContainerView) {
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
 
@@ -55,18 +57,19 @@ export class WheelCanvas {
         this.startTime = 0;
         this.speed = 0.01;
         this.acceleration = 0.002;
+        this.buttons = controllers;
 
         this.timerInput = timerInput;
         this.wheelState = WheelState.INITIAL;
         this.colors = this.getColors();
-        this.drawWheel();
+        this.drawWheel(Math.random() * 2);
     }
 
-    public drawWheel(): void {
+    public drawWheel(startNumber: number): void {
         const totalWeight = this.sections.reduce((sum, option) => sum + Number(option.weight), 0);
         const radius = this.canvas.width / 2;
 
-        let startAngle = Math.random();
+        let startAngle = startNumber;
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
@@ -205,6 +208,34 @@ export class WheelCanvas {
         return colorsArr;
     }
 
+    public easeOut(min: number, max: number) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // public rotate() {
+    //     // if (this.wheelState === WheelState.PICKING) {
+    //     //     return;
+    //     // }
+    //     // this.wheelState = WheelState.PICKING;
+
+    //     if ((this.startTime = 0)) {
+    //         this.startTime = performance.now();
+    //     }
+    //     const duration = this.timerInput ? +this.timerInput.value : 0;
+    //     const durationMs = duration * 1000;
+    //     const totalRotations = 5;
+    //     const currentTime = performance.now();
+    //     const elapsed = currentTime - this.startTime;
+    //     const t = Math.min(elapsed / durationMs, 1);
+    //     const eased = this.easeInOutBack(t);
+
+    //     this.startAngle += eased * (totalRotations * 360) + Math.random() * 360;
+    //     this.drawWheel();
+    //     requestAnimationFrame(() => this.rotate());
+    // }
+
     public easeInOutBack(t: number) {
         // return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
         // return t < 0.5 ? 4 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
@@ -213,8 +244,11 @@ export class WheelCanvas {
         return t < 0.5
             ? (Math.pow(2 * t, 2) * ((s + 1) * 2 * t - s)) / 2
             : (Math.pow(2 * t - 2, 2) * ((s + 1) * (2 * t - 2) + s) + 2) / 2;
-    }
 
+        // return t < 0.5
+        //     ? 4 * t * t * t
+        //     : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
     // public startAnimation(duration: number) {
     //     if (this.wheelState === WheelState.PICKING) {
     //         return;
@@ -242,66 +276,106 @@ export class WheelCanvas {
     //     requestAnimationFrame(() => animate);
     // }
 
-    // public rotate(duration: number) {
+    // public rotate() {
+    //     const duration = this.timerInput ? +this.timerInput.value : 0;
+
     //     if ((this.startTime = 0)) {
     //         this.startTime = performance.now();
     //     }
     //     this.wheelState = WheelState.PICKING;
-    //     const timer = duration * 1000;
-    //     const numberOfSections = this.sections.length;
+
     //     let currentTime = performance.now();
+    //     const durationMs = duration * 1000;
+    //     const numberOfSections = this.sections.length;
+
     //     const elapsedTime = currentTime - this.startTime;
-    //     let t = Math.min(elapsedTime / timer, 1);
+    //     let t = Math.min(elapsedTime / durationMs, 1);
     //     const easeValue = this.easeInOutBack(t);
 
     //     const rotationAmount = easeValue * Math.PI * numberOfSections; // Полный оборот
-
-    //     this.startAngle += rotationAmount;
+    //     this.startAngle += easeValue * (rotationAmount * 360) + Math.random() * 360;
     //     this.drawWheel();
     //     if (t < 1) {
-    //         requestAnimationFrame(() => this.rotate(duration));
+    //         requestAnimationFrame(() => this.rotate());
     //     } else {
     //         this.endAnimation();
     //         currentTime = 0;
     //         this.wheelState = WheelState.PICKED;
     //     }
     // }
+
+    // public rotate() {
+    //     const duration = this.timerInput ? +this.timerInput.value : 0;
+    //     const durationMs = duration * 1000;
+    //     const totalRotations = 5;
+
+    //     const targetAngleStop = 2 * Math.PI * totalRotations + Math.random() * (2 * Math.PI); //
+    //     const startTime = performance.now();
+
+    //     const animate = (currentTime: number) => {
+    //         const elapsed = currentTime - startTime;
+    //         const t = Math.min(elapsed / durationMs, 1);
+    //         const easing = this.easeInOutBack(t);
+
+    //         this.startAngle += easing * targetAngleStop;
+    //         this.drawWheel();
+
+    //         if (t < 1) {
+    //             this.animationFrameId = requestAnimationFrame(() => animate);
+    //         } else {
+    //             this.animationFrameId = null;
+    //             this.endAnimation;
+    //         }
+    //     };
+    //     if (this.animationFrameId !== null) {
+    //         cancelAnimationFrame(this.animationFrameId);
+    //     }
+    //     this.animationFrameId = requestAnimationFrame(() => animate);
+    // }
+
     public rotate() {
         const duration = this.timerInput ? +this.timerInput.value : 0;
-
-        if ((this.startTime = 0)) {
+        this.wheelState = WheelState.PICKING;
+        this.disableElements();
+        if (this.startTime === 0) {
             this.startTime = performance.now();
         }
-        const timer = duration * 1000;
-        console.log('this start time ' + this.startTime);
-        const numberOfSections = this.sections.length;
+        const durationMs = duration * 1000;
         let currentTime = performance.now();
         const elapsedTime = currentTime - this.startTime;
-        let t = Math.min(elapsedTime / timer, 1);
+        let t = Math.min(elapsedTime / durationMs, 1);
         const easeValue = this.easeInOutBack(t);
-
-        const rotationAmount = easeValue * Math.PI * numberOfSections; // Полный оборот
-        // if (this.context) {
-        //     // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        //     // this.context.save();
-        //     // this.context.translate(this.canvas.width / 2, this.canvas.height / 2);
-        // }
-
+        const rotationAmount = easeValue * 5;
         this.startAngle += rotationAmount;
-        this.drawWheel();
+        // this.startAngle += easeValue * (rotationAmount * 360) + Math.random() * 360;
+        this.drawWheel(this.startAngle);
 
-        console.log('currentTime: ' + currentTime);
         if (t < 1) {
+            // this.startAngle += rotationAmount - 1;
             requestAnimationFrame(() => this.rotate());
         } else {
-            console.log('Анимация завершена');
-            this.endAnimation();
-            currentTime = 0;
+            this.wheelState = WheelState.PICKED;
+            this.startTime = 0;
+            this.disableElements();
         }
     }
 
-    private endAnimation() {
-        this.startTime = 0;
-        this.startAngle = 0;
+    private disableElements() {
+        if (this.buttons !== undefined) {
+            const children = Array.from(this.buttons.getHTMLElement().children);
+            if (this.wheelState === WheelState.PICKING) {
+                children.forEach((elem) =>
+                    elem instanceof HTMLElement
+                        ? elem.classList.add('disabled')
+                        : console.log('It does not an HTMLElement')
+                );
+            } else {
+                children.forEach((elem) =>
+                    elem instanceof HTMLElement
+                        ? elem.classList.remove('disabled')
+                        : console.log('It does not an HTMLElement')
+                );
+            }
+        }
     }
 }

@@ -151,3 +151,4 @@ export class IndexView extends View {
         });
     }
 }
+console.log('Проверьте пожалуйста попозже!!!!!!!!');

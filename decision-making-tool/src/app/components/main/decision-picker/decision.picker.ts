@@ -79,7 +79,7 @@ export class DecisionPicker extends View {
         const saveState = new SaveState();
         const optionsList = saveState.getFilledOptions();
         if (this.timerInput) {
-            this.wheel = new WheelCanvas(optionsList, this.timerInput);
+            this.wheel = new WheelCanvas(optionsList, this.timerInput, this.btnBox);
             this.container.addInnerElements([this.wheel.getHTMLElement()]);
         }
     }
@@ -112,13 +112,25 @@ export class DecisionPicker extends View {
     }
 
     private doDisableBtn() {
-        const elements = [
-            this.playBtn.getElement(),
-            // this.backBtn.getElement(),
-            this.timerInput,
-            this.timerLabel?.getElement(),
-            this.soundBtn.getElement(),
-        ];
-        elements.forEach((elem) => (elem ? elem.classList.add('disabled') : ''));
+        if (this.wheelState === WheelState.PICKING) {
+            const elements = [
+                this.playBtn.getElement(),
+                // this.backBtn.getElement(),
+                this.timerInput,
+                this.timerLabel?.getElement(),
+                this.soundBtn.getElement(),
+            ];
+            elements.forEach((elem) => (elem ? elem.classList.add('disabled') : ''));
+        } else {
+            const elements = [
+                this.playBtn.getElement(),
+                // this.backBtn.getElement(),
+                this.timerInput,
+                this.timerLabel?.getElement(),
+                this.soundBtn.getElement(),
+            ];
+            elements.forEach((elem) => (elem ? elem.classList.remove('disabled') : ''));
+        }
     }
 }
+console.log('Проверьте пожалуйста попозже!!!!!!!!');
