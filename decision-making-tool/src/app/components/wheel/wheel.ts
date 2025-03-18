@@ -23,23 +23,37 @@ type centerElement = {
 
 export class WheelCanvas {
     private canvas: HTMLCanvasElement;
-    private context: CanvasRenderingContext2D;
+    private context: CanvasRenderingContext2D | null;
     private sections: OptionsParams[];
     private cursorIndex: number;
     private centerElement: centerElement;
     private startAngle: number;
     public wheelState: WheelState;
+    private centerX: number;
+    private centerY: number;
+    startTime: number;
+    speed: number;
+    acceleration: number;
+
     colors: string[];
 
     constructor(sections: OptionsParams[]) {
         this.canvas = document.createElement('canvas');
-        this.context = this.canvas.getContext('2d')!;
+        this.context = this.canvas.getContext('2d');
+
         this.sections = sections;
         this.cursorIndex = 0;
         this.centerElement = { x: 10, y: 10, radius: 20 };
         this.canvas.width = 420;
         this.canvas.height = 440;
         this.startAngle = 0;
+
+        this.centerX = this.canvas.width / 2;
+        this.centerY = this.canvas.height / 2;
+        this.startTime = 0;
+        this.speed = 0.01;
+        this.acceleration = 0.002;
+
         this.wheelState = WheelState.INITIAL;
         this.colors = this.getColors();
         this.drawWheel();
@@ -48,63 +62,66 @@ export class WheelCanvas {
     public drawWheel(): void {
         const totalWeight = this.sections.reduce((sum, option) => sum + Number(option.weight), 0);
         const radius = this.canvas.width / 2;
-        const centerX = this.canvas.width / 2;
-        const centerY = this.canvas.height / 2;
-        let startAngle = this.startAngle;
+
+        let startAngle = Math.random();
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
             let sectionAngle = (+this.sections[i].weight / totalWeight) * 2 * Math.PI;
-            this.context.beginPath();
-            this.context.moveTo(centerX, centerY);
-            this.context.arc(centerX, centerY, radius, startAngle, startAngle + sectionAngle);
-            this.context.closePath();
-            const color = this.colors[i];
-            this.context.fillStyle = color;
-            this.context.fill();
-            this.context.strokeStyle = 'rgba(255, 255, 255, 1)';
-            this.context.stroke();
-            this.addOptionName({
-                startAngle: startAngle,
-                sliceAngle: sectionAngle,
-                options: this.sections[i],
-                centerX: centerX,
-                centerY: centerY,
-            });
+            if (this.context) {
+                this.context.beginPath();
+                this.context.moveTo(this.centerX, this.centerY);
+                this.context.arc(this.centerX, this.centerY, radius, startAngle, startAngle + sectionAngle);
+                this.context.closePath();
+                const color = this.colors[i];
+                this.context.fillStyle = color;
+                this.context.fill();
+                this.context.strokeStyle = 'rgba(255, 255, 255, 1)';
+                this.context.stroke();
+                this.addOptionName({
+                    startAngle: startAngle,
+                    sliceAngle: sectionAngle,
+                    options: this.sections[i],
+                    centerX: this.centerX,
+                    centerY: this.centerY,
+                });
+            }
             startAngle += sectionAngle;
         }
 
         this.drawCursor();
-        this.drawCenterElement(centerX, centerY);
-        this.context.save();
+        this.drawCenterElement(this.centerX, this.centerY);
+        if (this.context) this.context.save();
     }
 
-    public getSaveCtx() {
+    public getSaveCtx(): void {
         this.drawWheel;
     }
 
     private addOptionName(textParams: optionNameParams): void {
         const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
-        this.context.save();
-        this.context.translate(
-            textParams.centerX + (Math.cos(textAngle) * textParams.centerX) / 2,
-            textParams.centerY + (Math.sin(textAngle) * textParams.centerY) / 2
-        );
-        this.context.rotate(textAngle);
-        this.context.fillStyle = 'white';
-        this.context.font = 'bold 16px sans-serif';
-        this.context.shadowBlur = 15;
-        this.context.shadowOffsetX = 0;
-        this.context.shadowOffsetY = 0;
-        this.context.shadowColor = 'black';
-        this.context.fillStyle = 'white';
-        this.context.fillText(
-            textParams.options.title,
-            -this.context.measureText(textParams.options.title).width / 2,
-            0
-        );
+        if (this.context) {
+            this.context.save();
+            this.context.translate(
+                textParams.centerX + (Math.cos(textAngle) * textParams.centerX) / 2,
+                textParams.centerY + (Math.sin(textAngle) * textParams.centerY) / 2
+            );
+            this.context.rotate(textAngle);
+            this.context.fillStyle = 'white';
+            this.context.font = 'bold 16px sans-serif';
+            this.context.shadowBlur = 15;
+            this.context.shadowOffsetX = 0;
+            this.context.shadowOffsetY = 0;
+            this.context.shadowColor = 'black';
+            this.context.fillStyle = 'white';
+            this.context.fillText(
+                textParams.options.title,
+                -this.context.measureText(textParams.options.title).width / 2,
+                0
+            );
 
-        this.context.restore();
+            this.context.restore();
+        }
 
         textParams.startAngle += textParams.sliceAngle;
     }
@@ -120,42 +137,46 @@ export class WheelCanvas {
         const borderWidth = 2;
 
         // курсор (треугольник)
-        this.context.beginPath();
-        this.context.moveTo(cursorX, cursorY);
-        this.context.lineTo(cursorX - cursorSize, cursorY - cursorSize);
-        this.context.lineTo(cursorX + cursorSize, cursorY - cursorSize);
-        this.context.closePath();
+        if (this.context) {
+            this.context.beginPath();
+            this.context.moveTo(cursorX, cursorY);
+            this.context.lineTo(cursorX - cursorSize, cursorY - cursorSize);
+            this.context.lineTo(cursorX + cursorSize, cursorY - cursorSize);
+            this.context.closePath();
 
-        // цвет курсора
-        this.context.fillStyle = 'rgba(68, 0, 255, 0.8)';
-        this.context.fill();
+            // цвет курсора
+            this.context.fillStyle = 'rgba(68, 0, 255, 0.8)';
+            this.context.fill();
 
-        // цвет бордера для курсора
-        this.context.lineWidth = borderWidth;
-        this.context.strokeStyle = 'black';
-        this.context.stroke();
+            // цвет бордера для курсора
+            this.context.lineWidth = borderWidth;
+            this.context.strokeStyle = 'black';
+            this.context.stroke();
+        }
     }
 
     private drawCenterElement(centerX: number, centerY: number): void {
         const { radius } = this.centerElement;
 
         // отрисовка центрального круга
-        this.context.beginPath();
-        this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI); // Круг
-        this.context.closePath();
+        if (this.context) {
+            this.context.beginPath();
+            this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI); // Круг
+            this.context.closePath();
 
-        // цвета для центр. круга
-        const grad = this.context.createLinearGradient(0, 0, 280, 0);
-        grad.addColorStop(0, 'rgb(49, 22, 125)');
-        grad.addColorStop(0.5, 'rgb(152, 205, 204)');
-        grad.addColorStop(1, 'rgb(86, 56, 195)');
-        this.context.fillStyle = grad;
-        this.context.fill();
+            // цвета для центр. круга
+            const grad = this.context.createLinearGradient(0, 0, 280, 0);
+            grad.addColorStop(0, 'rgb(49, 22, 125)');
+            grad.addColorStop(0.5, 'rgb(152, 205, 204)');
+            grad.addColorStop(1, 'rgb(86, 56, 195)');
+            this.context.fillStyle = grad;
+            this.context.fill();
 
-        // бордер центр. круга
-        this.context.lineWidth = 2;
-        this.context.strokeStyle = 'white';
-        this.context.stroke();
+            // бордер центр. круга
+            this.context.lineWidth = 2;
+            this.context.strokeStyle = 'white';
+            this.context.stroke();
+        }
     }
 
     public getHTMLElement(): HTMLElement & Partial<ElementCreator> {
@@ -171,7 +192,7 @@ export class WheelCanvas {
         return '#' + color;
     }
 
-    private getColors() {
+    private getColors(): string[] {
         const length = this.sections.length;
         let colorsArr: string[] = [];
         for (let i = 0; i < length; i++) {
@@ -181,17 +202,103 @@ export class WheelCanvas {
         return colorsArr;
     }
 
-    public animate(): void {
-        console.log('hi');
-        this.startAngle += 0.01; // Увеличиваем угол вращения
-        this.drawWheel();
-        requestAnimationFrame(() => this.animate());
+    public easeInOutBack(t: number) {
+        // return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        // return t < 0.5 ? 4 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        // return 1 - Math.pow(1 - t, 3);
+        const s = 1.70158;
+        return t < 0.5
+            ? (Math.pow(2 * t, 2) * ((s + 1) * 2 * t - s)) / 2
+            : (Math.pow(2 * t - 2, 2) * ((s + 1) * (2 * t - 2) + s) + 2) / 2;
     }
 
-    private getRandomTargetAngle(): number {
-        // Генерация угла в радианах для минимальных 5 поворотов
-        const completeRotations = 5 * 2 * Math.PI; // минимум 5 полных оборотов
-        const randomSectionAngle = Math.random() * ((2 * Math.PI) / this.sections.length);
-        return completeRotations + randomSectionAngle;
+    // public startAnimation(duration: number) {
+    //     if (this.wheelState === WheelState.PICKING) {
+    //         return;
+    //     }
+    //     this.wheelState = WheelState.PICKING;
+    //     const startTime = performance.now();
+    //     const totalRotations = 5;
+    //     const durationMs = duration * 1000;
+
+    //     const animate = (time: number) => {
+    //         const elapsed = time - startTime;
+    //         const t = Math.min(elapsed / durationMs, 1);
+    //         const easing = this.easeInOutBack(t);
+    //         this.startAngle += easing * (totalRotations * 360) + Math.random() * 360;
+
+    //         this.drawWheel();
+
+    //         if (t < 1) {
+    //             requestAnimationFrame(() => animate);
+    //         } else {
+    //             this.wheelState = WheelState.PICKED;
+    //             this.endAnimation();
+    //         }
+    //     };
+    //     requestAnimationFrame(() => animate);
+    // }
+
+    public rotate(duration: number) {
+        if ((this.startTime = 0)) {
+            this.startTime = performance.now();
+        }
+        const timer = duration * 1000;
+        console.log('this start time ' + this.startTime);
+        const numberOfSections = this.sections.length;
+        let currentTime = performance.now();
+        const elapsedTime = currentTime - this.startTime;
+        let t = Math.min(elapsedTime / timer, 1);
+        const easeValue = this.easeInOutBack(t);
+
+        const rotationAmount = easeValue * Math.PI * numberOfSections; // Полный оборот
+
+        this.startAngle += rotationAmount;
+        this.drawWheel();
+
+        console.log('currentTime: ' + currentTime);
+        if (t < 1) {
+            requestAnimationFrame(() => this.rotate(duration));
+        } else {
+            console.log('Анимация завершена');
+            this.endAnimation();
+            currentTime = 0;
+        }
+    }
+    // public rotate(duration: number) {
+    //     if ((this.startTime = 0)) {
+    //         this.startTime = performance.now();
+    //     }
+    //     const timer = duration * 1000;
+    //     console.log('this start time ' + this.startTime);
+    //     const numberOfSections = this.sections.length;
+    //     let currentTime = performance.now();
+    //     const elapsedTime = currentTime - this.startTime;
+    //     let t = Math.min(elapsedTime / timer, 1);
+    //     const easeValue = this.easeInOutBack(t);
+
+    //     const rotationAmount = easeValue * Math.PI * numberOfSections; // Полный оборот
+    //     // if (this.context) {
+    //     //     // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    //     //     // this.context.save();
+    //     //     // this.context.translate(this.canvas.width / 2, this.canvas.height / 2);
+    //     // }
+
+    //     this.startAngle += rotationAmount;
+    //     this.drawWheel();
+
+    //     console.log('currentTime: ' + currentTime);
+    //     if (t < 1) {
+    //         requestAnimationFrame(() => this.rotate(duration));
+    //     } else {
+    //         console.log('Анимация завершена');
+    //         this.endAnimation();
+    //         currentTime = 0;
+    //     }
+    // }
+
+    private endAnimation() {
+        this.startTime = 0;
+        this.startAngle = 0;
     }
 }

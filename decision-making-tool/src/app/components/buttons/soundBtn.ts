@@ -6,5 +6,7 @@ export class SoundButton extends Button {
         super(ButtonsName.SOUND, ['sound-btn']);
     }
 
-    public handleClick(event: Event): void {}
+    public handleClick(): void {
+        this.element.classList.toggle('off');
+    }
 }

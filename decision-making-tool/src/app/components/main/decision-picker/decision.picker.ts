@@ -8,12 +8,12 @@ import { PlayButton } from '../../buttons/playBtn';
 import { SoundButton } from '../../buttons/soundBtn';
 import { WheelCanvas } from '../../wheel/wheel';
 import { SaveState } from '../../save-state/saveState';
-import { WheelState } from '../../wheel/types';
 
 export class DecisionPicker extends View {
     router: Router;
     container: ContainerView;
     btnBox: ContainerView;
+    soundBtn: SoundButton;
     playBtn: PlayButton;
     wheel: WheelCanvas | null;
     constructor(router: Router) {
@@ -26,6 +26,7 @@ export class DecisionPicker extends View {
         this.container = new ContainerView(['decision-picker__container'], this.element.getElement());
         this.btnBox = new ContainerView(['button-box']);
         this.playBtn = new PlayButton();
+        this.soundBtn = new SoundButton();
         this.wheel = null;
         this.configure();
         this.btnEventListeners();
@@ -40,15 +41,14 @@ export class DecisionPicker extends View {
         });
         const backBtn = new BackButton(this.router);
 
-        const soundBtn = new SoundButton();
         const label = new ElementCreator({ tagName: 'label', classes: ['label', 'timer-label'], textContent: 'Time' });
-        const timerInput = new ElementCreator({ tagName: 'input', classes: ['timer-input'] });
+        const timerInput = new ElementCreator<HTMLInputElement>({ tagName: 'input', classes: ['timer-input'] });
 
         this.container.addInnerElements([this.btnBox.getHTMLElement()]);
         this.btnBox.addInnerElements([
             backBtn.getElement(),
             this.playBtn.getElement(),
-            soundBtn.getElement(),
+            this.soundBtn.getElement(),
             label.getElement(),
             timerInput.getElement(),
         ]);
@@ -83,9 +83,13 @@ export class DecisionPicker extends View {
         this.playBtn.getElement().addEventListener('click', () => {
             if (this.wheel) {
                 this.playBtn.handleClick(this.wheel);
-                this.wheel.wheelState = WheelState.PICKING;
-                this.wheel.animate();
+                this.wheel.rotate(5);
+                console.log(this.wheel.wheelState);
             }
+        });
+
+        this.soundBtn.getElement().addEventListener('click', () => {
+            this.soundBtn.handleClick();
         });
     }
 }
