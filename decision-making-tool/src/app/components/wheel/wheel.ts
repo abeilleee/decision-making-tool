@@ -1,4 +1,5 @@
 import { ElementCreator } from '../../utils/element-creator';
+import { DecisionPicker } from '../main/decision-picker/decision.picker';
 import { WheelState } from './types';
 
 export type OptionsParams = {
@@ -34,10 +35,11 @@ export class WheelCanvas {
     startTime: number;
     speed: number;
     acceleration: number;
+    timerInput;
 
     colors: string[];
 
-    constructor(sections: OptionsParams[]) {
+    constructor(sections: OptionsParams[], timerInput?: HTMLInputElement) {
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
 
@@ -54,6 +56,7 @@ export class WheelCanvas {
         this.speed = 0.01;
         this.acceleration = 0.002;
 
+        this.timerInput = timerInput;
         this.wheelState = WheelState.INITIAL;
         this.colors = this.getColors();
         this.drawWheel();
@@ -263,7 +266,9 @@ export class WheelCanvas {
     //         this.wheelState = WheelState.PICKED;
     //     }
     // }
-    public rotate(duration: number) {
+    public rotate() {
+        const duration = this.timerInput ? +this.timerInput.value : 0;
+
         if ((this.startTime = 0)) {
             this.startTime = performance.now();
         }
@@ -287,7 +292,7 @@ export class WheelCanvas {
 
         console.log('currentTime: ' + currentTime);
         if (t < 1) {
-            requestAnimationFrame(() => this.rotate(duration));
+            requestAnimationFrame(() => this.rotate());
         } else {
             console.log('Анимация завершена');
             this.endAnimation();

@@ -78,8 +78,10 @@ export class DecisionPicker extends View {
     private createWheel(): void {
         const saveState = new SaveState();
         const optionsList = saveState.getFilledOptions();
-        this.wheel = new WheelCanvas(optionsList);
-        this.container.addInnerElements([this.wheel.getHTMLElement()]);
+        if (this.timerInput) {
+            this.wheel = new WheelCanvas(optionsList, this.timerInput);
+            this.container.addInnerElements([this.wheel.getHTMLElement()]);
+        }
     }
 
     private handlerOnload(): void {
@@ -99,7 +101,7 @@ export class DecisionPicker extends View {
         this.playBtn.getElement().addEventListener('click', () => {
             if (this.wheel) {
                 this.playBtn.handleClick(this.wheel);
-                this.wheel.rotate(5);
+                this.wheel.rotate();
             }
             this.doDisableBtn();
         });
