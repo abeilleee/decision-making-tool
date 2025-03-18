@@ -237,17 +237,21 @@ export class WheelCanvas {
     // }
 
     public easeInOutBack(t: number) {
-        // return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+        return t < 0.5 ? 2 * t * t * ((1.70158 + 1) * 2 * t - 1.70158) : -1 + 2 * t * ((1.70158 + 1) * 2 * t - 1.70158);
+        //     const s = 1.70158; //
+        //    return t < 0.5
+        //        ? (2 * t * t * ((s + 1) * 2 * t - s))
+        //        : -1 + (2 * t * ((s + 1) * 2 * t - s));
         // return t < 0.5 ? 4 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
         // return 1 - Math.pow(1 - t, 3);
-        const s = 1.70158;
-        return t < 0.5
-            ? (Math.pow(2 * t, 2) * ((s + 1) * 2 * t - s)) / 2
-            : (Math.pow(2 * t - 2, 2) * ((s + 1) * (2 * t - 2) + s) + 2) / 2;
-
+        // const s = 1.70158;
         // return t < 0.5
-        //     ? 4 * t * t * t
-        //     : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        //     ? (Math.pow(2 * t, 2) * ((s + 1) * 2 * t - s)) / 2
+        //     : (Math.pow(2 * t - 2, 2) * ((s + 1) * (2 * t - 2) + s) + 2) / 2;
+
+        // return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     }
     // public startAnimation(duration: number) {
     //     if (this.wheelState === WheelState.PICKING) {
@@ -345,9 +349,10 @@ export class WheelCanvas {
         const elapsedTime = currentTime - this.startTime;
         let t = Math.min(elapsedTime / durationMs, 1);
         const easeValue = this.easeInOutBack(t);
-        const rotationAmount = easeValue * 5;
+        let targetRotation = Math.PI * 2;
+        const rotationAmount = easeValue * targetRotation;
+
         this.startAngle += rotationAmount;
-        // this.startAngle += easeValue * (rotationAmount * 360) + Math.random() * 360;
         this.drawWheel(this.startAngle);
 
         if (t < 1) {

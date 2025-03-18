@@ -21,6 +21,7 @@ export class DecisionPicker extends View {
     wheelState: WheelState;
     timerLabel: ElementCreator | null;
     timerInput: HTMLInputElement | null;
+    message: HTMLInputElement | null;
 
     constructor(router: Router) {
         const options: options = {
@@ -35,6 +36,7 @@ export class DecisionPicker extends View {
         this.playBtn = new PlayButton();
         this.soundBtn = new SoundButton();
         this.wheel = null;
+        this.message = null;
         this.timerInput = null;
         this.timerLabel = null;
         this.wheelState = WheelState.INITIAL;
@@ -60,7 +62,12 @@ export class DecisionPicker extends View {
         this.timerInput.type = 'number';
         this.timerInput.value = '5';
 
-        this.container.addInnerElements([this.btnBox.getHTMLElement()]);
+        this.message = document.createElement('input');
+        this.message.classList.add('message');
+        this.message.disabled = true;
+        this.message.value = "Let's get started! Click start!";
+
+        this.container.addInnerElements([this.btnBox.getHTMLElement(), this.message]);
         this.btnBox.addInnerElements([
             this.backBtn.getElement(),
             this.playBtn.getElement(),
