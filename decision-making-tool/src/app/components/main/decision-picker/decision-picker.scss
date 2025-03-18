@@ -27,3 +27,8 @@
     // grid-area: timer-label;
     height: 35px;
 }
+
+.disabled {
+    background-color: #afafaf91;
+    pointer-events: none;
+}

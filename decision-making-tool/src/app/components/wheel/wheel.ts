@@ -243,8 +243,8 @@ export class WheelCanvas {
         if ((this.startTime = 0)) {
             this.startTime = performance.now();
         }
+        this.wheelState = WheelState.PICKING;
         const timer = duration * 1000;
-        console.log('this start time ' + this.startTime);
         const numberOfSections = this.sections.length;
         let currentTime = performance.now();
         const elapsedTime = currentTime - this.startTime;
@@ -255,14 +255,12 @@ export class WheelCanvas {
 
         this.startAngle += rotationAmount;
         this.drawWheel();
-
-        console.log('currentTime: ' + currentTime);
         if (t < 1) {
             requestAnimationFrame(() => this.rotate(duration));
         } else {
-            console.log('Анимация завершена');
             this.endAnimation();
             currentTime = 0;
+            this.wheelState = WheelState.PICKED;
         }
     }
     // public rotate(duration: number) {

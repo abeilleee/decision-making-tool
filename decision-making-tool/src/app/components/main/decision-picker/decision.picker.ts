@@ -8,14 +8,20 @@ import { PlayButton } from '../../buttons/playBtn';
 import { SoundButton } from '../../buttons/soundBtn';
 import { WheelCanvas } from '../../wheel/wheel';
 import { SaveState } from '../../save-state/saveState';
+import { WheelState } from '../../wheel/types';
 
 export class DecisionPicker extends View {
     router: Router;
     container: ContainerView;
     btnBox: ContainerView;
     soundBtn: SoundButton;
+    backBtn: BackButton;
     playBtn: PlayButton;
     wheel: WheelCanvas | null;
+    wheelState: WheelState;
+    timerLabel: ElementCreator | null;
+    timerInput: HTMLInputElement | null;
+
     constructor(router: Router) {
         const options: options = {
             tagName: 'section',
@@ -25,9 +31,13 @@ export class DecisionPicker extends View {
         this.router = router;
         this.container = new ContainerView(['decision-picker__container'], this.element.getElement());
         this.btnBox = new ContainerView(['button-box']);
+        this.backBtn = new BackButton(this.router);
         this.playBtn = new PlayButton();
         this.soundBtn = new SoundButton();
         this.wheel = null;
+        this.timerInput = null;
+        this.timerLabel = null;
+        this.wheelState = WheelState.INITIAL;
         this.configure();
         this.btnEventListeners();
     }
@@ -39,21 +49,27 @@ export class DecisionPicker extends View {
             textContent: 'Decision Making Tool',
             parent: this.container.getHTMLElement(),
         });
-        const backBtn = new BackButton(this.router);
 
-        const label = new ElementCreator({ tagName: 'label', classes: ['label', 'timer-label'], textContent: 'Time' });
-        const timerInput = new ElementCreator<HTMLInputElement>({ tagName: 'input', classes: ['timer-input'] });
+        this.timerLabel = new ElementCreator({
+            tagName: 'label',
+            classes: ['label', 'timer-label'],
+            textContent: 'Time',
+        });
+        this.timerInput = document.createElement('input');
+        this.timerInput.classList.add('timer-input');
+        this.timerInput.type = 'number';
+        this.timerInput.value = '5';
 
         this.container.addInnerElements([this.btnBox.getHTMLElement()]);
         this.btnBox.addInnerElements([
-            backBtn.getElement(),
+            this.backBtn.getElement(),
             this.playBtn.getElement(),
             this.soundBtn.getElement(),
-            label.getElement(),
-            timerInput.getElement(),
+            this.timerLabel.getElement(),
+            this.timerInput,
         ]);
-        backBtn.getElement().addEventListener('click', () => {
-            backBtn.handleClick();
+        this.backBtn.getElement().addEventListener('click', () => {
+            this.backBtn.handleClick();
         });
         this.createWheel();
         this.handlerOnload();
@@ -84,12 +100,23 @@ export class DecisionPicker extends View {
             if (this.wheel) {
                 this.playBtn.handleClick(this.wheel);
                 this.wheel.rotate(5);
-                console.log(this.wheel.wheelState);
             }
+            this.doDisableBtn();
         });
 
         this.soundBtn.getElement().addEventListener('click', () => {
             this.soundBtn.handleClick();
         });
+    }
+
+    private doDisableBtn() {
+        const elements = [
+            this.playBtn.getElement(),
+            // this.backBtn.getElement(),
+            this.timerInput,
+            this.timerLabel?.getElement(),
+            this.soundBtn.getElement(),
+        ];
+        elements.forEach((elem) => (elem ? elem.classList.add('disabled') : ''));
     }
 }
