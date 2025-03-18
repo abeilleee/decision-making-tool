@@ -349,10 +349,10 @@ export class WheelCanvas {
         const elapsedTime = currentTime - this.startTime;
         let t = Math.min(elapsedTime / durationMs, 1);
         const easeValue = this.easeInOutBack(t);
-        let targetRotation = Math.PI * 2;
+        let targetRotation = Math.PI * 10;
         const rotationAmount = easeValue * targetRotation;
 
-        this.startAngle += rotationAmount;
+        this.startAngle = rotationAmount;
         this.drawWheel(this.startAngle);
 
         if (t < 1) {
