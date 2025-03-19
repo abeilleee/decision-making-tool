@@ -9,4 +9,12 @@ export class SoundButton extends Button {
     public handleClick(): void {
         this.element.classList.toggle('off');
     }
+
+    public setClass(mute: string) {
+        if (mute === 'false') {
+            this.element.classList.remove('off');
+        } else if (mute === 'true') {
+            this.element.classList.add('off');
+        }
+    }
 }

@@ -10,6 +10,7 @@ import { WheelCanvas } from '../../wheel/wheel';
 import { SaveState } from '../../save-state/saveState';
 import { WheelState } from '../../wheel/types';
 import { Modal, TextModal } from '../../modal/modal';
+import { SoundHandler } from '../../../utils/soundHandler';
 
 export class DecisionPicker extends View {
     router: Router;
@@ -23,6 +24,7 @@ export class DecisionPicker extends View {
     timerLabel: ElementCreator | null;
     timerInput: HTMLInputElement | null;
     message: HTMLInputElement | null;
+    soundHandler: SoundHandler;
     timerInputValue: number = 5;
 
     constructor(router: Router) {
@@ -42,6 +44,7 @@ export class DecisionPicker extends View {
         this.timerInput = null;
         this.timerLabel = null;
         this.wheelState = WheelState.INITIAL;
+        this.soundHandler = new SoundHandler();
         this.configure();
         this.EventListeners();
     }
@@ -80,8 +83,12 @@ export class DecisionPicker extends View {
         this.backBtn.getElement().addEventListener('click', () => {
             this.backBtn.handleClick();
         });
+        const soundOption = this.soundHandler.getData();
+        console.log(soundOption);
+        if (soundOption) this.soundBtn.setClass(soundOption);
         this.createWheel();
         this.handlerOnload();
+        this.soundHandler.setSoundHandler();
     }
 
     private createWheel(): void {
@@ -124,6 +131,7 @@ export class DecisionPicker extends View {
 
         this.soundBtn.getElement().addEventListener('click', () => {
             this.soundBtn.handleClick();
+            this.soundHandler.setSoundOption();
         });
         if (this.timerInput) {
             this.timerInput.addEventListener('input', () => {

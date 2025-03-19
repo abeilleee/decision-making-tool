@@ -1,5 +1,5 @@
 import { ElementCreator } from '../../utils/element-creator';
-import { soundHandler } from '../../utils/sound';
+import { SoundHandler } from '../../utils/soundHandler';
 import { ContainerView } from '../container/container';
 import { WheelState } from './types';
 
@@ -43,15 +43,17 @@ export class WheelCanvas {
     timerInput;
     buttons: ContainerView | undefined;
     message;
-    soundHandler: soundHandler;
+    soundHandler: SoundHandler | undefined;
 
     colors: string[];
 
     constructor(
         sections: OptionsParams[],
+
         timerInput?: HTMLInputElement,
         controllers?: ContainerView,
-        message?: HTMLInputElement
+        message?: HTMLInputElement,
+        soundHandler?: SoundHandler
     ) {
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
@@ -69,7 +71,7 @@ export class WheelCanvas {
         this.message = message;
         this.wheelState = WheelState.INITIAL;
         this.colors = this.getColors();
-        this.soundHandler = new soundHandler();
+        this.soundHandler = soundHandler;
         this.drawWheel(Math.floor(Math.random() * (10 - 1)) + 10);
     }
 
@@ -270,7 +272,7 @@ export class WheelCanvas {
             this.startTime = 0;
             this.disableElements();
             console.log(this.sectionsParams);
-            this.soundHandler.playClick();
+            if (this.soundHandler) this.soundHandler.playClick();
         }
     }
 
