@@ -9,6 +9,7 @@ import { SoundButton } from '../../buttons/soundBtn';
 import { WheelCanvas } from '../../wheel/wheel';
 import { SaveState } from '../../save-state/saveState';
 import { WheelState } from '../../wheel/types';
+import { Modal, TextModal } from '../../modal/modal';
 
 export class DecisionPicker extends View {
     router: Router;
@@ -22,6 +23,7 @@ export class DecisionPicker extends View {
     timerLabel: ElementCreator | null;
     timerInput: HTMLInputElement | null;
     message: HTMLInputElement | null;
+    timerInputValue: number = 5;
 
     constructor(router: Router) {
         const options: options = {
@@ -41,7 +43,7 @@ export class DecisionPicker extends View {
         this.timerLabel = null;
         this.wheelState = WheelState.INITIAL;
         this.configure();
-        this.btnEventListeners();
+        this.EventListeners();
     }
 
     private configure(): void {
@@ -85,8 +87,8 @@ export class DecisionPicker extends View {
     private createWheel(): void {
         const saveState = new SaveState();
         const optionsList = saveState.getFilledOptions();
-        if (this.timerInput) {
-            this.wheel = new WheelCanvas(optionsList, this.timerInput, this.btnBox);
+        if (this.timerInput && this.message) {
+            this.wheel = new WheelCanvas(optionsList, this.timerInput, this.btnBox, this.message);
             this.container.addInnerElements([this.wheel.getHTMLElement()]);
         }
     }
@@ -104,18 +106,31 @@ export class DecisionPicker extends View {
         };
     }
 
-    private btnEventListeners() {
+    private EventListeners() {
         this.playBtn.getElement().addEventListener('click', () => {
-            if (this.wheel) {
-                this.playBtn.handleClick(this.wheel);
-                this.wheel.rotate();
+            const modal = new Modal();
+            if (this.timerInput) {
+                const timerValue = this.timerInputValue;
+                if (timerValue < 5 || timerValue > 30) {
+                    modal.open();
+                    modal.addOptionDialog(TextModal.PLAY_BTN_MESSAGE);
+                } else {
+                    if (this.wheel) {
+                        this.wheel.rotate();
+                    }
+                }
+                this.doDisableBtn();
             }
-            this.doDisableBtn();
         });
 
         this.soundBtn.getElement().addEventListener('click', () => {
             this.soundBtn.handleClick();
         });
+        if (this.timerInput) {
+            this.timerInput.addEventListener('input', () => {
+                this.timerInputValue = this.timerInput ? +this.timerInput.value : 5;
+            });
+        }
     }
 
     private doDisableBtn() {

@@ -1,3 +1,4 @@
+import { start } from 'repl';
 import { ElementCreator } from '../../utils/element-creator';
 import { ContainerView } from '../container/container';
 import { WheelState } from './types';
@@ -22,47 +23,52 @@ type centerElement = {
     radius: number;
 };
 
+type sectionParams = {
+    title: string;
+    startAngle: number;
+    sectionAngle: number;
+};
+
 export class WheelCanvas {
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D | null;
     private sections: OptionsParams[];
-    private cursorIndex: number;
     private centerElement: centerElement;
     private startAngle: number;
     public wheelState: WheelState;
     private centerX: number;
     private centerY: number;
-    animationFrameId: number | null = null;
+    sectionsParams: sectionParams[];
     startTime: number;
-    speed: number;
-    acceleration: number;
     timerInput;
     buttons: ContainerView | undefined;
+    message;
 
     colors: string[];
 
-    constructor(sections: OptionsParams[], timerInput?: HTMLInputElement, controllers?: ContainerView) {
+    constructor(
+        sections: OptionsParams[],
+        timerInput?: HTMLInputElement,
+        controllers?: ContainerView,
+        message?: HTMLInputElement
+    ) {
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
-
         this.sections = sections;
-        this.cursorIndex = 0;
+        this.sectionsParams = [];
         this.centerElement = { x: 10, y: 10, radius: 20 };
         this.canvas.width = 420;
         this.canvas.height = 440;
         this.startAngle = 0;
-
         this.centerX = this.canvas.width / 2;
         this.centerY = this.canvas.height / 2;
         this.startTime = 0;
-        this.speed = 0.01;
-        this.acceleration = 0.002;
         this.buttons = controllers;
-
         this.timerInput = timerInput;
+        this.message = message;
         this.wheelState = WheelState.INITIAL;
         this.colors = this.getColors();
-        this.drawWheel(Math.random() * 2);
+        this.drawWheel(Math.floor(Math.random() * (10 - 1)) + 10);
     }
 
     public drawWheel(startNumber: number): void {
@@ -93,6 +99,8 @@ export class WheelCanvas {
                 });
             }
             startAngle += sectionAngle;
+
+            // this.sectionsParams.push({ id: i, startAngle: startAngle, sectionAngle: sectionAngle });
         }
 
         this.drawCursor();
@@ -100,12 +108,13 @@ export class WheelCanvas {
         if (this.context) this.context.save();
     }
 
-    public getSaveCtx(): void {
-        this.drawWheel;
-    }
-
     private addOptionName(textParams: optionNameParams): void {
         const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
+        this.sectionsParams.push({
+            title: textParams.options.title,
+            startAngle: textParams.startAngle,
+            sectionAngle: textParams.sliceAngle + textParams.startAngle,
+        });
         const title =
             textParams.options.title.length > 15
                 ? textParams.options.title.slice(1, 15) + '...'
@@ -211,135 +220,18 @@ export class WheelCanvas {
     public easeOut(min: number, max: number) {
         min = Math.ceil(min);
         max = Math.floor(max);
+
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // public rotate() {
-    //     // if (this.wheelState === WheelState.PICKING) {
-    //     //     return;
-    //     // }
-    //     // this.wheelState = WheelState.PICKING;
-
-    //     if ((this.startTime = 0)) {
-    //         this.startTime = performance.now();
-    //     }
-    //     const duration = this.timerInput ? +this.timerInput.value : 0;
-    //     const durationMs = duration * 1000;
-    //     const totalRotations = 5;
-    //     const currentTime = performance.now();
-    //     const elapsed = currentTime - this.startTime;
-    //     const t = Math.min(elapsed / durationMs, 1);
-    //     const eased = this.easeInOutBack(t);
-
-    //     this.startAngle += eased * (totalRotations * 360) + Math.random() * 360;
-    //     this.drawWheel();
-    //     requestAnimationFrame(() => this.rotate());
-    // }
-
     public easeInOutBack(t: number) {
         return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-
-        return t < 0.5 ? 2 * t * t * ((1.70158 + 1) * 2 * t - 1.70158) : -1 + 2 * t * ((1.70158 + 1) * 2 * t - 1.70158);
-        //     const s = 1.70158; //
-        //    return t < 0.5
-        //        ? (2 * t * t * ((s + 1) * 2 * t - s))
-        //        : -1 + (2 * t * ((s + 1) * 2 * t - s));
-        // return t < 0.5 ? 4 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-        // return 1 - Math.pow(1 - t, 3);
-        // const s = 1.70158;
-        // return t < 0.5
-        //     ? (Math.pow(2 * t, 2) * ((s + 1) * 2 * t - s)) / 2
-        //     : (Math.pow(2 * t - 2, 2) * ((s + 1) * (2 * t - 2) + s) + 2) / 2;
-
-        // return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     }
-    // public startAnimation(duration: number) {
-    //     if (this.wheelState === WheelState.PICKING) {
-    //         return;
-    //     }
-    //     this.wheelState = WheelState.PICKING;
-    //     const startTime = performance.now();
-    //     const totalRotations = 5;
-    //     const durationMs = duration * 1000;
-
-    //     const animate = (time: number) => {
-    //         const elapsed = time - startTime;
-    //         const t = Math.min(elapsed / durationMs, 1);
-    //         const easing = this.easeInOutBack(t);
-    //         this.startAngle += easing * (totalRotations * 360) + Math.random() * 360;
-
-    //         this.drawWheel();
-
-    //         if (t < 1) {
-    //             requestAnimationFrame(() => animate);
-    //         } else {
-    //             this.wheelState = WheelState.PICKED;
-    //             this.endAnimation();
-    //         }
-    //     };
-    //     requestAnimationFrame(() => animate);
-    // }
-
-    // public rotate() {
-    //     const duration = this.timerInput ? +this.timerInput.value : 0;
-
-    //     if ((this.startTime = 0)) {
-    //         this.startTime = performance.now();
-    //     }
-    //     this.wheelState = WheelState.PICKING;
-
-    //     let currentTime = performance.now();
-    //     const durationMs = duration * 1000;
-    //     const numberOfSections = this.sections.length;
-
-    //     const elapsedTime = currentTime - this.startTime;
-    //     let t = Math.min(elapsedTime / durationMs, 1);
-    //     const easeValue = this.easeInOutBack(t);
-
-    //     const rotationAmount = easeValue * Math.PI * numberOfSections; // Полный оборот
-    //     this.startAngle += easeValue * (rotationAmount * 360) + Math.random() * 360;
-    //     this.drawWheel();
-    //     if (t < 1) {
-    //         requestAnimationFrame(() => this.rotate());
-    //     } else {
-    //         this.endAnimation();
-    //         currentTime = 0;
-    //         this.wheelState = WheelState.PICKED;
-    //     }
-    // }
-
-    // public rotate() {
-    //     const duration = this.timerInput ? +this.timerInput.value : 0;
-    //     const durationMs = duration * 1000;
-    //     const totalRotations = 5;
-
-    //     const targetAngleStop = 2 * Math.PI * totalRotations + Math.random() * (2 * Math.PI); //
-    //     const startTime = performance.now();
-
-    //     const animate = (currentTime: number) => {
-    //         const elapsed = currentTime - startTime;
-    //         const t = Math.min(elapsed / durationMs, 1);
-    //         const easing = this.easeInOutBack(t);
-
-    //         this.startAngle += easing * targetAngleStop;
-    //         this.drawWheel();
-
-    //         if (t < 1) {
-    //             this.animationFrameId = requestAnimationFrame(() => animate);
-    //         } else {
-    //             this.animationFrameId = null;
-    //             this.endAnimation;
-    //         }
-    //     };
-    //     if (this.animationFrameId !== null) {
-    //         cancelAnimationFrame(this.animationFrameId);
-    //     }
-    //     this.animationFrameId = requestAnimationFrame(() => animate);
-    // }
 
     public rotate() {
         const duration = this.timerInput ? +this.timerInput.value : 0;
         this.wheelState = WheelState.PICKING;
+
         this.disableElements();
         if (this.startTime === 0) {
             this.startTime = performance.now();
@@ -349,11 +241,19 @@ export class WheelCanvas {
         const elapsedTime = currentTime - this.startTime;
         let t = Math.min(elapsedTime / durationMs, 1);
         const easeValue = this.easeInOutBack(t);
-        let targetRotation = Math.PI * 10;
+        const randomSection = Math.floor(Math.random() * this.sections.length);
+        let targetRotation = Math.PI * 5;
+
         const rotationAmount = easeValue * targetRotation;
 
         this.startAngle = rotationAmount;
         this.drawWheel(this.startAngle);
+
+        const pointerCoordinates = (3 * Math.PI) / 2;
+        console.log(pointerCoordinates);
+        this.sectionsParams.forEach((section) => {
+            const interval = [section.startAngle, section.sectionAngle];
+        });
 
         if (t < 1) {
             // this.startAngle += rotationAmount - 1;
@@ -362,6 +262,7 @@ export class WheelCanvas {
             this.wheelState = WheelState.PICKED;
             this.startTime = 0;
             this.disableElements();
+            console.log(this.sectionsParams);
         }
     }
 
@@ -374,13 +275,21 @@ export class WheelCanvas {
                         ? elem.classList.add('disabled')
                         : console.log('It does not an HTMLElement')
                 );
-            } else {
+            } else if (this.wheelState === WheelState.PICKED) {
                 children.forEach((elem) =>
                     elem instanceof HTMLElement
                         ? elem.classList.remove('disabled')
                         : console.log('It does not an HTMLElement')
                 );
+                this.message?.classList.add('disabled');
             }
         }
     }
+
+    // public getCurrentSection(rotationAngle: number) {
+    //     let sectionAngle = 360 / this.sections.length;
+    //     let currentAngle = (thisstartAngle + rotationAngle) % 360;
+    //     let sectionIndex = Math.floor(currentAngle / sectionAngle);
+    //     return sectionValues[sectionIndex];
+    // }
 }

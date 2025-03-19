@@ -3,6 +3,11 @@ import { parsedData, ValidateText } from '../../utils/validateText';
 import { Button } from '../buttons/button';
 import { ButtonsName } from '../buttons/types';
 
+export const enum TextModal {
+    PLAY_BTN_MESSAGE = 'The duration must be from 5 to 30 seconds!',
+    START_BTN_MESSAGE = 'Please add at last 2 valid options. An option is considered valid if its title is not empty and its weight is greater than 0',
+}
+
 export class Modal {
     modal: HTMLDialogElement | HTMLElement;
     form: HTMLFormElement | HTMLElement;
@@ -82,7 +87,7 @@ title, weight`;
         }
     }
 
-    public addOptionDialog(): void {
+    public addOptionDialog(text: TextModal): void {
         if (this.form.firstChild) {
             while (this.form.childNodes.length !== 1) {
                 this.form.removeChild(this.form.firstChild);
@@ -90,8 +95,7 @@ title, weight`;
         }
         if (this.textArea instanceof HTMLTextAreaElement) {
             this.textArea.disabled = true;
-            this.textArea.placeholder =
-                'Please add at least 2 valid options. An option is considered valid if its title is not empty and its weight is greater than 0';
+            this.textArea.placeholder = text;
         }
         const closeBtn = new Button('Close');
         this.form.append(closeBtn.getElement());
