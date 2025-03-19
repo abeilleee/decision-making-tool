@@ -1,3 +1,4 @@
+import { start } from 'repl';
 import { ElementCreator } from '../../utils/element-creator';
 import { SoundHandler } from '../../utils/soundHandler';
 import { ContainerView } from '../container/container';
@@ -80,7 +81,6 @@ export class WheelCanvas {
         const radius = this.canvas.width / 2;
 
         let startAngle = startNumber;
-        console.log(startNumber + ' startNumber');
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
@@ -102,11 +102,12 @@ export class WheelCanvas {
                     centerX: this.centerX,
                     centerY: this.centerY,
                 });
-                this.sectionsParams.push({
-                    title: this.sections[i].title,
-                    startAngle: (startAngle % (2 * Math.PI)) * (180 / Math.PI),
-                    endAngle: ((sectionAngle + startAngle) % (2 * Math.PI)) * (180 / Math.PI),
-                });
+                // let SG = startAngle
+                // this.sectionsParams.push({
+                //     title: this.sections[i].title,
+                //     startAngle: (startAngle % (2 * Math.PI)) * (180 / Math.PI),
+                //     endAngle: ((sectionAngle + startAngle) % (2 * Math.PI)) * (180 / Math.PI),
+                // });
             }
             startAngle += sectionAngle;
 
@@ -120,14 +121,14 @@ export class WheelCanvas {
 
     private addOptionName(textParams: optionNameParams): void {
         const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
-        // this.sectionsParams.push({
-        //     title: textParams.options.title,
-        //     startAngle: (textParams.startAngle % (2 * Math.PI)) * (180 / Math.PI),
-        //     endAngle: ((textParams.sliceAngle + textParams.startAngle) % (2 * Math.PI)) * (180 / Math.PI),
-        // });
+        this.sectionsParams.push({
+            title: textParams.options.title,
+            startAngle: (textParams.startAngle % (2 * Math.PI)) * (180 / Math.PI),
+            endAngle: ((textParams.sliceAngle + textParams.startAngle) % (2 * Math.PI)) * (180 / Math.PI),
+        });
         const title =
             textParams.options.title.length > 15
-                ? textParams.options.title.slice(1, 15) + '...'
+                ? textParams.options.title.slice(0, 12) + '...'
                 : textParams.options.title;
         if (this.context) {
             this.context.save();
@@ -137,7 +138,7 @@ export class WheelCanvas {
             );
             this.context.rotate(textAngle);
             this.context.fillStyle = 'white';
-            this.context.font = 'bold 16px sans-serif';
+            this.context.font = 'bold 14px sans-serif';
             this.context.shadowBlur = 15;
             this.context.shadowOffsetX = 0;
             this.context.shadowOffsetY = 0;
@@ -259,14 +260,11 @@ export class WheelCanvas {
         this.startAngle = rotationAmount;
         this.drawWheel(this.startAngle);
 
-        const pointerCoordinates = (3 * Math.PI) / 2;
-
-        console.log(this.sectionsParams);
         this.sectionsParams.forEach((section) => {
-            const target = (3 * Math.PI) / 2 + 47;
+            const target = (3 * Math.PI) / 2;
             if (section.endAngle <= target && target <= section.startAngle) {
+                console.log(section);
                 if (this.message) {
-                    console.log('hi');
                     this.message.value = section.title;
                 }
             }
