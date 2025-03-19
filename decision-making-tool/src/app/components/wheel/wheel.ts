@@ -273,6 +273,7 @@ export class WheelCanvas {
             this.disableElements();
             console.log(this.sectionsParams);
             if (this.soundHandler) {
+                console.log('hi');
                 this.soundHandler.playClick();
             }
         }

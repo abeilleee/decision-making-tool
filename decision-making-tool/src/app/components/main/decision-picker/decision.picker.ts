@@ -95,7 +95,7 @@ export class DecisionPicker extends View {
         const saveState = new SaveState();
         const optionsList = saveState.getFilledOptions();
         if (this.timerInput && this.message) {
-            this.wheel = new WheelCanvas(optionsList, this.timerInput, this.btnBox, this.message);
+            this.wheel = new WheelCanvas(optionsList, this.timerInput, this.btnBox, this.message, this.soundHandler);
             this.container.addInnerElements([this.wheel.getHTMLElement()]);
         }
     }

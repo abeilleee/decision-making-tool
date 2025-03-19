@@ -4,13 +4,13 @@ export class SoundHandler {
     endSound: HTMLAudioElement;
 
     constructor() {
-        this.endSound = new Audio('../assets/sounds/sound.wav');
+        this.endSound = new Audio('assets/audio/sound.mp3');
     }
 
     playClick() {
         const data = this.getData();
-        if (!data) {
-            this.endSound.src = '../assets/sounds/sound.wav';
+        if (data === 'false') {
+            this.endSound.src = 'assets/audio/sound.mp3';
             console.log('hi');
             this.endSound.play();
         }
