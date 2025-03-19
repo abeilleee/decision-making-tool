@@ -272,7 +272,9 @@ export class WheelCanvas {
             this.startTime = 0;
             this.disableElements();
             console.log(this.sectionsParams);
-            if (this.soundHandler) this.soundHandler.playClick();
+            if (this.soundHandler) {
+                this.soundHandler.playClick();
+            }
         }
     }
 
@@ -296,11 +298,4 @@ export class WheelCanvas {
             }
         }
     }
-
-    // public getCurrentSection(rotationAngle: number) {
-    //     let sectionAngle = 360 / this.sections.length;
-    //     let currentAngle = (thisstartAngle + rotationAngle) % 360;
-    //     let sectionIndex = Math.floor(currentAngle / sectionAngle);
-    //     return sectionValues[sectionIndex];
-    // }
 }
