@@ -15,7 +15,12 @@ export class Router {
         document.addEventListener('DOMContentLoaded', () => {
             this.handler.navigate(history.state);
         });
-        this.redirectToIndexPage();
+        window.addEventListener('DOMContentLoaded', () => {
+            this.redirectToIndexPage();
+            console.log('hi');
+        });
+
+        // this.redirectToIndexPage();
     }
 
     public setHashHandler(): void {
@@ -49,7 +54,8 @@ export class Router {
     public redirectToIndexPage(): void {
         const saveState = new SaveState();
         const filledOptions = saveState.getFilledOptions();
-        if (filledOptions.length < 2) {
+        const path = window.location.pathname;
+        if (filledOptions.length < 2 && path === `/${Pages.DECISION_PICKER}`) {
             this.navigate(Pages.INDEX);
         }
     }
