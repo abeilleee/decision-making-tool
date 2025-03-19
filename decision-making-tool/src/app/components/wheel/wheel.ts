@@ -79,7 +79,7 @@ export class WheelCanvas {
     public drawWheel(startNumber: number): void {
         const totalWeight = this.sections.reduce((sum, option) => sum + Number(option.weight), 0);
         const radius = this.canvas.width / 2;
-
+        this.sectionsParams = [];
         let startAngle = startNumber;
 
         // отрисовка секций
@@ -102,12 +102,12 @@ export class WheelCanvas {
                     centerX: this.centerX,
                     centerY: this.centerY,
                 });
-                // let SG = startAngle
-                // this.sectionsParams.push({
-                //     title: this.sections[i].title,
-                //     startAngle: (startAngle % (2 * Math.PI)) * (180 / Math.PI),
-                //     endAngle: ((sectionAngle + startAngle) % (2 * Math.PI)) * (180 / Math.PI),
-                // });
+                let SG = startAngle;
+                this.sectionsParams.push({
+                    title: this.sections[i].title,
+                    startAngle: startAngle,
+                    endAngle: startAngle + sectionAngle,
+                });
             }
             startAngle += sectionAngle;
 
@@ -121,11 +121,11 @@ export class WheelCanvas {
 
     private addOptionName(textParams: optionNameParams): void {
         const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
-        this.sectionsParams.push({
-            title: textParams.options.title,
-            startAngle: (textParams.startAngle % (2 * Math.PI)) * (180 / Math.PI),
-            endAngle: ((textParams.sliceAngle + textParams.startAngle) % (2 * Math.PI)) * (180 / Math.PI),
-        });
+        // this.sectionsParams.push({
+        //     title: textParams.options.title,
+        //     startAngle: (textParams.startAngle % (2 * Math.PI)) * (180 / Math.PI),
+        //     endAngle: ((textParams.sliceAngle + textParams.startAngle) % (2 * Math.PI)) * (180 / Math.PI),
+        // });
         const title =
             textParams.options.title.length > 15
                 ? textParams.options.title.slice(0, 12) + '...'
@@ -240,46 +240,48 @@ export class WheelCanvas {
     }
 
     public rotate() {
-        const duration = this.timerInput ? +this.timerInput.value : 0;
+        const duration = this.timerInput ? +this.timerInput.value : 5;
+        const initialAngle = Math.random() * 2 * Math.PI;
+        const fullRotations = Math.floor(Math.random() * 5) + 5;
+        const targetAngle = fullRotations * 2 * Math.PI + initialAngle;
+        this.startTime = performance.now();
         this.wheelState = WheelState.PICKING;
-
         this.disableElements();
-        if (this.startTime === 0) {
-            this.startTime = performance.now();
-        }
-        const durationMs = duration * 1000;
-        let currentTime = performance.now();
-        const elapsedTime = currentTime - this.startTime;
-        let t = Math.min(elapsedTime / durationMs, 1);
-        const easeValue = this.easeInOutBack(t);
-        const randomSection = Math.floor(Math.random() * this.sections.length);
-        let targetRotation = Math.PI * 15;
 
-        const rotationAmount = easeValue * targetRotation;
+        const animate = () => {
+            const currentTime = performance.now();
+            const elapsed = currentTime - this.startTime;
+            const t = Math.min(elapsed / (duration * 1000), 1); //
+            const easeValue = this.easeInOutBack(t);
+            const currentRotation = initialAngle + easeValue * (targetAngle - initialAngle);
+            this.drawWheel(currentRotation);
 
-        this.startAngle = rotationAmount;
-        this.drawWheel(this.startAngle);
+            if (t < 1) {
+                requestAnimationFrame(animate);
+                this.checkFinalSection(currentRotation);
+            } else {
+                this.wheelState = WheelState.PICKED;
+                this.disableElements();
+                if (this.soundHandler) {
+                    this.soundHandler.playClick();
+                }
+                this.checkFinalSection(currentRotation + Math.PI);
+            }
+        };
+        animate();
+    }
+
+    private checkFinalSection(currentRotation: number) {
+        const normalizedAngle = ((currentRotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        const target = (3 * Math.PI) / 2;
 
         this.sectionsParams.forEach((section) => {
-            const target = (3 * Math.PI) / 2;
-            if (section.endAngle <= target && target <= section.startAngle) {
-                console.log(section);
+            if (section.startAngle % (2 * Math.PI) <= target && target < section.endAngle % (2 * Math.PI)) {
                 if (this.message) {
                     this.message.value = section.title;
                 }
             }
         });
-
-        if (t < 1) {
-            requestAnimationFrame(() => this.rotate());
-        } else {
-            this.wheelState = WheelState.PICKED;
-            this.startTime = 0;
-            this.disableElements();
-            if (this.soundHandler) {
-                this.soundHandler.playClick();
-            }
-        }
     }
 
     private disableElements() {
