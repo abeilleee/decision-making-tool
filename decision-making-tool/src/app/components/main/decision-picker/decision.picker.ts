@@ -84,7 +84,7 @@ export class DecisionPicker extends View {
             this.backBtn.handleClick();
         });
         const soundOption = this.soundHandler.getData();
-        console.log(soundOption);
+
         if (soundOption) this.soundBtn.setClass(soundOption);
         this.createWheel();
         this.handlerOnload();

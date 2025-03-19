@@ -80,6 +80,7 @@ export class WheelCanvas {
         const radius = this.canvas.width / 2;
 
         let startAngle = startNumber;
+        console.log(startNumber + ' startNumber');
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
@@ -101,6 +102,11 @@ export class WheelCanvas {
                     centerX: this.centerX,
                     centerY: this.centerY,
                 });
+                this.sectionsParams.push({
+                    title: this.sections[i].title,
+                    startAngle: (startAngle % (2 * Math.PI)) * (180 / Math.PI),
+                    endAngle: ((sectionAngle + startAngle) % (2 * Math.PI)) * (180 / Math.PI),
+                });
             }
             startAngle += sectionAngle;
 
@@ -114,11 +120,11 @@ export class WheelCanvas {
 
     private addOptionName(textParams: optionNameParams): void {
         const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
-        this.sectionsParams.push({
-            title: textParams.options.title,
-            startAngle: ((textParams.startAngle * 180) / Math.PI) % (2 * Math.PI),
-            endAngle: (textParams.sliceAngle + textParams.startAngle) % (2 * Math.PI),
-        });
+        // this.sectionsParams.push({
+        //     title: textParams.options.title,
+        //     startAngle: (textParams.startAngle % (2 * Math.PI)) * (180 / Math.PI),
+        //     endAngle: ((textParams.sliceAngle + textParams.startAngle) % (2 * Math.PI)) * (180 / Math.PI),
+        // });
         const title =
             textParams.options.title.length > 15
                 ? textParams.options.title.slice(1, 15) + '...'
@@ -254,12 +260,13 @@ export class WheelCanvas {
         this.drawWheel(this.startAngle);
 
         const pointerCoordinates = (3 * Math.PI) / 2;
-        console.log(pointerCoordinates);
+
+        console.log(this.sectionsParams);
         this.sectionsParams.forEach((section) => {
-            const target = 90;
-            if (section.startAngle % (2 * Math.PI) <= target && target <= section.endAngle % (2 * Math.PI)) {
-                console.log(section.title);
+            const target = (3 * Math.PI) / 2 + 47;
+            if (section.endAngle <= target && target <= section.startAngle) {
                 if (this.message) {
+                    console.log('hi');
                     this.message.value = section.title;
                 }
             }
@@ -271,9 +278,7 @@ export class WheelCanvas {
             this.wheelState = WheelState.PICKED;
             this.startTime = 0;
             this.disableElements();
-            console.log(this.sectionsParams);
             if (this.soundHandler) {
-                console.log('hi');
                 this.soundHandler.playClick();
             }
         }

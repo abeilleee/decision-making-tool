@@ -11,22 +11,20 @@ export class SoundHandler {
         const data = this.getData();
         if (data === 'false') {
             this.endSound.src = 'assets/audio/sound.mp3';
-            console.log('hi');
             this.endSound.play();
         }
     }
 
     public setSoundHandler(): void {
         if (!localStorage.getItem(this.storageName)) {
-            localStorage.setItem(this.storageName, 'true');
+            localStorage.setItem(this.storageName, 'false');
         }
     }
 
     public setSoundOption(): void {
         const data = this.getData();
-        console.log(data);
+
         const isMute = data === 'true' ? false : true;
-        // console.log(isMute);
         JSON.stringify(localStorage.setItem(this.storageName, isMute.toString()));
     }
 
