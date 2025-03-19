@@ -275,6 +275,7 @@ export class WheelCanvas {
                         ? elem.classList.add('disabled')
                         : console.log('It does not an HTMLElement')
                 );
+                this.message?.classList.remove('disabled');
             } else if (this.wheelState === WheelState.PICKED) {
                 children.forEach((elem) =>
                     elem instanceof HTMLElement

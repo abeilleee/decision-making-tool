@@ -119,7 +119,7 @@ export class DecisionPicker extends View {
                         this.wheel.rotate();
                     }
                 }
-                this.doDisableBtn();
+                // this.doDisableBtn();
             }
         });
 
@@ -133,26 +133,26 @@ export class DecisionPicker extends View {
         }
     }
 
-    private doDisableBtn() {
-        if (this.wheelState === WheelState.PICKING) {
-            const elements = [
-                this.playBtn.getElement(),
-                // this.backBtn.getElement(),
-                this.timerInput,
-                this.timerLabel?.getElement(),
-                this.soundBtn.getElement(),
-            ];
-            elements.forEach((elem) => (elem ? elem.classList.add('disabled') : ''));
-        } else {
-            const elements = [
-                this.playBtn.getElement(),
-                // this.backBtn.getElement(),
-                this.timerInput,
-                this.timerLabel?.getElement(),
-                this.soundBtn.getElement(),
-            ];
-            elements.forEach((elem) => (elem ? elem.classList.remove('disabled') : ''));
-        }
-    }
+    // private doDisableBtn() {
+    //     if (this.wheelState === WheelState.PICKING) {
+    //         const elements = [
+    //             this.playBtn.getElement(),
+    //             // this.backBtn.getElement(),
+    //             this.timerInput,
+    //             this.timerLabel?.getElement(),
+    //             this.soundBtn.getElement(),
+    //         ];
+    //         elements.forEach((elem) => (elem ? elem.classList.add('disabled') : ''));
+    //     } else {
+    //         const elements = [
+    //             this.playBtn.getElement(),
+    //             // this.backBtn.getElement(),
+    //             this.timerInput,
+    //             this.timerLabel?.getElement(),
+    //             this.soundBtn.getElement(),
+    //         ];
+    //         elements.forEach((elem) => (elem ? elem.classList.remove('disabled') : ''));
+    //     }
+    // }
 }
 console.log('Проверьте пожалуйста попозже!!!!!!!!');
