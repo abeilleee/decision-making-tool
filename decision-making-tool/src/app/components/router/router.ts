@@ -1,3 +1,4 @@
+import { SaveState } from '../save-state/saveState';
 import { HashRouterHandler } from './handler/hash-router-handler';
 import { HistoryRouterHandler } from './handler/history-router-handler';
 import { Pages, Route, UserRequest } from './types';
@@ -14,6 +15,7 @@ export class Router {
         document.addEventListener('DOMContentLoaded', () => {
             this.handler.navigate(history.state);
         });
+        this.redirectToIndexPage();
     }
 
     public setHashHandler(): void {
@@ -41,6 +43,14 @@ export class Router {
         const notFoundPage = this.routes.find((item) => item.path === Pages.NOT_FOUND);
         if (notFoundPage) {
             this.navigate(notFoundPage.path);
+        }
+    }
+
+    public redirectToIndexPage(): void {
+        const saveState = new SaveState();
+        const filledOptions = saveState.getFilledOptions();
+        if (filledOptions.length < 2) {
+            this.navigate(Pages.INDEX);
         }
     }
 }
