@@ -29,6 +29,13 @@ module.exports = {
                 test: /\.(scss|css)$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
+            {
+                test: /\.(mp3|ogg)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/audio/[name][ext]',
+                },
+            },
         ],
     },
     plugins: [

@@ -1,5 +1,5 @@
-import { start } from 'repl';
 import { ElementCreator } from '../../utils/element-creator';
+import { soundHandler } from '../../utils/sound';
 import { ContainerView } from '../container/container';
 import { WheelState } from './types';
 
@@ -26,7 +26,7 @@ type centerElement = {
 type sectionParams = {
     title: string;
     startAngle: number;
-    sectionAngle: number;
+    endAngle: number;
 };
 
 export class WheelCanvas {
@@ -43,6 +43,7 @@ export class WheelCanvas {
     timerInput;
     buttons: ContainerView | undefined;
     message;
+    soundHandler: soundHandler;
 
     colors: string[];
 
@@ -68,6 +69,7 @@ export class WheelCanvas {
         this.message = message;
         this.wheelState = WheelState.INITIAL;
         this.colors = this.getColors();
+        this.soundHandler = new soundHandler();
         this.drawWheel(Math.floor(Math.random() * (10 - 1)) + 10);
     }
 
@@ -112,8 +114,8 @@ export class WheelCanvas {
         const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
         this.sectionsParams.push({
             title: textParams.options.title,
-            startAngle: textParams.startAngle,
-            sectionAngle: textParams.sliceAngle + textParams.startAngle,
+            startAngle: ((textParams.startAngle * 180) / Math.PI) % (2 * Math.PI),
+            endAngle: (textParams.sliceAngle + textParams.startAngle) % (2 * Math.PI),
         });
         const title =
             textParams.options.title.length > 15
@@ -242,7 +244,7 @@ export class WheelCanvas {
         let t = Math.min(elapsedTime / durationMs, 1);
         const easeValue = this.easeInOutBack(t);
         const randomSection = Math.floor(Math.random() * this.sections.length);
-        let targetRotation = Math.PI * 5;
+        let targetRotation = Math.PI * 15;
 
         const rotationAmount = easeValue * targetRotation;
 
@@ -252,17 +254,23 @@ export class WheelCanvas {
         const pointerCoordinates = (3 * Math.PI) / 2;
         console.log(pointerCoordinates);
         this.sectionsParams.forEach((section) => {
-            const interval = [section.startAngle, section.sectionAngle];
+            const target = 90;
+            if (section.startAngle % (2 * Math.PI) <= target && target <= section.endAngle % (2 * Math.PI)) {
+                console.log(section.title);
+                if (this.message) {
+                    this.message.value = section.title;
+                }
+            }
         });
 
         if (t < 1) {
-            // this.startAngle += rotationAmount - 1;
             requestAnimationFrame(() => this.rotate());
         } else {
             this.wheelState = WheelState.PICKED;
             this.startTime = 0;
             this.disableElements();
             console.log(this.sectionsParams);
+            this.soundHandler.playClick();
         }
     }
 
