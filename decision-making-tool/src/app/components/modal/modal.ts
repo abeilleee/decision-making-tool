@@ -52,6 +52,11 @@ title, weight`;
                 this.close();
             }
         });
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.close();
+            }
+        });
         window.addEventListener('scroll', this.preventScroll);
         this.form.addEventListener('click', (MouseEvent: Event) => {
             MouseEvent?.preventDefault();
