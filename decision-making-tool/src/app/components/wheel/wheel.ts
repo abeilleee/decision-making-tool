@@ -1,8 +1,18 @@
-import { start } from 'repl';
 import { ElementCreator } from '../../utils/element-creator';
 import { SoundHandler } from '../../utils/soundHandler';
 import { ContainerView } from '../container/container';
 import { WheelState } from './types';
+import {
+    ANIMATION_PARAMS,
+    CENTER_ELEMENT_SETTINGS,
+    CURSOR_SETTINGS,
+    HEX_CODES,
+    MS_PER_SEC,
+    NUMBERS,
+    POINTER_COORDINATES,
+    TEXT_PARAMS,
+    TWO_PI,
+} from './constants';
 
 export type OptionsParams = {
     id: number;
@@ -64,9 +74,9 @@ export class WheelCanvas {
         this.canvas.width = 420;
         this.canvas.height = 440;
         this.startAngle = 0;
-        this.centerX = this.canvas.width / 2;
-        this.centerY = this.canvas.height / 2;
-        this.startTime = 0;
+        this.centerX = this.canvas.width / NUMBERS.HALF;
+        this.centerY = this.canvas.height / NUMBERS.HALF;
+        this.startTime = NUMBERS.ZERO;
         this.buttons = controllers;
         this.timerInput = timerInput;
         this.message = message;
@@ -77,14 +87,14 @@ export class WheelCanvas {
     }
 
     public drawWheel(startNumber: number): void {
-        const totalWeight = this.sections.reduce((sum, option) => sum + Number(option.weight), 0);
-        const radius = this.canvas.width / 2;
+        const totalWeight = this.sections.reduce((sum, option) => sum + Number(option.weight), NUMBERS.ZERO);
+        const radius = this.canvas.width / NUMBERS.HALF;
         this.sectionsParams = [];
         let startAngle = startNumber;
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
-            let sectionAngle = (+this.sections[i].weight / totalWeight) * 2 * Math.PI;
+            let sectionAngle = (+this.sections[i].weight / totalWeight) * TWO_PI;
             if (this.context) {
                 this.context.beginPath();
                 this.context.moveTo(this.centerX, this.centerY);
@@ -110,8 +120,6 @@ export class WheelCanvas {
                 });
             }
             startAngle += sectionAngle;
-
-            // this.sectionsParams.push({ id: i, startAngle: startAngle, sectionAngle: sectionAngle });
         }
 
         this.drawCursor();
@@ -120,10 +128,10 @@ export class WheelCanvas {
     }
 
     private addOptionName(textParams: optionNameParams): void {
-        const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
+        const textAngle = textParams.startAngle + textParams.sliceAngle / NUMBERS.HALF;
         const title =
-            textParams.options.title.length > 15
-                ? textParams.options.title.slice(0, 12) + '...'
+            textParams.options.title.length > TEXT_PARAMS.MAX_LENGTH
+                ? textParams.options.title.slice(NUMBERS.ZERO, TEXT_PARAMS.MAX_LENGTH) + '...'
                 : textParams.options.title;
 
         if (this.context) {
@@ -137,18 +145,18 @@ export class WheelCanvas {
 
             this.context.save();
             this.context.translate(
-                textParams.centerX + (Math.cos(textAngle) * textParams.centerX) / 2,
-                textParams.centerY + (Math.sin(textAngle) * textParams.centerY) / 2
+                textParams.centerX + (Math.cos(textAngle) * textParams.centerX) / NUMBERS.HALF,
+                textParams.centerY + (Math.sin(textAngle) * textParams.centerY) / NUMBERS.HALF
             );
             this.context.rotate(textAngle);
             this.context.fillStyle = 'white';
-            this.context.font = 'bold 14px sans-serif';
-            this.context.shadowBlur = 15;
-            this.context.shadowOffsetX = 0;
-            this.context.shadowOffsetY = 0;
-            this.context.shadowColor = 'black';
-            this.context.fillStyle = 'white';
-            this.context.fillText(title, -this.context.measureText(title).width / 2, 0);
+            this.context.font = `bold ${TEXT_PARAMS.FONT_SIZE}px sans-serif`;
+            this.context.shadowBlur = TEXT_PARAMS.SHADOW_BLUR;
+            this.context.shadowOffsetX = TEXT_PARAMS.SHADOW_OFFSET_X;
+            this.context.shadowOffsetY = TEXT_PARAMS.SHADOW_OFFSET_Y;
+            this.context.shadowColor = TEXT_PARAMS.SHADOW_COLOR;
+            this.context.fillStyle = TEXT_PARAMS.FILL_COLOR;
+            this.context.fillText(title, -this.context.measureText(title).width / NUMBERS.HALF, NUMBERS.ZERO);
 
             this.context.restore();
         }
@@ -161,10 +169,10 @@ export class WheelCanvas {
         const x = this.canvas.width;
         const y = this.canvas.height - this.canvas.width;
 
-        const cursorX = x / 2;
+        const cursorX = x / NUMBERS.HALF;
         const cursorY = y;
-        const cursorSize = 17;
-        const borderWidth = 2;
+        const cursorSize = CURSOR_SETTINGS.SIZE;
+        const borderWidth = NUMBERS.HALF;
 
         // курсор (треугольник)
         if (this.context) {
@@ -175,12 +183,12 @@ export class WheelCanvas {
             this.context.closePath();
 
             // цвет курсора
-            this.context.fillStyle = 'rgba(68, 0, 255, 0.8)';
+            this.context.fillStyle = CURSOR_SETTINGS.COLOR;
             this.context.fill();
 
             // цвет бордера для курсора
             this.context.lineWidth = borderWidth;
-            this.context.strokeStyle = 'black';
+            this.context.strokeStyle = CURSOR_SETTINGS.BORDER_COLOR;
             this.context.stroke();
         }
     }
@@ -191,7 +199,7 @@ export class WheelCanvas {
         // отрисовка центрального круга
         if (this.context) {
             this.context.beginPath();
-            this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI); // Круг
+            this.context.arc(centerX, centerY, radius, 0, TWO_PI); // Круг
             this.context.closePath();
 
             // цвета для центр. круга
@@ -203,8 +211,8 @@ export class WheelCanvas {
             this.context.fill();
 
             // бордер центр. круга
-            this.context.lineWidth = 2;
-            this.context.strokeStyle = 'white';
+            this.context.lineWidth = CENTER_ELEMENT_SETTINGS.BORDER_SIZE;
+            this.context.strokeStyle = CENTER_ELEMENT_SETTINGS.BORDER_COLOR;
             this.context.stroke();
         }
     }
@@ -214,7 +222,7 @@ export class WheelCanvas {
     }
 
     private generateRandomColor(): string {
-        const hexCodes = '0123456789ABCDEF';
+        const hexCodes = HEX_CODES;
         let color = '';
         for (let i = 0; i < 6; i++) {
             color += hexCodes[Math.floor(Math.random() * hexCodes.length)];
@@ -232,22 +240,16 @@ export class WheelCanvas {
         return colorsArr;
     }
 
-    public easeOut(min: number, max: number) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
     public easeInOutBack(t: number) {
         return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
     }
 
     public rotate() {
-        const duration = this.timerInput ? +this.timerInput.value : 5;
-        const initialAngle = Math.random() * 2 * Math.PI;
-        const fullRotations = Math.floor(Math.random() * 5) + 5;
-        const targetAngle = fullRotations * 2 * Math.PI + initialAngle;
+        const duration = this.timerInput ? +this.timerInput.value : ANIMATION_PARAMS.DEFAULT_DURATION;
+        const initialAngle = Math.random() * TWO_PI;
+        const fullRotations =
+            Math.floor(Math.random() * ANIMATION_PARAMS.DEFAULT_DURATION) + ANIMATION_PARAMS.DEFAULT_DURATION;
+        const targetAngle = fullRotations * TWO_PI + initialAngle;
         this.startTime = performance.now();
         this.wheelState = WheelState.PICKING;
         this.disableElements();
@@ -255,12 +257,12 @@ export class WheelCanvas {
         const animate = () => {
             const currentTime = performance.now();
             const elapsed = currentTime - this.startTime;
-            const t = Math.min(elapsed / (duration * 1000), 1); //
+            const t = Math.min(elapsed / (duration * MS_PER_SEC), NUMBERS.ONE); //
             const easeValue = this.easeInOutBack(t);
             const currentRotation = initialAngle + easeValue * (targetAngle - initialAngle);
             this.drawWheel(currentRotation);
 
-            if (t < 1) {
+            if (t < NUMBERS.ONE) {
                 requestAnimationFrame(animate);
                 this.checkFinalSection(currentRotation);
             } else {
@@ -276,11 +278,10 @@ export class WheelCanvas {
     }
 
     private checkFinalSection(currentRotation: number) {
-        const normalizedAngle = ((currentRotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-        const target = (3 * Math.PI) / 2;
+        const target = POINTER_COORDINATES;
 
         this.sectionsParams.forEach((section) => {
-            if (section.startAngle % (2 * Math.PI) <= target && target < section.endAngle % (2 * Math.PI)) {
+            if (section.startAngle % TWO_PI <= target && target < section.endAngle % TWO_PI) {
                 if (this.message) {
                     this.message.value = section.title;
                 }
