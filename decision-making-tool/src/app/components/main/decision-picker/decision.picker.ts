@@ -140,4 +140,3 @@ export class DecisionPicker extends View {
         }
     }
 }
-console.log('Проверьте пожалуйста попозже!!!!!!!!');

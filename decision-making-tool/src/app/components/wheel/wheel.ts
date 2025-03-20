@@ -121,16 +121,20 @@ export class WheelCanvas {
 
     private addOptionName(textParams: optionNameParams): void {
         const textAngle = textParams.startAngle + textParams.sliceAngle / 2;
-        // this.sectionsParams.push({
-        //     title: textParams.options.title,
-        //     startAngle: (textParams.startAngle % (2 * Math.PI)) * (180 / Math.PI),
-        //     endAngle: ((textParams.sliceAngle + textParams.startAngle) % (2 * Math.PI)) * (180 / Math.PI),
-        // });
         const title =
             textParams.options.title.length > 15
                 ? textParams.options.title.slice(0, 12) + '...'
                 : textParams.options.title;
+
         if (this.context) {
+            const textWidth = this.context.measureText(title).width;
+            const radius = textParams.centerX;
+            const sectionAngle = textParams.sliceAngle;
+            const sectionWidth = radius * sectionAngle;
+            if (textWidth > sectionWidth) {
+                return;
+            }
+
             this.context.save();
             this.context.translate(
                 textParams.centerX + (Math.cos(textAngle) * textParams.centerX) / 2,

@@ -17,7 +17,6 @@ export class Router {
         });
         window.addEventListener('DOMContentLoaded', () => {
             this.redirectToIndexPage();
-            console.log('hi');
         });
 
         // this.redirectToIndexPage();
