@@ -1,7 +1,7 @@
 import { Router } from '../../services/router/router';
 import { Pages } from '../../services/router/types';
 import { Button } from './button';
-import { ButtonsName } from './types';
+import { ButtonsName } from './enums';
 
 export class BackButton extends Button {
     router: Router;

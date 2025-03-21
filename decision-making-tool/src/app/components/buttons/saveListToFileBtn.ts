@@ -1,6 +1,6 @@
 import { DataExporter } from '../../services/dataExporter';
 import { Button } from './button';
-import { ButtonsName } from './types';
+import { ButtonsName } from './enums';
 
 export class SaveListButton extends Button {
     dataExporter: DataExporter;

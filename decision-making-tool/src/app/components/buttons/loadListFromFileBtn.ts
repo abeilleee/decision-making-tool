@@ -1,7 +1,6 @@
 import { FileLoader } from '../../services/fileLoader';
-import { OptionList } from '../list-option/optionList';
 import { Button } from './button';
-import { ButtonsName } from './types';
+import { ButtonsName } from './enums';
 
 export class LoadListButton extends Button {
     constructor() {

@@ -1,5 +1,5 @@
 import { Button } from './button';
-import { ButtonsName } from './types';
+import { ButtonsName } from './enums';
 
 export class PasteListButton extends Button {
     constructor() {

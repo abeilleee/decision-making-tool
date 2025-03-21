@@ -1,10 +1,11 @@
 import { Pages } from '../../services/router/types';
 import { Router } from '../../services/router/router';
 import { Button } from './button';
-import { ButtonsName } from './types';
+import { ButtonsName } from './enums';
 import { SaveState } from '../../services/saveState';
-import { Modal, TextModal } from '../modal/modal';
+import { Modal } from '../modal/modal';
 import { WheelCanvas } from '../wheel/wheel';
+import { TextModal } from '../modal/constants';
 
 export class StartButton extends Button {
     router: Router;

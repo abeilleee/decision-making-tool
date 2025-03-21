@@ -2,6 +2,9 @@ export const MS_PER_SEC = 1000;
 export const TWO_PI = 2 * Math.PI;
 export const POINTER_COORDINATES = (3 * Math.PI) / 2;
 export const HEX_CODES = '0123456789ABCDEF';
+export const CANVAS_WIDTH = 420;
+export const CANVAS_HEIGHT = 440;
+export const START_RANDOM_ANGLE = Math.floor(Math.random() * (10 - 1)) + 10;
 
 export enum NUMBERS {
     ZERO = 0,

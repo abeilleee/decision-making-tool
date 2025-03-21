@@ -9,7 +9,8 @@ import { SoundButton } from '../../components/buttons/soundBtn';
 import { WheelCanvas } from '../../components/wheel/wheel';
 import { SaveState } from '../../services/saveState';
 import { WheelState } from '../../components/wheel/types';
-import { Modal, TextModal } from '../../components/modal/modal';
+import { Modal } from '../../components/modal/modal';
+import { TextModal } from '../../components/modal/constants';
 import { SoundHandler } from '../../services/soundHandler';
 
 export class DecisionPicker extends View {
@@ -46,7 +47,7 @@ export class DecisionPicker extends View {
         this.wheelState = WheelState.INITIAL;
         this.soundHandler = new SoundHandler();
         this.configure();
-        this.EventListeners();
+        this.addEventListeners();
     }
 
     private configure(): void {
@@ -113,7 +114,7 @@ export class DecisionPicker extends View {
         };
     }
 
-    private EventListeners() {
+    private addEventListeners(): void {
         this.playBtn.getElement().addEventListener('click', () => {
             const modal = new Modal();
             if (this.timerInput) {

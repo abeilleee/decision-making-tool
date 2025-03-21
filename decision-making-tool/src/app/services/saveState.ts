@@ -59,7 +59,7 @@ export class SaveState {
         return lastId;
     }
 
-    public saveData(option: Option): savedOption | undefined {
+    public addToLocalStorage(option: Option): void {
         if (option.id?.textContent) {
             const id = +option.id.textContent.slice(1);
             const title = option.titleInput?.textContent ? option.titleInput.textContent : '';
@@ -69,23 +69,14 @@ export class SaveState {
                 title: title,
                 weight: weight,
             };
-            return data;
-        } else {
-            console.error('There is not an option in the list');
-        }
-    }
+            const dataFromStorage = localStorage.getItem(this.storageName);
 
-    public addToLocalStorage(option: Option): void {
-        const data = this.saveData(option);
-        const dataFromStorage = localStorage.getItem(this.storageName)
-            ? localStorage.getItem(this.storageName)
-            : this.#defaultValue;
-
-        if (data && typeof dataFromStorage === 'string') {
-            const storedData: localStorageObject = JSON.parse(dataFromStorage);
-            storedData.list.push(data);
-            storedData.lastId = Number(data.id);
-            localStorage.setItem(this.storageName, JSON.stringify(storedData));
+            if (data && typeof dataFromStorage === 'string') {
+                const storedData: localStorageObject = JSON.parse(dataFromStorage);
+                storedData.list.push(data);
+                storedData.lastId = Number(data.id);
+                localStorage.setItem(this.storageName, JSON.stringify(storedData));
+            }
         }
     }
 

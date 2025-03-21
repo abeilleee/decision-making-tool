@@ -1,6 +1,6 @@
 import { Option } from '../list-option/option';
 import { Button } from './button';
-import { ButtonsName } from './types';
+import { ButtonsName } from './enums';
 
 export class AddOptionButton extends Button {
     constructor() {

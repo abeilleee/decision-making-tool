@@ -1,66 +1,42 @@
 import { ElementCreator } from '../../utils/element-creator';
 import { SoundHandler } from '../../services/soundHandler';
 import { ContainerView } from '../../main/container/container';
-import { WheelState } from './types';
+import { centerElement, optionNameParams, OptionsParams, sectionParams, WheelState } from './types';
 import {
     ANIMATION_PARAMS,
+    CANVAS_HEIGHT,
+    CANVAS_WIDTH,
     CENTER_ELEMENT_SETTINGS,
     CURSOR_SETTINGS,
     HEX_CODES,
     MS_PER_SEC,
     NUMBERS,
     POINTER_COORDINATES,
+    START_RANDOM_ANGLE,
     TEXT_PARAMS,
     TWO_PI,
 } from './constants';
-
-export type OptionsParams = {
-    id: number;
-    title: string;
-    weight: string;
-};
-
-type optionNameParams = {
-    startAngle: number;
-    sliceAngle: number;
-    options: OptionsParams;
-    centerX: number;
-    centerY: number;
-};
-
-type centerElement = {
-    x: number;
-    y: number;
-    radius: number;
-};
-
-type sectionParams = {
-    title: string;
-    startAngle: number;
-    endAngle: number;
-};
 
 export class WheelCanvas {
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D | null;
     private sections: OptionsParams[];
     private centerElement: centerElement;
-    private startAngle: number;
-    public wheelState: WheelState;
+    private startAngle: number = START_RANDOM_ANGLE;
+    public wheelState: WheelState = WheelState.INITIAL;
     private centerX: number;
     private centerY: number;
-    sectionsParams: sectionParams[];
-    startTime: number;
-    timerInput;
-    buttons: ContainerView | undefined;
-    message;
-    soundHandler: SoundHandler | undefined;
+    private sectionsParams: sectionParams[];
+    private startTime: number;
+    private timerInput;
+    private buttons: ContainerView | undefined;
+    private message;
+    private soundHandler: SoundHandler | undefined;
 
     colors: string[];
 
     constructor(
         sections: OptionsParams[],
-
         timerInput?: HTMLInputElement,
         controllers?: ContainerView,
         message?: HTMLInputElement,
@@ -71,19 +47,17 @@ export class WheelCanvas {
         this.sections = sections;
         this.sectionsParams = [];
         this.centerElement = { x: 10, y: 10, radius: 20 };
-        this.canvas.width = 420;
-        this.canvas.height = 440;
-        this.startAngle = 0;
+        this.canvas.width = CANVAS_WIDTH;
+        this.canvas.height = CANVAS_HEIGHT;
         this.centerX = this.canvas.width / NUMBERS.HALF;
         this.centerY = this.canvas.height / NUMBERS.HALF;
         this.startTime = NUMBERS.ZERO;
         this.buttons = controllers;
         this.timerInput = timerInput;
         this.message = message;
-        this.wheelState = WheelState.INITIAL;
         this.colors = this.getColors();
         this.soundHandler = soundHandler;
-        this.drawWheel(Math.floor(Math.random() * (10 - 1)) + 10);
+        this.drawWheel(this.startAngle);
     }
 
     public drawWheel(startNumber: number): void {

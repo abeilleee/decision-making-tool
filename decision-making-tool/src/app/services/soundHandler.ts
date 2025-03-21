@@ -7,7 +7,7 @@ export class SoundHandler {
         this.endSound = new Audio('assets/audio/sound.mp3');
     }
 
-    playClick() {
+    public playClick(): void {
         const data = this.getData();
         if (data === 'false') {
             this.endSound.src = 'assets/audio/sound.mp3';

@@ -1,12 +1,9 @@
 import { ElementCreator } from '../../utils/element-creator';
 import { parsedData, ValidateText } from '../../services/validateText';
 import { Button } from '../buttons/button';
-import { ButtonsName } from '../buttons/types';
-
-export const enum TextModal {
-    PLAY_BTN_MESSAGE = 'The duration must be from 5 to 30 seconds!',
-    START_BTN_MESSAGE = 'Please add at last 2 valid options. An option is considered valid if its title is not empty and its weight is greater than 0',
-}
+import { ButtonsName } from '../buttons/enums';
+import { placeholderText } from './constants';
+import { TextModal } from './constants';
 
 export class Modal {
     modal: HTMLDialogElement | HTMLElement;
@@ -34,9 +31,7 @@ export class Modal {
         this.form.append(this.textArea);
 
         if (this.textArea instanceof HTMLTextAreaElement) {
-            this.textArea.placeholder = `Paste a list of new options in a CSV-like format:
-            
-title, weight`;
+            this.textArea.placeholder = placeholderText;
         }
     }
 

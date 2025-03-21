@@ -1,6 +1,6 @@
 import { SaveState } from '../../services/saveState';
 import { Button } from './button';
-import { ButtonsName } from './types';
+import { ButtonsName } from './enums';
 
 export class DeleteButton extends Button {
     constructor() {

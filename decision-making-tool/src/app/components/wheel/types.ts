@@ -3,6 +3,7 @@ export type OptionsParams = {
     title: string;
     weight: string;
 };
+
 export type optionNameParams = {
     startAngle: number;
     sliceAngle: number;
@@ -10,11 +11,19 @@ export type optionNameParams = {
     centerX: number;
     centerY: number;
 };
+
 export type centerElement = {
     x: number;
     y: number;
     radius: number;
 };
+
+export type sectionParams = {
+    title: string;
+    startAngle: number;
+    endAngle: number;
+};
+
 export enum WheelState {
     INITIAL = 'initial',
     PICKING = 'picking',
