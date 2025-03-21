@@ -23,8 +23,8 @@ export class DecisionPicker extends View {
     wheel: WheelCanvas | null;
     wheelState: WheelState;
     timerLabel: ElementCreator | null;
-    timerInput: HTMLInputElement | null;
-    message: HTMLInputElement | null;
+    timerInput: HTMLInputElement | HTMLElement | null;
+    message: HTMLInputElement | HTMLElement | null;
     soundHandler: SoundHandler;
     timerInputValue: number = 5;
 
@@ -63,15 +63,23 @@ export class DecisionPicker extends View {
             classes: ['label', 'timer-label'],
             textContent: 'Time',
         });
-        this.timerInput = document.createElement('input');
-        this.timerInput.classList.add('timer-input');
-        this.timerInput.type = 'number';
-        this.timerInput.value = '5';
 
-        this.message = document.createElement('input');
-        this.message.classList.add('message');
-        this.message.disabled = true;
-        this.message.value = "Let's get started! Click start!";
+        this.timerInput = new ElementCreator({
+            tagName: 'input',
+            classes: ['timer-input'],
+        }).getElement();
+        if (this.timerInput instanceof HTMLInputElement) {
+            this.timerInput.value = '5';
+        }
+
+        this.message = new ElementCreator({
+            tagName: 'input',
+            classes: ['message'],
+        }).getElement();
+        if (this.message instanceof HTMLInputElement) {
+            this.message.disabled = true;
+            this.message.value = "Let's get started! Click start!";
+        }
 
         this.container.addInnerElements([this.btnBox.getHTMLElement(), this.message]);
         this.btnBox.addInnerElements([
@@ -95,7 +103,7 @@ export class DecisionPicker extends View {
     private createWheel(): void {
         const saveState = new SaveState();
         const optionsList = saveState.getFilledOptions();
-        if (this.timerInput && this.message) {
+        if (this.timerInput instanceof HTMLInputElement && this.message instanceof HTMLInputElement) {
             this.wheel = new WheelCanvas(optionsList, this.timerInput, this.btnBox, this.message, this.soundHandler);
             this.container.addInnerElements([this.wheel.getHTMLElement()]);
         }
@@ -136,7 +144,8 @@ export class DecisionPicker extends View {
         });
         if (this.timerInput) {
             this.timerInput.addEventListener('input', () => {
-                this.timerInputValue = this.timerInput ? +this.timerInput.value : 5;
+                if (this.timerInput instanceof HTMLInputElement)
+                    this.timerInputValue = this.timerInput ? +this.timerInput.value : 5;
             });
         }
     }

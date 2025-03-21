@@ -13,9 +13,9 @@ export class Modal {
     textArea: HTMLTextAreaElement | HTMLElement;
 
     constructor() {
-        this.modal = new ElementCreator<HTMLDialogElement>({ tagName: 'dialog', classes: ['modal'] }).getElement();
-        this.form = new ElementCreator<HTMLFormElement>({ tagName: 'form', classes: ['form'] }).getElement();
-        this.textArea = new ElementCreator<HTMLTextAreaElement>({
+        this.modal = new ElementCreator({ tagName: 'dialog', classes: ['modal'] }).getElement();
+        this.form = new ElementCreator({ tagName: 'form', classes: ['form'] }).getElement();
+        this.textArea = new ElementCreator({
             tagName: 'textarea',
             classes: ['textarea'],
         }).getElement();

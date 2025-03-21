@@ -166,7 +166,6 @@ export class WheelCanvas {
 
     private drawCenterElement(centerX: number, centerY: number): void {
         const radius = CENTER_ELEMENT_RADIUS;
-        console.log(radius);
 
         // отрисовка центрального круга
         if (this.context) {

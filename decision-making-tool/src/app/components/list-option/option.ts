@@ -43,7 +43,7 @@ export class Option {
             classes: ['label'],
         }).getElement();
 
-        this.titleInput = new ElementCreator<HTMLInputElement>({
+        this.titleInput = new ElementCreator({
             tagName: 'input',
             parent: this.option,
             classes: ['input', 'input__title'],
