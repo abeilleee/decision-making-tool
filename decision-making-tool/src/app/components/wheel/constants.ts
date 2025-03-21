@@ -5,6 +5,7 @@ export const HEX_CODES = '0123456789ABCDEF';
 export const CANVAS_WIDTH = 420;
 export const CANVAS_HEIGHT = 440;
 export const START_RANDOM_ANGLE = Math.floor(Math.random() * (10 - 1)) + 10;
+export const CENTER_ELEMENT_RADIUS = 20;
 
 export enum NUMBERS {
     ZERO = 0,

@@ -11,4 +11,16 @@ export class ContainerView extends View {
 
         super(options);
     }
+
+    public toggleDisable(action: string): void {
+        const children = Array.from(this.element.getElement().children);
+
+        children.forEach((elem) =>
+            elem instanceof HTMLElement
+                ? action === 'add'
+                    ? elem.classList.add('disabled')
+                    : elem.classList.remove('disabled')
+                : console.error('Element is not HTMLElement')
+        );
+    }
 }

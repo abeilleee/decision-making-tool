@@ -12,12 +12,6 @@ export type optionNameParams = {
     centerY: number;
 };
 
-export type centerElement = {
-    x: number;
-    y: number;
-    radius: number;
-};
-
 export type sectionParams = {
     title: string;
     startAngle: number;

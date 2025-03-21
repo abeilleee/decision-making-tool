@@ -1,14 +1,14 @@
 import { ElementCreator } from '../../utils/element-creator';
 import { SoundHandler } from '../../services/soundHandler';
 import { ContainerView } from '../../main/container/container';
-import { centerElement, optionNameParams, OptionsParams, sectionParams, WheelState } from './types';
+import { optionNameParams, OptionsParams, sectionParams, WheelState } from './types';
 import {
     ANIMATION_PARAMS,
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
+    CENTER_ELEMENT_RADIUS,
     CENTER_ELEMENT_SETTINGS,
     CURSOR_SETTINGS,
-    HEX_CODES,
     MS_PER_SEC,
     NUMBERS,
     POINTER_COORDINATES,
@@ -16,12 +16,12 @@ import {
     TEXT_PARAMS,
     TWO_PI,
 } from './constants';
+import { easeInOutBack, generateRandomColor } from './utils';
 
 export class WheelCanvas {
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D | null;
     private sections: OptionsParams[];
-    private centerElement: centerElement;
     private startAngle: number = START_RANDOM_ANGLE;
     public wheelState: WheelState = WheelState.INITIAL;
     private centerX: number;
@@ -46,7 +46,6 @@ export class WheelCanvas {
         this.context = this.canvas.getContext('2d');
         this.sections = sections;
         this.sectionsParams = [];
-        this.centerElement = { x: 10, y: 10, radius: 20 };
         this.canvas.width = CANVAS_WIDTH;
         this.canvas.height = CANVAS_HEIGHT;
         this.centerX = this.canvas.width / NUMBERS.HALF;
@@ -86,7 +85,6 @@ export class WheelCanvas {
                     centerX: this.centerX,
                     centerY: this.centerY,
                 });
-                let SG = startAngle;
                 this.sectionsParams.push({
                     title: this.sections[i].title,
                     startAngle: startAngle,
@@ -116,7 +114,6 @@ export class WheelCanvas {
             if (textWidth > sectionWidth) {
                 return;
             }
-
             this.context.save();
             this.context.translate(
                 textParams.centerX + (Math.cos(textAngle) * textParams.centerX) / NUMBERS.HALF,
@@ -168,7 +165,8 @@ export class WheelCanvas {
     }
 
     private drawCenterElement(centerX: number, centerY: number): void {
-        const { radius } = this.centerElement;
+        const radius = CENTER_ELEMENT_RADIUS;
+        console.log(radius);
 
         // отрисовка центрального круга
         if (this.context) {
@@ -195,30 +193,17 @@ export class WheelCanvas {
         return this.canvas;
     }
 
-    private generateRandomColor(): string {
-        const hexCodes = HEX_CODES;
-        let color = '';
-        for (let i = 0; i < 6; i++) {
-            color += hexCodes[Math.floor(Math.random() * hexCodes.length)];
-        }
-        return '#' + color;
-    }
-
     private getColors(): string[] {
         const length = this.sections.length;
         let colorsArr: string[] = [];
         for (let i = 0; i < length; i++) {
-            const color = this.generateRandomColor();
+            const color = generateRandomColor();
             colorsArr.push(color);
         }
         return colorsArr;
     }
 
-    public easeInOutBack(t: number) {
-        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    }
-
-    public rotate() {
+    public rotate(): void {
         const duration = this.timerInput ? +this.timerInput.value : ANIMATION_PARAMS.DEFAULT_DURATION;
         const initialAngle = Math.random() * TWO_PI;
         const fullRotations =
@@ -232,7 +217,7 @@ export class WheelCanvas {
             const currentTime = performance.now();
             const elapsed = currentTime - this.startTime;
             const t = Math.min(elapsed / (duration * MS_PER_SEC), NUMBERS.ONE); //
-            const easeValue = this.easeInOutBack(t);
+            const easeValue = easeInOutBack(t);
             const currentRotation = initialAngle + easeValue * (targetAngle - initialAngle);
             this.drawWheel(currentRotation);
 
@@ -265,20 +250,11 @@ export class WheelCanvas {
 
     private disableElements() {
         if (this.buttons !== undefined) {
-            const children = Array.from(this.buttons.getHTMLElement().children);
             if (this.wheelState === WheelState.PICKING) {
-                children.forEach((elem) =>
-                    elem instanceof HTMLElement
-                        ? elem.classList.add('disabled')
-                        : console.log('It does not an HTMLElement')
-                );
+                this.buttons.toggleDisable('add');
                 this.message?.classList.remove('disabled');
             } else if (this.wheelState === WheelState.PICKED) {
-                children.forEach((elem) =>
-                    elem instanceof HTMLElement
-                        ? elem.classList.remove('disabled')
-                        : console.log('It does not an HTMLElement')
-                );
+                this.buttons.toggleDisable('remove');
                 this.message?.classList.add('disabled');
             }
         }
