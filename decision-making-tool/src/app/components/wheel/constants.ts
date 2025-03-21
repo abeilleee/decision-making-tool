@@ -7,6 +7,7 @@ export enum NUMBERS {
     ZERO = 0,
     ONE = 1,
     HALF = 2,
+    DOUBLE = 2,
 }
 
 export enum ANIMATION_PARAMS {

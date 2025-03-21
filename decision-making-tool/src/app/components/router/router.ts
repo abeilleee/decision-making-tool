@@ -1,4 +1,5 @@
 import { SaveState } from '../save-state/saveState';
+import { NUMBERS } from '../wheel/constants';
 import { HashRouterHandler } from './handler/hash-router-handler';
 import { HistoryRouterHandler } from './handler/history-router-handler';
 import { Pages, Route, UserRequest } from './types';
@@ -18,8 +19,6 @@ export class Router {
         window.addEventListener('DOMContentLoaded', () => {
             this.redirectToIndexPage();
         });
-
-        // this.redirectToIndexPage();
     }
 
     public setHashHandler(): void {
@@ -54,7 +53,7 @@ export class Router {
         const saveState = new SaveState();
         const filledOptions = saveState.getFilledOptions();
         const path = window.location.pathname;
-        if (filledOptions.length < 2 && path === `/${Pages.DECISION_PICKER}`) {
+        if (filledOptions.length < NUMBERS.HALF && path === `/${Pages.DECISION_PICKER}`) {
             this.navigate(Pages.INDEX);
         }
     }

@@ -1,4 +1,5 @@
 import { SaveState } from '../save-state/saveState';
+import { NUMBERS } from '../wheel/constants';
 
 export class DataExporter {
     saveState: SaveState;
@@ -9,7 +10,7 @@ export class DataExporter {
 
     public exportDataToJson(): void {
         const data = this.saveState.getData();
-        const blob = new Blob([JSON.stringify(data, null, 2)]);
+        const blob = new Blob([JSON.stringify(data, null, NUMBERS.DOUBLE)]);
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = 'data.json';
