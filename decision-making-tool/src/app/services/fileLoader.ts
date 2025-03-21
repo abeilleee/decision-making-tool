@@ -1,6 +1,6 @@
-import { savedOption } from '../list-option/types';
-import { OptionList } from '../list-option/optionList';
-import { localStorageObject, SaveState } from '../save-state/saveState';
+import { savedOption } from '../components/list-option/types';
+import { OptionList } from '../components/list-option/optionList';
+import { localStorageObject, SaveState } from './saveState';
 
 export type jsonType = {
     lastId: [];

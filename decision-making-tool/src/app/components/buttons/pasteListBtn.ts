@@ -1,4 +1,3 @@
-import { Modal } from '../modal/modal';
 import { Button } from './button';
 import { ButtonsName } from './types';
 

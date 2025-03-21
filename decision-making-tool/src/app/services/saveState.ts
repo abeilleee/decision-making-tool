@@ -1,7 +1,7 @@
-import { Option } from '../list-option/option';
-import { OptionList } from '../list-option/optionList';
-import { savedOption } from '../list-option/types';
-import { OptionsParams } from '../wheel/wheel';
+import { Option } from '../components/list-option/option';
+import { OptionList } from '../components/list-option/optionList';
+import { savedOption } from '../components/list-option/types';
+import { OptionsParams } from '../components/wheel/types';
 
 export type localStorageObject = {
     list: savedOption[];

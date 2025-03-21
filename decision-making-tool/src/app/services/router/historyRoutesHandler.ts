@@ -1,6 +1,6 @@
-import { RouterHandlerOptions, UserRequest } from '../types';
+import { RouterHandlerOptions, UserRequest } from './types';
 
-export class HistoryRouterHandler {
+export class HistoryRoutesHandler {
     callback: (arg: UserRequest) => void;
     options: RouterHandlerOptions;
     handler: (url: string | PopStateEvent | Event) => void;
@@ -10,27 +10,23 @@ export class HistoryRouterHandler {
             locationKey: 'pathname',
             event: 'popstate',
         };
-        this.callback = callback;
         this.handler = this.navigate.bind(this);
+        this.callback = callback;
         window.addEventListener(this.options.event, this.handler);
     }
 
     public navigate(url: string | PopStateEvent | Event): void {
         if (typeof url === 'string') {
-            this.setHistory(url);
+            this.pushHistory(url);
         }
-        const urlString = window.location.pathname.slice(1);
+        const urlPath = window.location.pathname.slice(1);
         const result: UserRequest = { path: '', resource: '' };
-        const path = urlString.split('/');
-        [result.path = '', result.resource = ''] = path;
+        const path = urlPath.split('/');
+        [result.path = ''] = path;
         this.callback(result);
     }
 
-    public disable(): void {
-        window.removeEventListener(this.options.event, this.handler);
-    }
-
-    public setHistory(url: string): void {
+    public pushHistory(url: string): void {
         window.history.pushState(null, '', `/${url}`);
     }
 }

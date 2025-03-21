@@ -1,5 +1,5 @@
-import { Router } from '../router/router';
-import { Pages } from '../router/types';
+import { Router } from '../../services/router/router';
+import { Pages } from '../../services/router/types';
 import { Button } from './button';
 import { ButtonsName } from './types';
 

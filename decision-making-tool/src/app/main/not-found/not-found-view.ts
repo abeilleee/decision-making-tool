@@ -1,8 +1,8 @@
-import { options } from '../../list-option/types';
-import { ElementCreator } from '../../../utils/element-creator';
+import { options } from '../../components/list-option/types';
+import { ElementCreator } from '../../utils/element-creator';
 import { View } from '../view';
-import { BackButton } from '../../buttons/backBtn';
-import { Router } from '../../router/router';
+import { BackButton } from '../../components/buttons/backBtn';
+import { Router } from '../../services/router/router';
 
 export class NotFoundView extends View {
     #default_text = 'Error. Page not found';

@@ -52,7 +52,7 @@ module.exports = {
     },
     devServer: {
         watchFiles: path.join(__dirname, 'src'),
-        port: 9000,
+        port: 8080,
         historyApiFallback: true,
     },
 };

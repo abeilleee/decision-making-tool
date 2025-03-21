@@ -1,4 +1,3 @@
-import { WheelCanvas } from '../wheel/wheel';
 import { Button } from './button';
 import { ButtonsName } from './types';
 

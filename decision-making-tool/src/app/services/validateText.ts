@@ -4,7 +4,7 @@ export class ValidateText {
     private readonly regex: RegExp;
 
     constructor() {
-        this.regex = /^(?:"([^"]*?)"|([^",]*?))\s*,\s*(\d+)\s*$/; // разбивка строк на части с пробелами запятыми и кавычками
+        this.regex = /^(?:"([^"]*?)"|([^",]*?))\s*,\s*(\d+)\s*$/;
     }
 
     public validate(input: string): boolean {

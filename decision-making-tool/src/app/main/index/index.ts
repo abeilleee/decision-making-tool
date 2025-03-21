@@ -1,19 +1,19 @@
-import { options } from '../../list-option/types';
-import { ContainerView } from '../../container/container';
+import { options } from '../../components/list-option/types';
+import { ContainerView } from '../container/container';
 import { View } from '../view';
-import { ElementCreator } from '../../../utils/element-creator';
-import { OptionList } from '../../list-option/optionList';
-import { AddOptionButton } from '../../buttons/addOptionsBtn';
-import { PasteListButton } from '../../buttons/pasteListBtn';
-import { ClearListButton } from '../../buttons/clearListBtn';
-import { SaveListButton } from '../../buttons/saveListToFileBtn';
-import { LoadListButton } from '../../buttons/loadListFromFileBtn';
-import { StartButton } from '../../buttons/startButton';
-import { Modal } from '../../modal/modal';
-import { SaveState } from '../../save-state/saveState';
-import { FileLoader } from '../../file-handler.ts/fileLoader';
-import { Router } from '../../router/router';
-import { DataExporter } from '../../file-handler.ts/dataExporter';
+import { ElementCreator } from '../../utils/element-creator';
+import { OptionList } from '../../components/list-option/optionList';
+import { AddOptionButton } from '../../components/buttons/addOptionsBtn';
+import { PasteListButton } from '../../components/buttons/pasteListBtn';
+import { ClearListButton } from '../../components/buttons/clearListBtn';
+import { SaveListButton } from '../../components/buttons/saveListToFileBtn';
+import { LoadListButton } from '../../components/buttons/loadListFromFileBtn';
+import { StartButton } from '../../components/buttons/startButton';
+import { Modal } from '../../components/modal/modal';
+import { SaveState } from '../../services/saveState';
+import { FileLoader } from '../../services/fileLoader';
+import { Router } from '../../services/router/router';
+import { DataExporter } from '../../services/dataExporter';
 
 export class IndexView extends View {
     indexContainer: ContainerView;

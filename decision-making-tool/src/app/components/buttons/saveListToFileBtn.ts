@@ -1,4 +1,4 @@
-import { DataExporter } from '../file-handler.ts/dataExporter';
+import { DataExporter } from '../../services/dataExporter';
 import { Button } from './button';
 import { ButtonsName } from './types';
 

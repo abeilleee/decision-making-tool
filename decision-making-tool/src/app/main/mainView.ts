@@ -1,4 +1,4 @@
-import { options } from '../list-option/types';
+import { options } from '../components/list-option/types';
 import { View } from './view';
 
 export class MainView extends View {

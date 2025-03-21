@@ -1,4 +1,4 @@
-import { FileLoader } from '../file-handler.ts/fileLoader';
+import { FileLoader } from '../../services/fileLoader';
 import { OptionList } from '../list-option/optionList';
 import { Button } from './button';
 import { ButtonsName } from './types';

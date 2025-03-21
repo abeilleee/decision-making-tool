@@ -1,5 +1,5 @@
-import { options } from '../list-option/types';
-import { View } from '../main/view';
+import { options } from '../../components/list-option/types';
+import { View } from '../view';
 
 export class ContainerView extends View {
     constructor(className: string[], parent?: HTMLElement) {

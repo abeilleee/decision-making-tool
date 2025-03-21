@@ -1,6 +1,6 @@
 import { ElementCreator } from '../../utils/element-creator';
-import { SoundHandler } from '../../utils/soundHandler';
-import { ContainerView } from '../container/container';
+import { SoundHandler } from '../../services/soundHandler';
+import { ContainerView } from '../../main/container/container';
 import { WheelState } from './types';
 import {
     ANIMATION_PARAMS,

@@ -1,7 +1,7 @@
 import { options } from './types';
 import { ElementCreator } from '../../utils/element-creator';
 import { DeleteButton } from '../buttons/deleteBtn';
-import { SaveState } from '../save-state/saveState';
+import { SaveState } from '../../services/saveState';
 
 export class Option {
     option: HTMLElement | HTMLLIElement;

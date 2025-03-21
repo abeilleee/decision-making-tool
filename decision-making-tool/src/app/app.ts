@@ -1,8 +1,8 @@
-import { MainView } from './components/main/mainView';
-import { Pages } from './components/router/types';
-import { Router } from './components/router/router';
-import { View } from './components/main/view';
-import { Route } from './components/router/types';
+import { MainView } from './main/mainView';
+import { Pages } from './services/router/types';
+import { Router } from './services/router/router';
+import { View } from './main/view';
+import { Route } from './services/router/types';
 
 export class App {
     router: Router;
@@ -25,28 +25,28 @@ export class App {
             {
                 path: ``,
                 callback: async () => {
-                    const { IndexView } = await import('./components/main/index/index');
+                    const { IndexView } = await import('./main/index/index');
                     this.setContent(new IndexView(this.router));
                 },
             },
             {
                 path: `${Pages.INDEX}`,
                 callback: async () => {
-                    const { IndexView } = await import('./components/main/index/index');
+                    const { IndexView } = await import('./main/index/index');
                     this.setContent(new IndexView(this.router));
                 },
             },
             {
                 path: `${Pages.DECISION_PICKER}`,
                 callback: async () => {
-                    const { DecisionPicker } = await import('./components/main/decision-picker/decision.picker');
+                    const { DecisionPicker } = await import('./main/decision-picker/decision.picker');
                     this.setContent(new DecisionPicker(this.router));
                 },
             },
             {
                 path: `${Pages.NOT_FOUND}`,
                 callback: async () => {
-                    const { NotFoundView } = await import('./components/main/not-found/not-found-view');
+                    const { NotFoundView } = await import('./main/not-found/not-found-view');
                     this.setContent(new NotFoundView(this.router));
                 },
             },

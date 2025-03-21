@@ -1,16 +1,16 @@
-import { options } from '../../list-option/types';
+import { options } from '../../components/list-option/types';
 import { View } from '../view';
-import { BackButton } from '../../buttons/backBtn';
-import { Router } from '../../router/router';
-import { ElementCreator } from '../../../utils/element-creator';
-import { ContainerView } from '../../container/container';
-import { PlayButton } from '../../buttons/playBtn';
-import { SoundButton } from '../../buttons/soundBtn';
-import { WheelCanvas } from '../../wheel/wheel';
-import { SaveState } from '../../save-state/saveState';
-import { WheelState } from '../../wheel/types';
-import { Modal, TextModal } from '../../modal/modal';
-import { SoundHandler } from '../../../utils/soundHandler';
+import { BackButton } from '../../components/buttons/backBtn';
+import { Router } from '../../services/router/router';
+import { ElementCreator } from '../../utils/element-creator';
+import { ContainerView } from '../container/container';
+import { PlayButton } from '../../components/buttons/playBtn';
+import { SoundButton } from '../../components/buttons/soundBtn';
+import { WheelCanvas } from '../../components/wheel/wheel';
+import { SaveState } from '../../services/saveState';
+import { WheelState } from '../../components/wheel/types';
+import { Modal, TextModal } from '../../components/modal/modal';
+import { SoundHandler } from '../../services/soundHandler';
 
 export class DecisionPicker extends View {
     router: Router;

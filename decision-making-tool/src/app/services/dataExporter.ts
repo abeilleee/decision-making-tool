@@ -1,5 +1,5 @@
-import { SaveState } from '../save-state/saveState';
-import { NUMBERS } from '../wheel/constants';
+import { SaveState } from './saveState';
+import { NUMBERS } from '../components/wheel/constants';
 
 export class DataExporter {
     saveState: SaveState;

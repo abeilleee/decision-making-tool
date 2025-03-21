@@ -1,8 +1,8 @@
-import { Pages } from '../router/types';
-import { Router } from '../router/router';
+import { Pages } from '../../services/router/types';
+import { Router } from '../../services/router/router';
 import { Button } from './button';
 import { ButtonsName } from './types';
-import { SaveState } from '../save-state/saveState';
+import { SaveState } from '../../services/saveState';
 import { Modal, TextModal } from '../modal/modal';
 import { WheelCanvas } from '../wheel/wheel';
 

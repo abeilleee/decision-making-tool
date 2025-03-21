@@ -1,5 +1,5 @@
 import { ElementCreator } from '../../utils/element-creator';
-import { parsedData, ValidateText } from '../../utils/validateText';
+import { parsedData, ValidateText } from '../../services/validateText';
 import { Button } from '../buttons/button';
 import { ButtonsName } from '../buttons/types';
 
