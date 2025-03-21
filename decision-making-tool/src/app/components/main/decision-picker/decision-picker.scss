@@ -5,26 +5,15 @@
     gap: 10px;
 }
 
-.back-btn {
-    // grid-area: back-btn;
-}
-
-.play-btn {
-    // grid-area: play-btn;
-}
-
 .timer-input {
-    width: 100px;
+    width: 60px;
     height: 35px;
-
-    // grid-area: timer-input;
     border: 2px solid rgb(255 255 255);
     border-radius: 10px;
     background-color: var(--backgorund);
 }
 
 .timer-label {
-    // grid-area: timer-label;
     height: 35px;
 }
 
@@ -37,8 +26,6 @@
     width: 240px;
     padding: 8px;
     border-radius: 10px;
-
-    // background: rgba(255, 255, 255, 0.177);
     color: #fff;
     letter-spacing: 0.04em;
     text-align: center;
