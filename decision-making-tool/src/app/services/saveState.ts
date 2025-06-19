@@ -37,7 +37,7 @@ export class SaveState {
     public getLastId(type: string): number | undefined {
         const dataFromStorage = localStorage.getItem(this.storageName);
         let storedData: localStorageObject;
-        let lastId;
+        let lastId: number | undefined;
         if (dataFromStorage) {
             storedData = JSON.parse(dataFromStorage);
             lastId = Number(storedData.lastId);

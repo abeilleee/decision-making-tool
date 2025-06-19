@@ -24,8 +24,8 @@ export class SoundHandler {
     public setSoundOption(): void {
         const data = this.getData();
 
-        const isMute = data === 'true' ? false : true;
-        JSON.stringify(localStorage.setItem(this.storageName, isMute.toString()));
+        const isMute = data !== 'true';
+        localStorage.setItem(this.storageName, isMute.toString());
     }
 
     public getData(): string | undefined {

@@ -84,23 +84,13 @@ export class Option {
                     const obj = savedListOptions.find((obj) => Number(obj.id) === id);
                     let title;
                     let weight;
-                    if (input instanceof HTMLInputElement) {
+                    if (input instanceof HTMLInputElement && obj) {
                         if (input === this.titleInput) {
                             title = input.value;
-                            if (obj && title) {
-                                obj.title = title;
-                            }
-                            if (obj && !title) {
-                                obj.title = '';
-                            }
+                            obj.title = title ? title : '';
                         } else if (input === this.weightInput) {
                             weight = input.value;
-                            if (obj && weight) {
-                                obj.weight = weight;
-                            }
-                            if (obj && !weight) {
-                                obj.weight = '';
-                            }
+                            obj.weight = weight ? weight : '';
                         }
                     }
                     localStorage.setItem(this.saveState.storageName, JSON.stringify(savedDate));
