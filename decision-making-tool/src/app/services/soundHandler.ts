@@ -1,7 +1,6 @@
 export class SoundHandler {
-    storageName = 'abeilleee_isMute';
-
-    endSound: HTMLAudioElement;
+    private storageName = 'abeilleee_isMute';
+    private endSound: HTMLAudioElement;
 
     constructor() {
         this.endSound = new Audio('assets/audio/sound.mp3');
@@ -11,7 +10,7 @@ export class SoundHandler {
         const data = this.getData();
         if (data === 'false') {
             this.endSound.src = 'assets/audio/sound.mp3';
-            this.endSound.play();
+            this.endSound.play().catch((error) => console.error(error));
         }
     }
 

@@ -14,19 +14,19 @@ import { TextModal } from '../../components/modal/constants';
 import { SoundHandler } from '../../services/soundHandler';
 
 export class DecisionPicker extends View {
-    router: Router;
-    container: ContainerView;
-    btnBox: ContainerView;
-    soundBtn: SoundButton;
-    backBtn: BackButton;
-    playBtn: PlayButton;
-    wheel: WheelCanvas | null;
-    wheelState: WheelState;
-    timerLabel: ElementCreator | null;
-    timerInput: HTMLInputElement | HTMLElement | null;
-    message: HTMLInputElement | HTMLElement | null;
-    soundHandler: SoundHandler;
-    timerInputValue: number = 5;
+    public wheelState: WheelState;
+    private router: Router;
+    private container: ContainerView;
+    private btnBox: ContainerView;
+    private soundBtn: SoundButton;
+    private backBtn: BackButton;
+    private playBtn: PlayButton;
+    private wheel: WheelCanvas | null;
+    private timerLabel: ElementCreator | null;
+    private timerInput: HTMLInputElement | HTMLElement | null;
+    private message: HTMLInputElement | HTMLElement | null;
+    private soundHandler: SoundHandler;
+    private timerInputValue: number = 5;
 
     constructor(router: Router) {
         const options: options = {
@@ -51,7 +51,7 @@ export class DecisionPicker extends View {
     }
 
     private configure(): void {
-        const title = new ElementCreator({
+        new ElementCreator({
             tagName: 'h1',
             classes: ['title'],
             textContent: 'Decision Making Tool',
@@ -68,6 +68,7 @@ export class DecisionPicker extends View {
             tagName: 'input',
             classes: ['timer-input'],
         }).getElement();
+
         if (this.timerInput instanceof HTMLInputElement) {
             this.timerInput.value = '5';
         }
@@ -76,12 +77,14 @@ export class DecisionPicker extends View {
             tagName: 'input',
             classes: ['message'],
         }).getElement();
+
         if (this.message instanceof HTMLInputElement) {
             this.message.disabled = true;
             this.message.value = "Let's get started! Click start!";
         }
 
         this.container.addInnerElements([this.btnBox.getHTMLElement(), this.message]);
+
         this.btnBox.addInnerElements([
             this.backBtn.getElement(),
             this.playBtn.getElement(),
@@ -89,12 +92,15 @@ export class DecisionPicker extends View {
             this.timerLabel.getElement(),
             this.timerInput,
         ]);
+
         this.backBtn.getElement().addEventListener('click', () => {
             this.backBtn.handleClick();
         });
+
         const soundOption = this.soundHandler.getData();
 
         if (soundOption) this.soundBtn.setClass(soundOption);
+
         this.createWheel();
         this.handlerOnload();
         this.soundHandler.setSoundHandler();
@@ -110,7 +116,7 @@ export class DecisionPicker extends View {
     }
 
     private handlerOnload(): void {
-        window.onload = () => {
+        window.onload = (): void => {
             const children = this.container.getHTMLElement().children;
             for (let i = 0; i < children.length; i++) {
                 const child = children[i];

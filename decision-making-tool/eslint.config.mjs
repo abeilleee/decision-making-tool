@@ -1,91 +1,35 @@
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import globals from 'globals';
-import tsParser from '@typescript-eslint/parser';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import unicorn from 'eslint-plugin-unicorn';
+import tsParser from '@typescript-eslint/parser';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-});
+export default tseslint.config(
+    eslint.configs.recommended,
+    tseslint.configs.recommendedTypeChecked,
+    unicorn.configs.recommended,
 
-export default [
     {
-        ignores: ['**/*config.js'],
+        ignores: ['**/dist/**', '**/*config.js', './.stylelintrc.js', './eslint.config.mjs'],
     },
-    tseslint.config(eslint.configs.recommended, tseslint.configs.recommendedTypeChecked, {
-        languageOptions: {
-            parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
-    }),
-    ...compat.extends(
-        'eslint:recommendedTypeChecked ',
-        'plugin:@typescript-eslint/recommendedTypeChecked',
-        'tseslint.configs.recommendedTypeChecked'
-    ),
     {
-        plugins: {
-            '@typescript-eslint': typescriptEslint,
-        },
-
         languageOptions: {
-            globals: {
-                ...globals.browser,
-            },
-
+            globals: globals.browser,
             parser: tsParser,
-            ecmaVersion: 5,
-            sourceType: 'script',
-
             parserOptions: {
                 project: './tsconfig.json',
                 projectService: true,
                 tsconfigRootDir: import.meta.dirname,
             },
         },
+        linterOptions: {
+            noInlineConfig: true,
+            reportUnusedDisableDirectives: true,
+        },
+    },
 
+    {
         rules: {
-            'no-plusplus': 'off',
-            'no-console': 'warn',
-            'max-lines-per-function': ['error', { max: 40 }],
-
-            'max-len': [
-                'warn',
-                {
-                    code: 120,
-                },
-            ],
-
-            indent: [
-                'warn',
-                2,
-                {
-                    SwitchCase: 1,
-                },
-            ],
-
-            'import/prefer-default-export': 'off',
-
-            'no-param-reassign': [
-                'error',
-                {
-                    props: false,
-                },
-            ],
-            noInlineConfig: 'true',
-            reportUnusedDisableDirectives: 'true',
-
             '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'never' }],
             '@typescript-eslint/consistent-type-imports': 'error',
             '@typescript-eslint/explicit-function-return-type': 'error',
@@ -94,13 +38,38 @@ export default [
                 { accessibility: 'explicit', overrides: { constructors: 'off' } },
             ],
             '@typescript-eslint/member-ordering': 'error',
-            'class-methods-use-this': 'error',
+            '@typescript-eslint/no-unused-vars': 'error',
+            'class-methods-use-this': 'off',
+            '@typescript-eslint/no-unsafe-assignment': 'off',
+            '@typescript-eslint/no-redundant-type-constituents': 'off',
+            '@typescript-eslint/no-misused-promises': 'off',
+            '@typescript-eslint/no-unsafe-return': 'off',
+            '@typescript-eslint/consistent-type-imports': 'off',
+            '@typescript-eslint/no-duplicate-enum-values': 'off',
+            'unicorn/better-regex': 'off',
+            'unicorn/filename-case': 'off',
+            'unicorn/prefer-module': 0,
+            'unicorn/no-array-for-each': 0,
+            'unicorn/prevent-abbreviations': 0,
+            'unicorn/prefer-dom-node-dataset': 0,
+            'unicorn/prefer-query-selector': 0,
+            'unicorn/prefer-dom-node-remove': 0,
+            'unicorn/no-console-spaces': 0,
+            'unicorn/prefer-global-this': 0,
+            'unicorn/prefer-node-protocol': 0,
+            'unicorn/no-negated-condition': 0,
+            'unicorn/no-null': 0,
+            'unicorn/no-for-loop': 0,
+            'unicorn/prefer-math-min-max': 0,
+            'unicorn/prefer-spread': 0,
+            'unicorn/prefer-logical-operator-over-ternary': 0,
+            'unicorn/no-lonely-if': 0,
+            'unicorn/prefer-dom-node-append': 0,
+            'unicorn/prefer-switch': 0,
+            'unicorn/prefer-number-properties': 0,
+            'unicorn/prefer-add-event-listener': 0,
+            'unicorn/prefer-blob-reading-methods': 0,
+            'unicorn/no-nested-ternary': 0,
         },
-    },
-    eslintPluginUnicorn.configs.recommended,
-    {
-        rules: {
-            'unicorn/better-regex': 'warn',
-        },
-    },
-];
+    }
+);

@@ -4,7 +4,8 @@ import { Button } from './button';
 import { ButtonsName } from './enums';
 
 export class BackButton extends Button {
-    router: Router;
+    private router: Router;
+
     constructor(router: Router) {
         super(ButtonsName.BACK, ['button', 'back-btn']);
         this.router = router;

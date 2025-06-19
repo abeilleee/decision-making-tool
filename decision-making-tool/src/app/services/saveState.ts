@@ -9,14 +9,14 @@ export type localStorageObject = {
 };
 
 export class SaveState {
-    storageName: string = 'abeilleee_Option-List';
-    #defaultValue: localStorageObject = { list: [{ id: 1, title: '', weight: '' }], lastId: 1 };
+    public storageName: string = 'abeilleee_Option-List';
+    private defaultValue: localStorageObject = { list: [{ id: 1, title: '', weight: '' }], lastId: 1 };
 
     public initializeLocalStorage(parent: OptionList): localStorageObject | undefined {
         let data;
         if (!localStorage.getItem(this.storageName)) {
-            localStorage.setItem(this.storageName, JSON.stringify(this.#defaultValue));
-            new Option(parent.getHTMLElement(), this.#defaultValue.lastId);
+            localStorage.setItem(this.storageName, JSON.stringify(this.defaultValue));
+            new Option(parent.getHTMLElement(), this.defaultValue.lastId);
         } else {
             data = this.getData();
         }
@@ -24,7 +24,7 @@ export class SaveState {
     }
 
     public getData(): localStorageObject {
-        let storedData: localStorageObject = this.#defaultValue;
+        let storedData: localStorageObject = this.defaultValue;
         const dataFromStorage = localStorage.getItem(this.storageName);
         if (dataFromStorage) {
             storedData = JSON.parse(dataFromStorage);
@@ -114,12 +114,14 @@ export class SaveState {
     public getFilledOptions(): OptionsParams[] {
         const data = this.getData();
         const optionsList = data.list;
-        let filledOptions = [];
+        const filledOptions = [];
+
         for (let i = 0; i < optionsList.length; i++) {
             if (optionsList[i].title !== '' && Number(optionsList[i].weight) > 0) {
                 filledOptions.push(optionsList[i]);
             }
         }
+
         return filledOptions;
     }
 }

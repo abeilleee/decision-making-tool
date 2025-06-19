@@ -3,7 +3,8 @@ import { View } from '../../main/view';
 import { Option } from './option';
 
 export class OptionList extends View {
-    currentId: number;
+    private currentId: number;
+
     constructor(parent: HTMLElement, currentId: number) {
         const options: options = {
             tagName: 'ul',

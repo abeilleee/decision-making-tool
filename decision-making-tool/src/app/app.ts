@@ -5,8 +5,8 @@ import { View } from './main/view';
 import { Route } from './services/router/types';
 
 export class App {
-    router: Router;
-    main: MainView | null;
+    private router: Router;
+    private main: MainView | null;
 
     constructor() {
         this.main = null;
@@ -24,28 +24,28 @@ export class App {
         return [
             {
                 path: ``,
-                callback: async () => {
+                callback: async (): Promise<void> => {
                     const { IndexView } = await import('./main/index/index');
                     this.setContent(new IndexView(this.router));
                 },
             },
             {
                 path: `${Pages.INDEX}`,
-                callback: async () => {
+                callback: async (): Promise<void> => {
                     const { IndexView } = await import('./main/index/index');
                     this.setContent(new IndexView(this.router));
                 },
             },
             {
                 path: `${Pages.DECISION_PICKER}`,
-                callback: async () => {
+                callback: async (): Promise<void> => {
                     const { DecisionPicker } = await import('./main/decision-picker/decision.picker');
                     this.setContent(new DecisionPicker(this.router));
                 },
             },
             {
                 path: `${Pages.NOT_FOUND}`,
-                callback: async () => {
+                callback: async (): Promise<void> => {
                     const { NotFoundView } = await import('./main/not-found/not-found-view');
                     this.setContent(new NotFoundView(this.router));
                 },

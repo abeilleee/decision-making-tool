@@ -1,6 +1,6 @@
 import { HEX_CODES } from './constants';
 
-export const generateRandomColor = () => {
+export const generateRandomColor = (): string => {
     const hexCodes = HEX_CODES;
     let color = '';
     for (let i = 0; i < 6; i++) {
@@ -9,6 +9,6 @@ export const generateRandomColor = () => {
     return '#' + color;
 };
 
-export const easeInOutBack = (t: number) => {
+export const easeInOutBack = (t: number): number => {
     return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 };

@@ -8,8 +8,8 @@ import { WheelCanvas } from '../wheel/wheel';
 import { TextModal } from '../modal/constants';
 
 export class StartButton extends Button {
-    router: Router;
-    saveState: SaveState;
+    private router: Router;
+    private saveState: SaveState;
 
     constructor(router: Router, saveState: SaveState) {
         super(ButtonsName.START, ['start-btn']);
@@ -18,7 +18,6 @@ export class StartButton extends Button {
     }
 
     public handleClick(): void {
-        const optionsList = this.saveState.getData().list;
         const filledOptions = this.saveState.getFilledOptions();
         if (filledOptions.length < 2) {
             const modal = new Modal();

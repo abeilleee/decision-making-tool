@@ -5,9 +5,9 @@ import { BackButton } from '../../components/buttons/backBtn';
 import { Router } from '../../services/router/router';
 
 export class NotFoundView extends View {
-    #default_text = 'Error. Page not found';
-    router: Router;
-    backBtn: BackButton;
+    private router: Router;
+    private backBtn: BackButton;
+    private default_text = 'Error. Page not found';
 
     constructor(router: Router) {
         const options: options = {
@@ -24,7 +24,7 @@ export class NotFoundView extends View {
         const text = new ElementCreator({
             tagName: 'h1',
             classes: ['title', 'title-not-found'],
-            textContent: this.#default_text,
+            textContent: this.default_text,
         });
         this.addInnerElements([text.getElement(), this.backBtn.getElement()]);
         this.backBtn.getElement().style.margin = '0 auto';

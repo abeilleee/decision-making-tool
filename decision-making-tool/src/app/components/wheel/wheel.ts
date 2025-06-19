@@ -19,11 +19,12 @@ import {
 import { easeInOutBack, generateRandomColor } from './utils';
 
 export class WheelCanvas {
+    public colors: string[];
+    public wheelState: WheelState = WheelState.INITIAL;
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D | null;
     private sections: OptionsParams[];
     private startAngle: number = START_RANDOM_ANGLE;
-    public wheelState: WheelState = WheelState.INITIAL;
     private centerX: number;
     private centerY: number;
     private sectionsParams: sectionParams[];
@@ -32,8 +33,6 @@ export class WheelCanvas {
     private buttons: ContainerView | undefined;
     private message;
     private soundHandler: SoundHandler | undefined;
-
-    colors: string[];
 
     constructor(
         sections: OptionsParams[],
@@ -67,7 +66,8 @@ export class WheelCanvas {
 
         // отрисовка секций
         for (let i = 0; i < this.sections.length; i++) {
-            let sectionAngle = (+this.sections[i].weight / totalWeight) * TWO_PI;
+            const sectionAngle = (+this.sections[i].weight / totalWeight) * TWO_PI;
+
             if (this.context) {
                 this.context.beginPath();
                 this.context.moveTo(this.centerX, this.centerY);
@@ -99,10 +99,47 @@ export class WheelCanvas {
         if (this.context) this.context.save();
     }
 
+    public getHTMLElement(): HTMLElement & Partial<ElementCreator> {
+        return this.canvas;
+    }
+
+    public rotate(): void {
+        const duration = this.timerInput ? +this.timerInput.value : ANIMATION_PARAMS.DEFAULT_DURATION;
+        const initialAngle = Math.random() * TWO_PI;
+        const fullRotations =
+            Math.floor(Math.random() * ANIMATION_PARAMS.DEFAULT_DURATION) + ANIMATION_PARAMS.DEFAULT_DURATION;
+        const targetAngle = fullRotations * TWO_PI + initialAngle;
+        this.startTime = performance.now();
+        this.wheelState = WheelState.PICKING;
+        this.disableElements();
+
+        const animate = (): void => {
+            const currentTime = performance.now();
+            const elapsed = currentTime - this.startTime;
+            const t = Math.min(elapsed / (duration * MS_PER_SEC), NUMBERS.ONE); //
+            const easeValue = easeInOutBack(t);
+            const currentRotation = initialAngle + easeValue * (targetAngle - initialAngle);
+            this.drawWheel(currentRotation);
+
+            if (t < +NUMBERS.ONE) {
+                requestAnimationFrame(animate);
+                this.checkFinalSection();
+            } else {
+                this.wheelState = WheelState.PICKED;
+                this.disableElements();
+                if (this.soundHandler) {
+                    this.soundHandler.playClick();
+                }
+                this.checkFinalSection();
+            }
+        };
+        animate();
+    }
+
     private addOptionName(textParams: optionNameParams): void {
         const textAngle = textParams.startAngle + textParams.sliceAngle / NUMBERS.HALF;
         const title =
-            textParams.options.title.length > TEXT_PARAMS.MAX_LENGTH
+            textParams.options.title.length > +TEXT_PARAMS.MAX_LENGTH
                 ? textParams.options.title.slice(NUMBERS.ZERO, TEXT_PARAMS.MAX_LENGTH) + '...'
                 : textParams.options.title;
 
@@ -188,54 +225,19 @@ export class WheelCanvas {
         }
     }
 
-    public getHTMLElement(): HTMLElement & Partial<ElementCreator> {
-        return this.canvas;
-    }
-
     private getColors(): string[] {
         const length = this.sections.length;
-        let colorsArr: string[] = [];
+        const colorsArr: string[] = [];
+
         for (let i = 0; i < length; i++) {
             const color = generateRandomColor();
             colorsArr.push(color);
         }
+
         return colorsArr;
     }
 
-    public rotate(): void {
-        const duration = this.timerInput ? +this.timerInput.value : ANIMATION_PARAMS.DEFAULT_DURATION;
-        const initialAngle = Math.random() * TWO_PI;
-        const fullRotations =
-            Math.floor(Math.random() * ANIMATION_PARAMS.DEFAULT_DURATION) + ANIMATION_PARAMS.DEFAULT_DURATION;
-        const targetAngle = fullRotations * TWO_PI + initialAngle;
-        this.startTime = performance.now();
-        this.wheelState = WheelState.PICKING;
-        this.disableElements();
-
-        const animate = () => {
-            const currentTime = performance.now();
-            const elapsed = currentTime - this.startTime;
-            const t = Math.min(elapsed / (duration * MS_PER_SEC), NUMBERS.ONE); //
-            const easeValue = easeInOutBack(t);
-            const currentRotation = initialAngle + easeValue * (targetAngle - initialAngle);
-            this.drawWheel(currentRotation);
-
-            if (t < NUMBERS.ONE) {
-                requestAnimationFrame(animate);
-                this.checkFinalSection(currentRotation);
-            } else {
-                this.wheelState = WheelState.PICKED;
-                this.disableElements();
-                if (this.soundHandler) {
-                    this.soundHandler.playClick();
-                }
-                this.checkFinalSection(currentRotation + Math.PI);
-            }
-        };
-        animate();
-    }
-
-    private checkFinalSection(currentRotation: number) {
+    private checkFinalSection(): void {
         const target = POINTER_COORDINATES;
 
         this.sectionsParams.forEach((section) => {
@@ -247,7 +249,7 @@ export class WheelCanvas {
         });
     }
 
-    private disableElements() {
+    private disableElements(): void {
         if (this.buttons !== undefined) {
             if (this.wheelState === WheelState.PICKING) {
                 this.buttons.toggleDisable('add');

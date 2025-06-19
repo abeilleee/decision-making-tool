@@ -10,7 +10,7 @@ export class SoundButton extends Button {
         this.element.classList.toggle('off');
     }
 
-    public setClass(mute: string) {
+    public setClass(mute: string): void {
         if (mute === 'false') {
             this.element.classList.remove('off');
         } else if (mute === 'true') {

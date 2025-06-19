@@ -4,13 +4,13 @@ import { DeleteButton } from '../buttons/deleteBtn';
 import { SaveState } from '../../services/saveState';
 
 export class Option {
-    option: HTMLElement | HTMLLIElement;
-    id: HTMLElement | null;
-    titleInput: HTMLInputElement | null | HTMLElement;
-    weightInput: HTMLInputElement | null | HTMLElement;
-    deleteBtn: DeleteButton;
-    saveState: SaveState;
-    lastId: number;
+    public titleInput: HTMLInputElement | null | HTMLElement;
+    public id: HTMLElement | null;
+    public weightInput: HTMLInputElement | null | HTMLElement;
+    private option: HTMLElement | HTMLLIElement;
+    private deleteBtn: DeleteButton;
+    private saveState: SaveState;
+    private lastId: number;
 
     constructor(parent: HTMLElement, id: number) {
         const options: options = {

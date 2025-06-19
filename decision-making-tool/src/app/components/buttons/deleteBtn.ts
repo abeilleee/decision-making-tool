@@ -8,7 +8,7 @@ export class DeleteButton extends Button {
     }
 
     public handleClick(event: Event): void {
-        let target = event.target;
+        const target = event.target;
         if (target instanceof HTMLElement) {
             const parentElement = target.parentElement;
             parentElement?.remove();

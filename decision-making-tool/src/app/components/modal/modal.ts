@@ -6,11 +6,11 @@ import { placeholderText } from './constants';
 import { TextModal } from './constants';
 
 export class Modal {
-    modal: HTMLDialogElement | HTMLElement;
-    form: HTMLFormElement | HTMLElement;
-    cancelButton: Button;
-    confirmButton: Button;
-    textArea: HTMLTextAreaElement | HTMLElement;
+    public confirmButton: Button;
+    private modal: HTMLDialogElement | HTMLElement;
+    private form: HTMLFormElement | HTMLElement;
+    private cancelButton: Button;
+    private textArea: HTMLTextAreaElement | HTMLElement;
 
     constructor() {
         this.modal = new ElementCreator({ tagName: 'dialog', classes: ['modal'] }).getElement();
@@ -23,6 +23,45 @@ export class Modal {
         this.confirmButton = new Button(ButtonsName.CONFIRM, ['confirm-btn', 'button'], this.form);
         this.configureModal();
         this.addEventListeners();
+    }
+
+    public open(): void {
+        if (this.modal instanceof HTMLDialogElement) {
+            this.modal.showModal();
+        }
+        if (this.textArea instanceof HTMLTextAreaElement) {
+            this.textArea.value = '';
+        }
+        document.body.style.overflow = 'hidden';
+    }
+
+    public close(): void {
+        if (this.modal instanceof HTMLDialogElement) {
+            this.modal.close();
+        }
+        document.body.style.overflow = '';
+        this.modal.remove();
+    }
+
+    public getParsedData(): parsedData | void {
+        const validator = new ValidateText();
+        if (this.textArea instanceof HTMLTextAreaElement) {
+            return validator.getValidateTextArea(this.textArea);
+        }
+    }
+
+    public addOptionDialog(text: TextModal): void {
+        if (this.form.firstChild) {
+            while (this.form.childNodes.length !== 1) {
+                this.form.removeChild(this.form.firstChild);
+            }
+        }
+        if (this.textArea instanceof HTMLTextAreaElement) {
+            this.textArea.disabled = true;
+            this.textArea.placeholder = text;
+        }
+        const closeBtn = new Button('Close');
+        this.form.append(closeBtn.getElement());
     }
 
     private configureModal(): void {
@@ -52,52 +91,14 @@ export class Modal {
                 this.close();
             }
         });
-        window.addEventListener('scroll', this.preventScroll);
+
+        window.addEventListener('scroll', this.preventScroll.bind(this));
         this.form.addEventListener('click', (MouseEvent: Event) => {
             MouseEvent?.preventDefault();
         });
     }
 
-    public open(): void {
-        if (this.modal instanceof HTMLDialogElement) {
-            this.modal.showModal();
-        }
-        if (this.textArea instanceof HTMLTextAreaElement) {
-            this.textArea.value = '';
-        }
-        document.body.style.overflow = 'hidden';
-    }
-
-    public close(): void {
-        if (this.modal instanceof HTMLDialogElement) {
-            this.modal.close();
-        }
-        document.body.style.overflow = '';
-        this.modal.remove();
-    }
-
     private preventScroll(event: Event): void {
         event.preventDefault();
-    }
-
-    public getParsedData(): parsedData | void {
-        const validator = new ValidateText();
-        if (this.textArea instanceof HTMLTextAreaElement) {
-            return validator.getValidateTextArea(this.textArea);
-        }
-    }
-
-    public addOptionDialog(text: TextModal): void {
-        if (this.form.firstChild) {
-            while (this.form.childNodes.length !== 1) {
-                this.form.removeChild(this.form.firstChild);
-            }
-        }
-        if (this.textArea instanceof HTMLTextAreaElement) {
-            this.textArea.disabled = true;
-            this.textArea.placeholder = text;
-        }
-        const closeBtn = new Button('Close');
-        this.form.append(closeBtn.getElement());
     }
 }

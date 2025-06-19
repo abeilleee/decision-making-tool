@@ -16,19 +16,19 @@ import { Router } from '../../services/router/router';
 import { DataExporter } from '../../services/dataExporter';
 
 export class IndexView extends View {
-    indexContainer: ContainerView;
-    optionList: OptionList;
-    fileLoader: FileLoader;
-    dataExporter: DataExporter;
-    addOptionBtn: AddOptionButton;
-    pasteListBtn: PasteListButton;
-    clearListBtn: ClearListButton;
-    saveListToFileBtn: SaveListButton;
-    loadListFromFileBtn: LoadListButton;
-    startBtn: StartButton;
-    saveState: SaveState;
-    lastId: number;
-    router: Router;
+    private indexContainer: ContainerView;
+    private optionList: OptionList;
+    private fileLoader: FileLoader;
+    private dataExporter: DataExporter;
+    private addOptionBtn: AddOptionButton;
+    private pasteListBtn: PasteListButton;
+    private clearListBtn: ClearListButton;
+    private saveListToFileBtn: SaveListButton;
+    private loadListFromFileBtn: LoadListButton;
+    private startBtn: StartButton;
+    private saveState: SaveState;
+    private lastId: number;
+    private router: Router;
 
     constructor(router: Router) {
         const options: options = {
@@ -63,10 +63,10 @@ export class IndexView extends View {
         ).getHTMLElement();
         this.addButons(buttonContainer);
         this.buttonsClickListeners(this.optionList.getHTMLElement());
-        this.uploadFromLocalStorage(this.optionList, this.lastId);
+        this.uploadFromLocalStorage(this.optionList);
     }
 
-    private uploadFromLocalStorage(optionList: OptionList, id: number): void {
+    private uploadFromLocalStorage(optionList: OptionList): void {
         this.optionList.removeChildren();
         const data = this.saveState.initializeLocalStorage(optionList);
         if (data) {
@@ -124,7 +124,8 @@ export class IndexView extends View {
                 const parsedData = modal.getParsedData();
                 if (parsedData) {
                     for (let i = 0; i < parsedData.length; i++) {
-                        let lastId = this.saveState.getLastId('add');
+                        const lastId = this.saveState.getLastId('add');
+
                         if (lastId) {
                             const id = lastId;
                             const title = parsedData[i].title;
