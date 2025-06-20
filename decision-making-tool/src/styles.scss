@@ -1,12 +1,12 @@
 @use './styles/base/reset';
 @use './styles/base/typography';
 @use './styles/utils/variables';
-@use './app/main/container/container';
+@use './app/view/container/container';
 @use './styles/utils/mixins';
 @use './styles/base/globals';
-@use './app/main/index/index';
+@use './app/view/index/index';
 @use './app/components/buttons/button';
-@use './app/main/not-found/not-found';
+@use './app/view/not-found/not-found';
 @use './app/components/list-option/option';
 @use './app/components/modal/modal';
-@use './app/main/decision-picker/decision-picker';
+@use './app/view/decision-picker/decision-picker';

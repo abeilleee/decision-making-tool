@@ -1,5 +1,5 @@
 import { options } from './types';
-import { View } from '../../main/view';
+import { View } from '../../view/view';
 import { Option } from './option';
 
 export class OptionList extends View {

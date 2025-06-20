@@ -1,7 +1,7 @@
-import { MainView } from './main/mainView';
+import { MainView } from './view/mainView';
 import { Pages } from './services/router/types';
 import { Router } from './services/router/router';
-import { View } from './main/view';
+import { View } from './view/view';
 import { Route } from './services/router/types';
 
 export class App {
@@ -25,28 +25,28 @@ export class App {
             {
                 path: ``,
                 callback: async (): Promise<void> => {
-                    const { IndexView } = await import('./main/index/index');
+                    const { IndexView } = await import('./view/index/index');
                     this.setContent(new IndexView(this.router));
                 },
             },
             {
                 path: `${Pages.INDEX}`,
                 callback: async (): Promise<void> => {
-                    const { IndexView } = await import('./main/index/index');
+                    const { IndexView } = await import('./view/index/index');
                     this.setContent(new IndexView(this.router));
                 },
             },
             {
                 path: `${Pages.DECISION_PICKER}`,
                 callback: async (): Promise<void> => {
-                    const { DecisionPicker } = await import('./main/decision-picker/decision.picker');
+                    const { DecisionPicker } = await import('./view/decision-picker/decision.picker');
                     this.setContent(new DecisionPicker(this.router));
                 },
             },
             {
                 path: `${Pages.NOT_FOUND}`,
                 callback: async (): Promise<void> => {
-                    const { NotFoundView } = await import('./main/not-found/not-found-view');
+                    const { NotFoundView } = await import('./view/not-found/not-found-view');
                     this.setContent(new NotFoundView(this.router));
                 },
             },
