@@ -8,6 +8,7 @@ export class SoundHandler {
 
     public playClick(): void {
         const data = this.getData();
+
         if (data === 'false') {
             this.endSound.src = 'assets/audio/sound.mp3';
             this.endSound.play().catch((error) => console.error(error));
@@ -22,13 +23,14 @@ export class SoundHandler {
 
     public setSoundOption(): void {
         const data = this.getData();
-
         const isMute = data !== 'true';
+
         localStorage.setItem(this.storageName, isMute.toString());
     }
 
     public getData(): string | undefined {
         const data = localStorage.getItem(this.storageName);
+
         if (data) return data;
     }
 }

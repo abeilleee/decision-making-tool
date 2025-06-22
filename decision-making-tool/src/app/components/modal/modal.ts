@@ -29,9 +29,11 @@ export class Modal {
         if (this.modal instanceof HTMLDialogElement) {
             this.modal.showModal();
         }
+
         if (this.textArea instanceof HTMLTextAreaElement) {
             this.textArea.value = '';
         }
+
         document.body.style.overflow = 'hidden';
     }
 
@@ -39,29 +41,34 @@ export class Modal {
         if (this.modal instanceof HTMLDialogElement) {
             this.modal.close();
         }
+
         document.body.style.overflow = '';
         this.modal.remove();
     }
 
     public getParsedData(): parsedData | void {
         const validator = new ValidateText();
+
         if (this.textArea instanceof HTMLTextAreaElement) {
             return validator.getValidateTextArea(this.textArea);
         }
     }
 
     public addOptionDialog(text: TextModal): void {
+        const closeBtn = new Button('Close');
+
+        this.form.append(closeBtn.getElement());
+
         if (this.form.firstChild) {
             while (this.form.childNodes.length !== 1) {
                 this.form.removeChild(this.form.firstChild);
             }
         }
+
         if (this.textArea instanceof HTMLTextAreaElement) {
             this.textArea.disabled = true;
             this.textArea.placeholder = text;
         }
-        const closeBtn = new Button('Close');
-        this.form.append(closeBtn.getElement());
     }
 
     private configureModal(): void {
@@ -86,6 +93,7 @@ export class Modal {
                 this.close();
             }
         });
+
         window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 this.close();
@@ -93,6 +101,7 @@ export class Modal {
         });
 
         window.addEventListener('scroll', this.preventScroll.bind(this));
+
         this.form.addEventListener('click', (MouseEvent: Event) => {
             MouseEvent?.preventDefault();
         });

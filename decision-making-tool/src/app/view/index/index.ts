@@ -51,7 +51,6 @@ export class IndexView extends View {
         this.loadListFromFileBtn = new LoadListButton();
         this.startBtn = new StartButton(this.router, this.saveState);
         this.fileLoader = new FileLoader(this.saveState, this.optionList);
-
         this.configureMain();
     }
 
@@ -69,6 +68,7 @@ export class IndexView extends View {
     private uploadFromLocalStorage(optionList: OptionList): void {
         this.optionList.removeChildren();
         const data = this.saveState.initializeLocalStorage(optionList);
+
         if (data) {
             for (let i = 0; i < data.list.length; i++) {
                 const id = data.list[i].id;
@@ -86,6 +86,7 @@ export class IndexView extends View {
             parent: parent,
             textContent: 'Decision Making Tool',
         };
+
         return new ElementCreator(options).getElement();
     }
 
@@ -98,12 +99,14 @@ export class IndexView extends View {
             this.loadListFromFileBtn.getElement(),
             this.startBtn.getElement(),
         ];
+
         buttons.forEach((button) => parent.append(button));
     }
 
     private buttonsClickListeners(optionList: HTMLElement): void {
         this.addOptionBtn.getElement().addEventListener('click', () => {
             const id = this.saveState.getLastId('add');
+
             if (id) {
                 const newOption = this.addOptionBtn.handleClick(optionList, id);
                 this.saveState.addToLocalStorage(newOption);
@@ -122,6 +125,7 @@ export class IndexView extends View {
             modal.open();
             modal.confirmButton.getElement().addEventListener('click', () => {
                 const parsedData = modal.getParsedData();
+
                 if (parsedData) {
                     for (let i = 0; i < parsedData.length; i++) {
                         const lastId = this.saveState.getLastId('add');

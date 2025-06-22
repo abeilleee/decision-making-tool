@@ -26,6 +26,7 @@ export class Router {
         const saveState = new SaveState();
         const filledOptions = saveState.getFilledOptions();
         const path = window.location.pathname;
+
         if (filledOptions.length < +NUMBERS.HALF && path === `/${Pages.DECISION_PICKER}`) {
             this.navigate(Pages.INDEX);
         }
@@ -34,6 +35,7 @@ export class Router {
     private redirectToNotFoundPage(): void {
         const targetPath: string = Pages.NOT_FOUND;
         const notFoundPage = this.routes.find((elem) => elem.path === targetPath);
+
         if (notFoundPage) {
             this.navigate(notFoundPage.path);
         }
@@ -42,10 +44,12 @@ export class Router {
     private urlHandler(request: UserRequest): void {
         const targetPath = request.path;
         const route = this.routes.find((elem) => elem.path === targetPath);
+
         if (!route) {
             this.redirectToNotFoundPage();
             return;
         }
+
         route.callback(request.resource);
     }
 }

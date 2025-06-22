@@ -29,6 +29,7 @@ export class FileLoader {
     public updateOptionList(file: localStorageObject, optionList: OptionList): void {
         optionList.removeChildren();
         this.saveState.addDataFromFile(file);
+
         for (let i = 0; i < file.list.length; i++) {
             const id = file.list[i].id;
             const title = file.list[i].title;
@@ -39,6 +40,7 @@ export class FileLoader {
 
     private handleUploadedFile(event: Event): void {
         const target = event.target;
+
         if (target instanceof HTMLInputElement) {
             if (target.files && target.files.length > 0) {
                 const file = target.files[0];

@@ -109,6 +109,7 @@ export class DecisionPicker extends View {
     private createWheel(): void {
         const saveState = new SaveState();
         const optionsList = saveState.getFilledOptions();
+
         if (this.timerInput instanceof HTMLInputElement && this.message instanceof HTMLInputElement) {
             this.wheel = new WheelCanvas(optionsList, this.timerInput, this.btnBox, this.message, this.soundHandler);
             this.container.addInnerElements([this.wheel.getHTMLElement()]);
@@ -118,12 +119,14 @@ export class DecisionPicker extends View {
     private handlerOnload(): void {
         window.onload = (): void => {
             const children = this.container.getHTMLElement().children;
+
             for (let i = 0; i < children.length; i++) {
                 const child = children[i];
                 if (child.nodeType === Node.ELEMENT_NODE && child.tagName === 'CANVAS') {
                     this.container.getHTMLElement().removeChild(child);
                 }
             }
+
             this.createWheel();
         };
     }
@@ -131,6 +134,7 @@ export class DecisionPicker extends View {
     private addEventListeners(): void {
         this.playBtn.getElement().addEventListener('click', () => {
             const modal = new Modal();
+
             if (this.timerInput) {
                 const timerValue = this.timerInputValue;
                 if (timerValue < 5 || timerValue > 30) {

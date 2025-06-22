@@ -14,23 +14,27 @@ export class SaveState {
 
     public initializeLocalStorage(parent: OptionList): localStorageObject | undefined {
         let data;
+
         if (!localStorage.getItem(this.storageName)) {
             localStorage.setItem(this.storageName, JSON.stringify(this.defaultValue));
             new Option(parent.getHTMLElement(), this.defaultValue.lastId);
         } else {
             data = this.getData();
         }
+
         if (data) return data;
     }
 
     public getData(): localStorageObject {
         let storedData: localStorageObject = this.defaultValue;
         const dataFromStorage = localStorage.getItem(this.storageName);
+
         if (dataFromStorage) {
             storedData = JSON.parse(dataFromStorage);
         } else {
             console.error('There is not any data in local storage');
         }
+
         return storedData;
     }
 
@@ -38,6 +42,7 @@ export class SaveState {
         const dataFromStorage = localStorage.getItem(this.storageName);
         let storedData: localStorageObject;
         let lastId: number | undefined;
+
         if (dataFromStorage) {
             storedData = JSON.parse(dataFromStorage);
             lastId = Number(storedData.lastId);
@@ -56,6 +61,7 @@ export class SaveState {
         } else {
             console.error('The lastId is not found');
         }
+
         return lastId;
     }
 
@@ -69,6 +75,7 @@ export class SaveState {
                 title: title,
                 weight: weight,
             };
+
             const dataFromStorage = localStorage.getItem(this.storageName);
 
             if (data && typeof dataFromStorage === 'string') {
@@ -83,6 +90,7 @@ export class SaveState {
     public removeFromLocalStorage(element: HTMLLIElement): void {
         const id = Number(element.firstChild?.textContent?.split('').slice(1));
         const storedData = localStorage.getItem(this.storageName);
+
         if (storedData && storedData.length > 1) {
             const arr: localStorageObject = JSON.parse(storedData);
             const filteredList = arr.list.filter((element) => element.id !== id);
@@ -94,6 +102,7 @@ export class SaveState {
     public saveInputData(id: number, title: string, weight: string): void {
         const data = { id: id, title: title, weight: weight };
         const dataFromStorage = localStorage.getItem(this.storageName);
+
         if (typeof dataFromStorage === 'string') {
             const storedData: localStorageObject = JSON.parse(dataFromStorage);
             storedData.list.push(data);

@@ -8,12 +8,14 @@ export class DeleteButton extends Button {
     }
 
     public handleClick(event: Event): void {
+        const saveState = new SaveState();
         const target = event.target;
+
         if (target instanceof HTMLElement) {
             const parentElement = target.parentElement;
             parentElement?.remove();
         }
-        const saveState = new SaveState();
+
         if (target instanceof HTMLElement) {
             if (target.parentElement instanceof HTMLLIElement) {
                 saveState.removeFromLocalStorage(target.parentElement);

@@ -12,6 +12,7 @@ export class MainView extends View {
 
     public setContent(): void {
         const htmlElement = this.element.getElement();
+
         while (htmlElement.firstElementChild) {
             htmlElement.firstElementChild.remove();
         }

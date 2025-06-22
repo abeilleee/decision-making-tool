@@ -12,6 +12,7 @@ export class DataExporter {
         const data = this.saveState.getData();
         const blob = new Blob([JSON.stringify(data, null, NUMBERS.HALF)]);
         const link = document.createElement('a');
+
         link.href = URL.createObjectURL(blob);
         link.download = 'data.json';
         document.body.appendChild(link);

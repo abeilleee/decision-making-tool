@@ -19,6 +19,7 @@ export class HistoryRoutesHandler {
         if (typeof url === 'string') {
             this.pushHistory(url);
         }
+
         const urlPath = window.location.pathname.slice(1);
         const result: UserRequest = { path: '', resource: '' };
         const path = urlPath.split('/');

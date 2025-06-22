@@ -19,6 +19,7 @@ export class StartButton extends Button {
 
     public handleClick(): void {
         const filledOptions = this.saveState.getFilledOptions();
+
         if (filledOptions.length < 2) {
             const modal = new Modal();
             modal.addOptionDialog(TextModal.START_BTN_MESSAGE);

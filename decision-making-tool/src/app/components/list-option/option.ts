@@ -48,6 +48,7 @@ export class Option {
             parent: this.option,
             classes: ['input', 'input__title'],
         }).getElement();
+
         if (this.titleInput instanceof HTMLInputElement) {
             this.titleInput.placeholder = 'Title';
         }
@@ -57,6 +58,7 @@ export class Option {
             parent: this.option,
             classes: ['input', 'input__weight'],
         }).getElement();
+
         if (this.weightInput instanceof HTMLInputElement) {
             this.weightInput.placeholder = 'Weight';
             this.weightInput.type = 'number';
@@ -66,24 +68,27 @@ export class Option {
     }
 
     public deleteBtnClickListener(): void {
-        this.deleteBtn.getElement().addEventListener('click', (MouseEvent) => {
-            this.deleteBtn.handleClick(MouseEvent);
+        this.deleteBtn.getElement().addEventListener('click', (e) => {
+            this.deleteBtn.handleClick(e);
             this.saveState.getLastId('delete');
         });
     }
 
     private inputListeners(): void {
         const elements = [this.titleInput, this.weightInput];
+
         for (let i = 0; i < elements.length; i++) {
             const input = elements[i];
+
             if (input)
                 input.addEventListener('input', () => {
                     const id = Number(input?.parentElement?.firstChild?.textContent?.slice(1));
                     const savedDate = this.saveState.getData();
                     const savedListOptions = savedDate.list;
                     const obj = savedListOptions.find((obj) => Number(obj.id) === id);
-                    let title;
-                    let weight;
+                    let title: string;
+                    let weight: string;
+
                     if (input instanceof HTMLInputElement && obj) {
                         if (input === this.titleInput) {
                             title = input.value;
@@ -93,6 +98,7 @@ export class Option {
                             obj.weight = weight ? weight : '';
                         }
                     }
+
                     localStorage.setItem(this.saveState.storageName, JSON.stringify(savedDate));
                 });
         }

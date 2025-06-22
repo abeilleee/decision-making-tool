@@ -18,19 +18,22 @@ export class OptionList extends View {
     public addFilledOption(id: number, title: string, weight: string): void {
         const parent = this.element.getElement();
         const newOption = new Option(parent, Number(this.currentId));
-        if (newOption)
-            if (newOption.titleInput instanceof HTMLInputElement && newOption.weightInput instanceof HTMLInputElement) {
-                if (newOption.id) {
-                    newOption.id.textContent = `#${id}`;
-                    newOption.titleInput.value = title;
-                    newOption.weightInput.value = String(weight);
-                }
-            }
+
+        if (
+            newOption.titleInput instanceof HTMLInputElement &&
+            newOption.weightInput instanceof HTMLInputElement &&
+            newOption.id
+        ) {
+            newOption.id.textContent = `#${id}`;
+            newOption.titleInput.value = title;
+            newOption.weightInput.value = String(weight);
+        }
     }
 
     public removeChildren(): void {
         while (this.element.getElement().firstChild) {
             const child = this.element.getElement().firstChild;
+
             if (child) {
                 this.element.getElement().removeChild(child);
             }

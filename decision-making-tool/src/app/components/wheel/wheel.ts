@@ -91,11 +91,13 @@ export class WheelCanvas {
                     endAngle: startAngle + sectionAngle,
                 });
             }
+
             startAngle += sectionAngle;
         }
 
         this.drawCursor();
         this.drawCenterElement(this.centerX, this.centerY);
+
         if (this.context) this.context.save();
     }
 

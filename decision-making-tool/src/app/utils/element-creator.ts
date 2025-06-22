@@ -17,6 +17,7 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
         this.setTextContent(options, element);
         this.setParentElement(options, element);
         this.addInnerElement(options, element);
+
         return element;
     }
 
