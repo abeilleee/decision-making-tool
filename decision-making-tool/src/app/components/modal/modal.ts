@@ -57,8 +57,6 @@ export class Modal {
     public addOptionDialog(text: TextModal): void {
         const closeBtn = new Button('Close');
 
-        this.form.append(closeBtn.getElement());
-
         if (this.form.firstChild) {
             while (this.form.childNodes.length !== 1) {
                 this.form.removeChild(this.form.firstChild);
@@ -69,6 +67,8 @@ export class Modal {
             this.textArea.disabled = true;
             this.textArea.placeholder = text;
         }
+
+        this.form.append(closeBtn.getElement());
     }
 
     private configureModal(): void {
